@@ -1,4 +1,4 @@
-/init-specコマンドの出力例を表示します。
+/kiroコマンドの出力例を表示します。
 
 ## requirements.mdの例
 ```markdown

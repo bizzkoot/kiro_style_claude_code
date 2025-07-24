@@ -5,7 +5,7 @@ my-project/
 ├── .claude/
 │   ├── CLAUDE.md          # プロジェクトのコンテキストと開発ルール
 │   └── commands/
-│       ├── init-spec.md   # 仕様初期化コマンド
+│       ├── kiro.md   # 仕様初期化コマンド
 │       └── sync-spec.md   # 仕様同期コマンド
 ├── specs/
 │   ├── requirements.md    # 要件定義（何を作るか）

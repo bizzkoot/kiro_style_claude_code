@@ -19,7 +19,7 @@ claude
 ### 3.1 仕様を作成
 
 ```
-/init-spec TODOアプリケーション
+/kiro TODOアプリケーション
 ```
 
 生成されるファイル：
@@ -55,9 +55,9 @@ Task 1を実装してください
 
 ## 利用可能なコマンド
 
-- `/init-spec [機能名]` - 新機能の仕様を作成
+- `/kiro [機能名]` - 新機能の仕様を作成
 - `/sync-spec` - 仕様ファイルを同期
-- `/show-example` - init-specの出力例を表示
+- `/show-example` - kiroの出力例を表示
 
 ## 開発フロー
 

@@ -17,9 +17,9 @@
 
 ## コマンド
 
-- `/init-spec`: 新しい機能の仕様を初期化
+- `/kiro`: 新しい機能の仕様を初期化
 - `/sync-spec`: 仕様ファイル間の整合性を確認
-- `/show-example`: init-specコマンドの出力例を表示
+- `/show-example`: kiroコマンドの出力例を表示
 
 ## 開発ルール
 
