@@ -31,7 +31,7 @@ cp path/to/example-project/.claude/commands/* .claude/commands/
 
 ```bash
 # Claude Codeを起動
-claude-code .
+claude
 ```
 
 ### 3. 最初の機能を作成

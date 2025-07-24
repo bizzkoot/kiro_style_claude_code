@@ -11,7 +11,7 @@ cd my-project/
 ## ステップ2: Claude Codeで開発開始
 
 ```bash
-claude-code .
+claude
 ```
 
 ## ステップ3: 機能の開発

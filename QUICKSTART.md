@@ -11,7 +11,7 @@ cd todo-app/
 
 ### 2. Claude Codeで開発開始
 ```bash
-claude-code .
+claude
 ```
 
 ### 3. TODOアプリの仕様を生成
