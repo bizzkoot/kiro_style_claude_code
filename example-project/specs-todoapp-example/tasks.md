@@ -2,114 +2,114 @@
 
 ## フェーズ1: 基盤構築
 
-- [x] **Task 1**: プロジェクトセットアップ ✓完了済み
+- [ ] **Task 1**: プロジェクトセットアップ
   - Viteでプロジェクトを初期化
   - TypeScript設定
   - 基本的なディレクトリ構造の作成
   - 依存関係: なし
 
-- [x] **Task 2**: 開発環境の設定 ✓完了済み
+- [ ] **Task 2**: 開発環境の設定
   - ESLint、Prettierの設定
   - CSS Modulesの設定
   - package.jsonのスクリプト設定
   - 依存関係: Task 1
 
-- [x] **Task 3**: 型定義の作成 ✓完了済み
+- [ ] **Task 3**: 型定義の作成
   - types/todo.tsの作成
   - 基本的な型インターフェースの定義
   - 依存関係: Task 1
 
 ## フェーズ2: コア機能実装
 
-- [x] **Task 4**: ローカルストレージユーティリティの実装 ✓完了済み
+- [ ] **Task 4**: ローカルストレージユーティリティの実装
   - utils/storage.tsの作成
   - 保存・読み込み・エラーハンドリング
   - 依存関係: Task 3
 
-- [x] **Task 5**: TodoContextとReducerの実装 ✓完了済み
+- [ ] **Task 5**: TodoContextとReducerの実装
   - contexts/TodoContext.tsxの作成
   - Reducerロジックの実装
   - 依存関係: Task 3, Task 4
 
-- [x] **Task 6**: カスタムフックの実装 ✓完了済み
+- [ ] **Task 6**: カスタムフックの実装
   - hooks/useTodos.tsの作成
   - hooks/useLocalStorage.tsの作成
   - 依存関係: Task 5
 
-- [x] **Task 7**: TodoInputコンポーネントの実装 ✓完了済み
+- [ ] **Task 7**: TodoInputコンポーネントの実装
   - components/TodoInput.tsxの作成
   - 入力フォームとバリデーション
   - 依存関係: Task 6
 
-- [x] **Task 8**: TodoItemコンポーネントの実装 ✓完了済み
+- [ ] **Task 8**: TodoItemコンポーネントの実装
   - components/TodoItem.tsxの作成
   - チェックボックス、編集、削除機能
   - 依存関係: Task 6
 
-- [x] **Task 9**: TodoListコンポーネントの実装 ✓完了済み
+- [ ] **Task 9**: TodoListコンポーネントの実装
   - components/TodoList.tsxの作成
   - タスク一覧表示とフィルタリング
   - 依存関係: Task 8
 
-- [x] **Task 10**: TodoFilterコンポーネントの実装 ✓完了済み
+- [ ] **Task 10**: TodoFilterコンポーネントの実装
   - components/TodoFilter.tsxの作成
   - フィルターボタンの実装
   - 依存関係: Task 6
 
-- [x] **Task 11**: Appコンポーネントの実装 ✓完了済み
+- [ ] **Task 11**: Appコンポーネントの実装
   - components/App.tsxの作成
   - 全体レイアウトとContextProvider
   - 依存関係: Task 7, Task 9, Task 10
 
 ## フェーズ3: スタイリングとUX
 
-- [x] **Task 12**: 基本スタイルの実装
+- [ ] **Task 12**: 基本スタイルの実装
   - CSS Modulesファイルの作成
   - レスポンシブデザインの実装
   - 依存関係: Task 11
 
-- [x] **Task 13**: アニメーションとトランジションの追加
+- [ ] **Task 13**: アニメーションとトランジションの追加
   - タスク追加・削除時のアニメーション
   - 状態変更時のトランジション
   - 依存関係: Task 12
 
-- [x] **Task 14**: キーボードショートカットの実装
+- [ ] **Task 14**: キーボードショートカットの実装
   - Enter/Escキーのハンドリング
   - フォーカス管理
   - 依存関係: Task 11
 
 ## フェーズ4: テストと品質保証
 
-- [x] **Task 15**: ユニットテストの作成
+- [ ] **Task 15**: ユニットテストの作成
   - コンポーネントテスト
   - カスタムフックのテスト
   - Reducerのテスト
   - 依存関係: Task 11
 
-- [x] **Task 16**: 統合テストの実施
+- [ ] **Task 16**: 統合テストの実施
   - ユーザーフロー全体のテスト
   - ローカルストレージとの連携テスト
   - 依存関係: Task 15
 
-- [x] **Task 17**: アクセシビリティの実装
+- [ ] **Task 17**: アクセシビリティの実装
   - ARIA属性の追加
   - スクリーンリーダー対応
   - 依存関係: Task 14
 
 ## フェーズ5: 最適化とデプロイ準備
 
-- [x] **Task 18**: パフォーマンス最適化
+- [ ] **Task 18**: パフォーマンス最適化
   - React.memoの適用
   - useCallbackの適用
   - 大量データ対応の検討
   - 依存関係: Task 11
 
-- [x] **Task 19**: ビルド設定の最適化
+- [ ] **Task 19**: ビルド設定の最適化
   - Viteのビルド設定
   - 本番環境用の最適化
   - 依存関係: Task 18
 
-- [x] **Task 20**: ドキュメント作成
+- [ ] **Task 20**: ドキュメント作成
   - README.mdの作成
   - 使用方法とセットアップ手順
   - 依存関係: Task 19
