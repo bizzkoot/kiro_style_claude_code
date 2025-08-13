@@ -1,17 +1,17 @@
-$ARGUMENTSの機能について、以下の仕様ファイルを作成してください：
+For the $ARGUMENTS feature, please create the following specification files:
 
 1. **specs/requirements.md**
-   - ユーザーストーリー形式： "As a [ユーザー], I want [目標] so that [利点]"
-   - 各ストーリーに受け入れ基準を含める
+   - User story format: "As a [user], I want [goal] so that [benefit]"
+   - Include acceptance criteria for each story
 
 2. **specs/design.md**
-   - システムアーキテクチャ
-   - 技術スタックの選定
-   - コンポーネント構成
+   - System architecture
+   - Technology stack selection
+   - Component structure
 
 3. **specs/tasks.md**
-   - 実装タスクの一覧
-   - 各タスクに[ ] チェックボックスを付ける
-   - 依存関係を明記
+   - List of implementation tasks
+   - Add [ ] checkbox to each task
+   - Specify dependencies
 
-まず要件を確認してから、他のファイルを作成してください。
+Please confirm the requirements first before creating the other files.

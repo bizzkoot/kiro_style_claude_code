@@ -1,90 +1,90 @@
-# TODOアプリ要件定義
+# TODO App Requirements Definition
 
-## プロジェクト概要
-シンプルで使いやすいTODOアプリケーションを作成する。ユーザーが日々のタスクを効率的に管理できるWebアプリケーション。
+## Project Overview
+Create a simple and easy-to-use TODO application. A web application that allows users to efficiently manage their daily tasks.
 
-## ユーザーストーリー
+## User Stories
 
-### 1. タスクの作成
-**As a** ユーザー
-**I want** 新しいタスクを作成できる
-**So that** やるべきことを記録できる
+### 1. Create Task
+**As a** user
+**I want** to create new tasks
+**So that** I can record what needs to be done
 
-**受け入れ基準:**
-- [ ] タスクのタイトルを入力できる
-- [ ] Enterキーまたは追加ボタンでタスクを作成できる
-- [ ] 空のタスクは作成できない
-- [ ] 作成したタスクはリストに即座に表示される
+**Acceptance Criteria:**
+- [ ] Can input task title
+- [ ] Can create task with Enter key or Add button
+- [ ] Cannot create empty tasks
+- [ ] Created tasks are immediately displayed in the list
 
-### 2. タスクの一覧表示
-**As a** ユーザー
-**I want** すべてのタスクを一覧で見る
-**So that** 何をすべきか把握できる
+### 2. List Tasks
+**As a** user
+**I want** to see all tasks in a list
+**So that** I can understand what needs to be done
 
-**受け入れ基準:**
-- [ ] すべてのタスクがリスト形式で表示される
-- [ ] 各タスクにはタイトルが表示される
-- [ ] 完了/未完了の状態が視覚的に区別できる
-- [ ] タスクがない場合は適切なメッセージが表示される
+**Acceptance Criteria:**
+- [ ] All tasks are displayed in list format
+- [ ] Each task displays its title
+- [ ] Completed/incomplete status is visually distinguishable
+- [ ] Appropriate message is displayed when there are no tasks
 
-### 3. タスクの完了/未完了の切り替え
-**As a** ユーザー
-**I want** タスクの完了状態を切り替える
-**So that** 進捗を管理できる
+### 3. Toggle Task Completion/Incompletion
+**As a** user
+**I want** to toggle task completion status
+**So that** I can manage progress
 
-**受け入れ基準:**
-- [ ] チェックボックスまたはクリックで状態を切り替えられる
-- [ ] 完了したタスクは打ち消し線が表示される
-- [ ] 状態の変更は即座に反映される
-- [ ] 完了したタスクも一覧に残る
+**Acceptance Criteria:**
+- [ ] Status can be toggled with checkbox or click
+- [ ] Completed tasks display strikethrough
+- [ ] Status changes are reflected immediately
+- [ ] Completed tasks remain in the list
 
-### 4. タスクの編集
-**As a** ユーザー
-**I want** 既存のタスクを編集する
-**So that** 内容を更新できる
+### 4. Edit Task
+**As a** user
+**I want** to edit existing tasks
+**So that** I can update content
 
-**受け入れ基準:**
-- [ ] タスクをクリックまたは編集ボタンで編集モードに入れる
-- [ ] タイトルを直接編集できる
-- [ ] Enterキーまたは保存ボタンで変更を保存できる
-- [ ] Escキーでキャンセルできる
-- [ ] 空の内容には更新できない
+**Acceptance Criteria:**
+- [ ] Can enter edit mode by clicking task or edit button
+- [ ] Can directly edit title
+- [ ] Can save changes with Enter key or save button
+- [ ] Can cancel with Esc key
+- [ ] Cannot update with empty content
 
-### 5. タスクの削除
-**As a** ユーザー
-**I want** 不要なタスクを削除する
-**So that** リストを整理できる
+### 5. Delete Task
+**As a** user
+**I want** to delete unnecessary tasks
+**So that** I can organize the list
 
-**受け入れ基準:**
-- [ ] 各タスクに削除ボタンがある
-- [ ] 削除ボタンをクリックすると確認ダイアログが表示される
-- [ ] 確認後、タスクがリストから削除される
-- [ ] 削除は取り消しできない
+**Acceptance Criteria:**
+- [ ] Each task has a delete button
+- [ ] Confirmation dialog is displayed when delete button is clicked
+- [ ] Task is removed from list after confirmation
+- [ ] Deletion cannot be undone
 
-### 6. タスクのフィルタリング
-**As a** ユーザー
-**I want** 完了/未完了でタスクをフィルタリングする
-**So that** 必要なタスクだけを見ることができる
+### 6. Filter Tasks
+**As a** user
+**I want** to filter tasks by completed/incomplete
+**So that** I can see only the tasks I need
 
-**受け入れ基準:**
-- [ ] 「すべて」「未完了」「完了済み」のフィルターオプションがある
-- [ ] フィルターの切り替えが即座に反映される
-- [ ] 現在のフィルター状態が視覚的にわかる
-- [ ] フィルター適用中もタスクの操作が可能
+**Acceptance Criteria:**
+- [ ] Filter options: "All", "Active", "Completed"
+- [ ] Filter switching is reflected immediately
+- [ ] Current filter status is visually clear
+- [ ] Task operations are possible while filter is applied
 
-### 7. データの永続化
-**As a** ユーザー
-**I want** タスクがブラウザを閉じても保存される
-**So that** データを失わない
+### 7. Data Persistence
+**As a** user
+**I want** tasks to be saved even after closing the browser
+**So that** I don't lose data
 
-**受け入れ基準:**
-- [ ] ブラウザのローカルストレージにデータが保存される
-- [ ] ページをリロードしてもタスクが復元される
-- [ ] タスクの作成/編集/削除が自動的に保存される
-- [ ] ストレージエラー時は適切なエラーメッセージが表示される
+**Acceptance Criteria:**
+- [ ] Data is saved in browser's local storage
+- [ ] Tasks are restored when page is reloaded
+- [ ] Task creation/editing/deletion is automatically saved
+- [ ] Appropriate error message is displayed on storage error
 
-## 非機能要件
+## Non-functional Requirements
 
-- **パフォーマンス**: タスクの追加/編集/削除は100ms以内に完了する。1000件のタスクでも快適に動作する
-- **使いやすさ**: レスポンシブデザインでモバイルでも使いやすい。キーボードショートカットをサポート。アクセシビリティに配慮（WAI-ARIA対応）
-- **ブラウザサポート**: Chrome（最新版）、Firefox（最新版）、Safari（最新版）、Edge（最新版）
+- **Performance**: Task addition/editing/deletion completes within 100ms. Works comfortably with 1000 tasks
+- **Usability**: Responsive design that's easy to use on mobile. Supports keyboard shortcuts. Accessibility considerations (WAI-ARIA compliant)
+- **Browser Support**: Chrome (latest), Firefox (latest), Safari (latest), Edge (latest)

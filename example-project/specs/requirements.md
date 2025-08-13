@@ -1,34 +1,34 @@
-# 要件定義書
+# Requirements Document
 
-## プロジェクト概要
+## Project Overview
 
-[プロジェクトの目的を記載]
+[Project purpose description]
 
-## ユーザーストーリー
+## User Stories
 
-### ストーリー1: [機能名]
+### Story 1: [Feature Name]
 
-**As a** [ユーザータイプ]  
-**I want** [目的]  
-**So that** [利点]
+**As a** [User Type]  
+**I want** [Purpose]  
+**So that** [Benefit]
 
-**受け入れ基準:**
-- [ ] [基準 1]
-- [ ] [基準 2]
-- [ ] [基準 3]
+**Acceptance Criteria:**
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+- [ ] [Criterion 3]
 
-### ストーリー2: [機能名]
+### Story 2: [Feature Name]
 
-**As a** [ユーザータイプ]  
-**I want** [目的]  
-**So that** [利点]
+**As a** [User Type]  
+**I want** [Purpose]  
+**So that** [Benefit]
 
-**受け入れ基準:**
-- [ ] [基準 1]
-- [ ] [基準 2]
+**Acceptance Criteria:**
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
 
-## 非機能要件
+## Non-functional Requirements
 
-- **パフォーマンス**: [要件]
-- **セキュリティ**: [要件]
-- **使いやすさ**: [要件]
+- **Performance**: [Requirements]
+- **Security**: [Requirements]
+- **Usability**: [Requirements]

@@ -1,128 +1,128 @@
-# TODOアプリ実装タスク一覧
+# TODO App Implementation Task List
 
-## フェーズ1: 基盤構築
+## Phase 1: Foundation Building
 
-- [ ] **Task 1**: プロジェクトセットアップ
-  - Viteでプロジェクトを初期化
-  - TypeScript設定
-  - 基本的なディレクトリ構造の作成
-  - 依存関係: なし
+- [ ] **Task 1**: Project Setup
+  - Initialize project with Vite
+  - TypeScript configuration
+  - Create basic directory structure
+  - Dependencies: None
 
-- [ ] **Task 2**: 開発環境の設定
-  - ESLint、Prettierの設定
-  - CSS Modulesの設定
-  - package.jsonのスクリプト設定
-  - 依存関係: Task 1
+- [ ] **Task 2**: Development Environment Configuration
+  - ESLint, Prettier configuration
+  - CSS Modules configuration
+  - package.json script configuration
+  - Dependencies: Task 1
 
-- [ ] **Task 3**: 型定義の作成
-  - types/todo.tsの作成
-  - 基本的な型インターフェースの定義
-  - 依存関係: Task 1
+- [ ] **Task 3**: Type Definition Creation
+  - Create types/todo.ts
+  - Define basic type interfaces
+  - Dependencies: Task 1
 
-## フェーズ2: コア機能実装
+## Phase 2: Core Feature Implementation
 
-- [ ] **Task 4**: ローカルストレージユーティリティの実装
-  - utils/storage.tsの作成
-  - 保存・読み込み・エラーハンドリング
-  - 依存関係: Task 3
+- [ ] **Task 4**: Local Storage Utility Implementation
+  - Create utils/storage.ts
+  - Save, load, and error handling
+  - Dependencies: Task 3
 
-- [ ] **Task 5**: TodoContextとReducerの実装
-  - contexts/TodoContext.tsxの作成
-  - Reducerロジックの実装
-  - 依存関係: Task 3, Task 4
+- [ ] **Task 5**: TodoContext and Reducer Implementation
+  - Create contexts/TodoContext.tsx
+  - Implement Reducer logic
+  - Dependencies: Task 3, Task 4
 
-- [ ] **Task 6**: カスタムフックの実装
-  - hooks/useTodos.tsの作成
-  - hooks/useLocalStorage.tsの作成
-  - 依存関係: Task 5
+- [ ] **Task 6**: Custom Hook Implementation
+  - Create hooks/useTodos.ts
+  - Create hooks/useLocalStorage.ts
+  - Dependencies: Task 5
 
-- [ ] **Task 7**: TodoInputコンポーネントの実装
-  - components/TodoInput.tsxの作成
-  - 入力フォームとバリデーション
-  - 依存関係: Task 6
+- [ ] **Task 7**: TodoInput Component Implementation
+  - Create components/TodoInput.tsx
+  - Input form and validation
+  - Dependencies: Task 6
 
-- [ ] **Task 8**: TodoItemコンポーネントの実装
-  - components/TodoItem.tsxの作成
-  - チェックボックス、編集、削除機能
-  - 依存関係: Task 6
+- [ ] **Task 8**: TodoItem Component Implementation
+  - Create components/TodoItem.tsx
+  - Checkbox, edit, delete functionality
+  - Dependencies: Task 6
 
-- [ ] **Task 9**: TodoListコンポーネントの実装
-  - components/TodoList.tsxの作成
-  - タスク一覧表示とフィルタリング
-  - 依存関係: Task 8
+- [ ] **Task 9**: TodoList Component Implementation
+  - Create components/TodoList.tsx
+  - Task list display and filtering
+  - Dependencies: Task 8
 
-- [ ] **Task 10**: TodoFilterコンポーネントの実装
-  - components/TodoFilter.tsxの作成
-  - フィルターボタンの実装
-  - 依存関係: Task 6
+- [ ] **Task 10**: TodoFilter Component Implementation
+  - Create components/TodoFilter.tsx
+  - Filter button implementation
+  - Dependencies: Task 6
 
-- [ ] **Task 11**: Appコンポーネントの実装
-  - components/App.tsxの作成
-  - 全体レイアウトとContextProvider
-  - 依存関係: Task 7, Task 9, Task 10
+- [ ] **Task 11**: App Component Implementation
+  - Create components/App.tsx
+  - Overall layout and ContextProvider
+  - Dependencies: Task 7, Task 9, Task 10
 
-## フェーズ3: スタイリングとUX
+## Phase 3: Styling and UX
 
-- [ ] **Task 12**: 基本スタイルの実装
-  - CSS Modulesファイルの作成
-  - レスポンシブデザインの実装
-  - 依存関係: Task 11
+- [ ] **Task 12**: Basic Style Implementation
+  - Create CSS Modules files
+  - Implement responsive design
+  - Dependencies: Task 11
 
-- [ ] **Task 13**: アニメーションとトランジションの追加
-  - タスク追加・削除時のアニメーション
-  - 状態変更時のトランジション
-  - 依存関係: Task 12
+- [ ] **Task 13**: Add Animations and Transitions
+  - Animations for task addition/deletion
+  - Transitions for state changes
+  - Dependencies: Task 12
 
-- [ ] **Task 14**: キーボードショートカットの実装
-  - Enter/Escキーのハンドリング
-  - フォーカス管理
-  - 依存関係: Task 11
+- [ ] **Task 14**: Keyboard Shortcut Implementation
+  - Handle Enter/Esc keys
+  - Focus management
+  - Dependencies: Task 11
 
-## フェーズ4: テストと品質保証
+## Phase 4: Testing and Quality Assurance
 
-- [ ] **Task 15**: ユニットテストの作成
-  - コンポーネントテスト
-  - カスタムフックのテスト
-  - Reducerのテスト
-  - 依存関係: Task 11
+- [ ] **Task 15**: Unit Test Creation
+  - Component tests
+  - Custom hook tests
+  - Reducer tests
+  - Dependencies: Task 11
 
-- [ ] **Task 16**: 統合テストの実施
-  - ユーザーフロー全体のテスト
-  - ローカルストレージとの連携テスト
-  - 依存関係: Task 15
+- [ ] **Task 16**: Integration Testing
+  - Test entire user flow
+  - Test integration with local storage
+  - Dependencies: Task 15
 
-- [ ] **Task 17**: アクセシビリティの実装
-  - ARIA属性の追加
-  - スクリーンリーダー対応
-  - 依存関係: Task 14
+- [ ] **Task 17**: Accessibility Implementation
+  - Add ARIA attributes
+  - Screen reader support
+  - Dependencies: Task 14
 
-## フェーズ5: 最適化とデプロイ準備
+## Phase 5: Optimization and Deployment Preparation
 
-- [ ] **Task 18**: パフォーマンス最適化
-  - React.memoの適用
-  - useCallbackの適用
-  - 大量データ対応の検討
-  - 依存関係: Task 11
+- [ ] **Task 18**: Performance Optimization
+  - Apply React.memo
+  - Apply useCallback
+  - Consider large data handling
+  - Dependencies: Task 11
 
-- [ ] **Task 19**: ビルド設定の最適化
-  - Viteのビルド設定
-  - 本番環境用の最適化
-  - 依存関係: Task 18
+- [ ] **Task 19**: Build Configuration Optimization
+  - Vite build configuration
+  - Production environment optimization
+  - Dependencies: Task 18
 
-- [ ] **Task 20**: ドキュメント作成
-  - README.mdの作成
-  - 使用方法とセットアップ手順
-  - 依存関係: Task 19
+- [ ] **Task 20**: Documentation Creation
+  - Create README.md
+  - Usage instructions and setup procedures
+  - Dependencies: Task 19
 
-## 進捗追跡
+## Progress Tracking
 
-- 完了: 11/20
-- 進行中: 0
-- 未着手: 9
+- Completed: 11/20
+- In Progress: 0
+- Not Started: 9
 
-## 実装順序の推奨
+## Recommended Implementation Order
 
-1. フェーズ1を順番に実施（基盤が必要）
-2. フェーズ2はTask 4-6を先に実施（状態管理の基盤）
-3. フェーズ2のTask 7-11は並行実施可能
-4. フェーズ3-5は順次実施
+1. Implement Phase 1 sequentially (foundation is required)
+2. Implement Task 4-6 of Phase 2 first (state management foundation)
+3. Tasks 7-11 of Phase 2 can be implemented in parallel
+4. Implement Phases 3-5 sequentially

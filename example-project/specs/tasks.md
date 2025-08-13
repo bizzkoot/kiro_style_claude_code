@@ -1,39 +1,39 @@
-# タスク一覧
+# Task List
 
-## フェーズ1: 基盤構築
+## Phase 1: Foundation Building
 
-- [ ] **Task 1**: プロジェクトセットアップ
-  - パッケージマネージャーの初期化
-  - 基本的なディレクトリ構造の作成
-  - 依存関係: なし
+- [ ] **Task 1**: Project Setup
+  - Initialize package manager
+  - Create basic directory structure
+  - Dependencies: None
 
-- [ ] **Task 2**: 開発環境の設定
-  - Linter、Formatterの設定
-  - TypeScriptの設定
-  - 依存関係: Task 1
+- [ ] **Task 2**: Development Environment Configuration
+  - Linter, Formatter setup
+  - TypeScript configuration
+  - Dependencies: Task 1
 
-## フェーズ2: コア機能実装
+## Phase 2: Core Feature Implementation
 
-- [ ] **Task 3**: [機能名]の実装
-  - [詳細]
-  - 依存関係: Task 2
+- [ ] **Task 3**: [Feature Name] Implementation
+  - [Details]
+  - Dependencies: Task 2
 
-- [ ] **Task 4**: [機能名]の実装
-  - [詳細]
-  - 依存関係: Task 2
+- [ ] **Task 4**: [Feature Name] Implementation
+  - [Details]
+  - Dependencies: Task 2
 
-## フェーズ3: テストと品質保証
+## Phase 3: Testing and Quality Assurance
 
-- [ ] **Task 5**: ユニットテストの作成
-  - 各コンポーネントのテスト
-  - 依存関係: Task 3, 4
+- [ ] **Task 5**: Unit Test Creation
+  - Testing each component
+  - Dependencies: Task 3, 4
 
-- [ ] **Task 6**: 統合テストの実施
-  - システム全体の動作確認
-  - 依存関係: Task 5
+- [ ] **Task 6**: Integration Testing
+  - System-wide operation verification
+  - Dependencies: Task 5
 
-## 進捗追跡
+## Progress Tracking
 
-- 完了: 0/6
-- 進行中: 0
-- 未着手: 6
+- Completed: 0/6
+- In Progress: 0
+- Not Started: 6

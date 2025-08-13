@@ -1,59 +1,59 @@
-# TODOアプリ設計文書
+# TODO App Design Document
 
-## アーキテクチャ概要
+## Architecture Overview
 
-シングルページアプリケーション（SPA）として実装。フロントエンドのみで完結し、データはブラウザのローカルストレージに保存する。
+Implemented as a Single Page Application (SPA). Runs entirely on the frontend with data stored in browser's local storage.
 
-## 技術スタック
+## Technology Stack
 
-- **言語**: TypeScript 5.x
-- **フレームワーク**: React 18.x
-- **ビルドツール**: Vite 5.x
-- **スタイリング**: CSS Modules
-- **状態管理**: React Context API + useReducer
-- **テスト**: Vitest + React Testing Library
-- **リンター**: ESLint + Prettier
+- **Language**: TypeScript 5.x
+- **Framework**: React 18.x
+- **Build Tool**: Vite 5.x
+- **Styling**: CSS Modules
+- **State Management**: React Context API + useReducer
+- **Testing**: Vitest + React Testing Library
+- **Linter**: ESLint + Prettier
 
-## コンポーネント構成
+## Component Structure
 
 ```
 src/
 ├── components/
-│   ├── App.tsx                 # ルートコンポーネント
-│   ├── TodoInput.tsx           # タスク入力フォーム
-│   ├── TodoList.tsx            # タスク一覧表示
-│   ├── TodoItem.tsx            # 個別タスクコンポーネント
-│   ├── TodoFilter.tsx          # フィルターボタン
-│   └── EditModal.tsx           # 編集用モーダル（インライン編集の場合は不要）
+│   ├── App.tsx                 # Root component
+│   ├── TodoInput.tsx           # Task input form
+│   ├── TodoList.tsx            # Task list display
+│   ├── TodoItem.tsx            # Individual task component
+│   ├── TodoFilter.tsx          # Filter buttons
+│   └── EditModal.tsx           # Edit modal (not needed for inline editing)
 ├── contexts/
-│   └── TodoContext.tsx         # TODOの状態管理
+│   └── TodoContext.tsx         # TODO state management
 ├── hooks/
-│   ├── useTodos.ts             # TODO操作のカスタムフック
-│   └── useLocalStorage.ts      # ローカルストレージ同期フック
+│   ├── useTodos.ts             # Custom hook for TODO operations
+│   └── useLocalStorage.ts      # Local storage synchronization hook
 ├── types/
-│   └── todo.ts                 # 型定義
+│   └── todo.ts                 # Type definitions
 └── utils/
-    └── storage.ts              # ローカルストレージ操作
+    └── storage.ts              # Local storage operations
 
 ```
 
-## データフロー
+## Data Flow
 
-1. **タスク作成**: TodoInput → useTodos → TodoContext → LocalStorage
-2. **状態更新**: TodoItem → useTodos → TodoContext → LocalStorage
-3. **フィルタリング**: TodoFilter → TodoContext → TodoList（表示の更新）
-4. **初期化**: App起動時 → LocalStorage → TodoContext → 各コンポーネント
+1. **Task Creation**: TodoInput → useTodos → TodoContext → LocalStorage
+2. **State Update**: TodoItem → useTodos → TodoContext → LocalStorage
+3. **Filtering**: TodoFilter → TodoContext → TodoList (display update)
+4. **Initialization**: App startup → LocalStorage → TodoContext → Components
 
-## 型定義
+## Type Definitions
 
 ```typescript
 // types/todo.ts
 interface Todo {
   id: string;           // UUID
-  title: string;        // タスクのタイトル
-  completed: boolean;   // 完了状態
-  createdAt: Date;      // 作成日時
-  updatedAt: Date;      // 更新日時
+  title: string;        // Task title
+  completed: boolean;   // Completion status
+  createdAt: Date;      // Creation date
+  updatedAt: Date;      // Update date
 }
 
 type FilterType = 'all' | 'active' | 'completed';
@@ -64,7 +64,7 @@ interface TodoState {
 }
 ```
 
-## 状態管理設計
+## State Management Design
 
 ### TodoContext
 
@@ -92,52 +92,52 @@ type TodoAction =
   | { type: 'LOAD_TODOS'; payload: { todos: Todo[] } };
 ```
 
-## ローカルストレージ設計
+## Local Storage Design
 
-- **キー**: `todo-app-data`
-- **形式**: JSON文字列
-- **保存タイミング**: 全ての状態変更時
-- **エラーハンドリング**: try-catchで包み、エラー時はコンソールに出力
+- **Key**: `todo-app-data`
+- **Format**: JSON string
+- **Save Timing**: On all state changes
+- **Error Handling**: Wrapped in try-catch, errors logged to console
 
-## UI/UX設計
+## UI/UX Design
 
-### レイアウト
+### Layout
 
 ```
 ┌─────────────────────────────────────┐
-│          TODOアプリ                  │
+│          TODO App                   │
 ├─────────────────────────────────────┤
-│  [          入力フィールド        ]  │
-│  [追加]                             │
+│  [          Input Field           ]  │
+│  [Add]                              │
 ├─────────────────────────────────────┤
-│  [すべて] [未完了] [完了済み]       │
+│  [All] [Active] [Completed]         │
 ├─────────────────────────────────────┤
-│  □ タスク1              [編集][削除] │
-│  ☑ タスク2              [編集][削除] │
-│  □ タスク3              [編集][削除] │
+│  □ Task 1               [Edit][Delete] │
+│  ☑ Task 2               [Edit][Delete] │
+│  □ Task 3               [Edit][Delete] │
 └─────────────────────────────────────┘
 ```
 
-### スタイリング方針
+### Styling Policy
 
-- モバイルファースト設計
-- 最小幅: 320px
-- 最大幅: 800px（中央寄せ）
-- カラーパレット:
-  - プライマリ: #007bff
-  - 完了: #6c757d
-  - 削除: #dc3545
-  - 背景: #f8f9fa
+- Mobile-first design
+- Minimum width: 320px
+- Maximum width: 800px (centered)
+- Color palette:
+  - Primary: #007bff
+  - Completed: #6c757d
+  - Delete: #dc3545
+  - Background: #f8f9fa
 
-## パフォーマンス最適化
+## Performance Optimization
 
-- React.memoを使用してコンポーネントの再レンダリングを最小化
-- useCallbackでイベントハンドラをメモ化
-- 大量のタスクに対応するため、仮想スクロールの実装を検討（1000件以上の場合）
+- Use React.memo to minimize component re-rendering
+- Memoize event handlers with useCallback
+- Consider virtual scrolling for large numbers of tasks (over 1000)
 
-## アクセシビリティ
+## Accessibility
 
-- すべてのインタラクティブ要素にaria-label
-- キーボードナビゲーション対応
-- フォーカス管理
-- スクリーンリーダー対応
+- aria-label for all interactive elements
+- Keyboard navigation support
+- Focus management
+- Screen reader support

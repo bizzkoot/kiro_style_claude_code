@@ -1,48 +1,48 @@
-# 設計文書
+# Design Document
 
-## アーキテクチャ概要
+## Architecture Overview
 
-[システム全体のアーキテクチャ説明]
+[System architecture description]
 
-## 技術スタック
+## Technology Stack
 
-- **言語**: [例: TypeScript]
-- **フレームワーク**: [例: React]
-- **データベース**: [例: PostgreSQL]
-- **その他**: [必要なツール]
+- **Language**: [e.g., TypeScript]
+- **Framework**: [e.g., React]
+- **Database**: [e.g., PostgreSQL]
+- **Others**: [Required tools]
 
-## コンポーネント構成
+## Component Structure
 
 ```
-[コンポーネント図]
+[Component diagram]
 ├── Component A
-│   └── 役割: [説明]
+│   └── Role: [Description]
 ├── Component B
-│   └── 役割: [説明]
+│   └── Role: [Description]
 └── Component C
-    └── 役割: [説明]
+    └── Role: [Description]
 ```
 
-## データフロー
+## Data Flow
 
-1. [フロー1]
-2. [フロー2]
-3. [フロー3]
+1. [Flow 1]
+2. [Flow 2]
+3. [Flow 3]
 
-## API設計
+## API Design
 
-### エンドポイント一覧
+### Endpoint List
 
-- `GET /api/[リソース]` - [説明]
-- `POST /api/[リソース]` - [説明]
-- `PUT /api/[リソース]/:id` - [説明]
-- `DELETE /api/[リソース]/:id` - [説明]
+- `GET /api/[resource]` - [Description]
+- `POST /api/[resource]` - [Description]
+- `PUT /api/[resource]/:id` - [Description]
+- `DELETE /api/[resource]/:id` - [Description]
 
-## データベーススキーマ
+## Database Schema
 
-### テーブル: [テーブル名]
+### Table: [Table Name]
 
-| カラム名 | 型 | 説明 |
-|---------|-----|------|
-| id | INTEGER | 主キー |
-| name | VARCHAR | [説明] |
+| Column Name | Type | Description |
+|-------------|------|-------------|
+| id | INTEGER | Primary Key |
+| name | VARCHAR | [Description] |

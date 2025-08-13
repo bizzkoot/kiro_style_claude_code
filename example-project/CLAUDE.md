@@ -1,43 +1,43 @@
-# Kiro スタイル仕様駆動開発テンプレート
+# Kiro Style Specification-Driven Development Template
 
-このプロジェクトはKiroスタイルの仕様駆動開発を採用しています。
+This project adopts Kiro-style specification-driven development.
 
-## 仕様ファイル
+## Specification Files
 
-- **specs/requirements.md**: ユーザーストーリーと要件
-- **specs/design.md**: 技術アーキテクチャ
-- **specs/tasks.md**: 実装タスクと進捗
+- **specs/requirements.md**: User stories and requirements
+- **specs/design.md**: Technical architecture
+- **specs/tasks.md**: Implementation tasks and progress
 
-## 開発フロー
+## Development Flow
 
-1. 要件定義 → requirements.mdに記載
-2. 設計 → design.mdに記載
-3. タスク分割 → tasks.mdに記載
-4. 実装 → 各タスクを順次実装
+1. Requirements Definition → Document in requirements.md
+2. Design → Document in design.md
+3. Task Division → Document in tasks.md
+4. Implementation → Implement each task sequentially
 
-## コマンド
+## Commands
 
-- `/kiro`: 新しい機能の仕様を初期化
+- `/kiro`: Initialize specifications for a new feature
 
-## 開発ルール
+## Development Rules
 
-1. すべての機能は要件定義から始める
-2. 要件を承認してから設計に進む
-3. 設計を承認してから実装に進む
-4. タスクは独立してテスト可能にする
+1. All features start with requirements definition
+2. Proceed to design after approving requirements
+3. Proceed to implementation after approving design
+4. Tasks should be independently testable
 
-## 仕様変更時の対応
+## Responding to Specification Changes
 
-仕様に変更があった場合は、関連するすべての仕様ファイル（requirements.md、design.md、tasks.md）を整合性を保ちながら更新します。
+When specifications change, update all related specification files (requirements.md, design.md, tasks.md) while maintaining consistency.
 
-例：
-- 「ユーザー認証機能を追加したい」
-- 「データベースをPostgreSQLからMongoDBに変更したい」
-- 「ダークモード機能は不要になったので削除して」
+Examples:
+- "I want to add user authentication functionality"
+- "I want to change the database from PostgreSQL to MongoDB"
+- "The dark mode feature is no longer needed, please remove it"
 
-変更があった場合、以下の対応を行います。
+When changes occur, take the following actions:
 
-1. requirements.mdに要件を追加/修正/削除
-2. design.mdの設計を要件に合わせて更新
-3. tasks.mdのタスクを設計に基づいて調整
-4. 各ファイル間の整合性を確認
+1. Add/modify/delete requirements in requirements.md
+2. Update design.md to match the requirements
+3. Adjust tasks.md based on the design
+4. Verify consistency between all files

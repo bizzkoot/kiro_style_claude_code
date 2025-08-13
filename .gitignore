@@ -1,0 +1,18 @@
+# IDE files
+.DS_Store
+*/.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Build outputs
+node_modules/
+dist/
+build/
+*.log
+
+# OS generated files
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db

@@ -1,101 +1,122 @@
-# Kiroスタイル仕様駆動開発 for Claude Code
+# Kiro Style Specification-Driven Development for Claude Code
 
-Claude CodeでKiroエディタのワークフローを再現するシンプルなシステムです。
+A simple system that reproduces the Kiro editor workflow in Claude Code.
 
-## 🎯 コンセプト
+## 🎯 Concept
 
-Kiroスタイルの仕様駆動開発は、3つのファイルを中心に開発を進める手法です。
+Kiro-style specification-driven development is a methodology that advances development centered around three files.
 
-1. **requirements.md** - 何を作るか（ユーザーストーリー）
-2. **design.md** - どう作るか（技術設計）
-3. **tasks.md** - 実装手順（タスク管理）
+1. **requirements.md** - What to build (User Stories)
+2. **design.md** - How to build it (Technical Design)
+3. **tasks.md** - Implementation steps (Task Management)
 
-### メリット
+### Benefits
 
-- **明確な開発プロセス** - 次に何をするか常に明確
-- **AIとの効率的な協業** - 構造化された仕様によりAIが理解しやすい
-- **変更の追跡が容易** - 仕様の変更履歴が明確
-- **チーム開発に適している** - 仕様が明確で認識を合わせやすい
+- **Clear Development Process** - Always clear what to do next
+- **Efficient Collaboration with AI** - AI can easily understand structured specifications
+- **Easy Change Tracking** - Clear specification change history
+- **Suitable for Team Development** - Clear specifications make it easy to align understanding
 
-## 🚀 使い方
+## 🚀 How to Use
 
-### 1. プロジェクトの初期化
+### 1. Project Initialization
 
 ```bash
-# 方法1: example-projectをコピー
+# Method 1: Copy example-project
 cp -r example-project/ my-project/
 cd my-project/
 
-# 方法2: 既存プロジェクトに追加
+# Method 2: Add to existing project
 cd your-existing-project/
 cp -r path/to/example-project/.claude .
 cp -r path/to/example-project/specs .
 cp path/to/example-project/CLAUDE.md .
+
+# Method 3: Direct download from GitHub
+mkdir my-project
+cd my-project/
+# Using curl (more common on macOS and many Linux distributions)
+curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
+# Extract using unzip (common on most systems)
+unzip main.zip
+# Alternative extraction using tar (if unzip is not available)
+# tar -xf main.zip
+mv kiro_style_claude_code-main/.claude .
+mv kiro_style_claude_code-main/specs .
+mv kiro_style_claude_code-main/CLAUDE.md .
+rm -rf kiro_style_claude_code-main main.zip
+
+# Alternative using wget (if curl is not available)
+# wget https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
 ```
 
-### 2. Claude Codeで開発開始
+### 2. Start Development with Claude Code
 
 ```bash
 claude
 ```
 
-### 3. 機能の開発フロー
+### 3. Feature Development Flow
 
-#### 新機能の仕様を作成
-
-```
-/kiro TODOアプリの作成
-```
-
-これにより以下のファイルが生成（更新）されます。
-
-- `specs/requirements.md` - ユーザーストーリー形式の要件定義
-- `specs/design.md` - システムアーキテクチャと技術設計
-- `specs/tasks.md` - 実装タスクとチェックリスト
-
-#### 開発の進め方
+#### Create Specifications for New Features
 
 ```
-# 1. 要件をレビュー・承認
-requirements.mdを承認します
+/kiro Create TODO app
+```
 
-# 2. 設計をレビュー・承認
-design.mdを承認します
+This will generate (update) the following files.
 
-# 3. タスクを順次実装
-Task 1 を実装してください
+- `specs/requirements.md` - Requirements definition in user story format
+- `specs/design.md` - System architecture and technical design
+- `specs/tasks.md` - Implementation tasks and checklist
+
+#### How to Proceed with Development
+
+```
+# 1. Review and approve requirements
+Approve requirements.md
+
+# 2. Review and approve design
+Approve design.md
+
+# 3. Implement tasks sequentially
+Please implement Task 1
   or
-specs/tasks.md に沿って開発を進めてください
+Proceed with development according to specs/tasks.md
 ```
 
-#### 仕様変更時の対応
+#### Responding to Specification Changes
 
-仕様に変更がある場合は、Claude Codeに変更内容を伝えてください。
-関連するすべての仕様ファイル（requirements.md、design.md、tasks.md）を整合性を保ちながら更新します。
+When there are changes to specifications, please communicate the changes to Claude Code.
+Update all related specification files (requirements.md, design.md, tasks.md) while maintaining consistency.
 
-例:
+Examples:
 
 ```
-「ユーザー認証機能を追加したい」
-「データベースをPostgreSQLからMongoDBに変更したい」
-「ダークモード機能は不要になったので削除して」
+"I want to add user authentication functionality"
+"I want to change the database from PostgreSQL to MongoDB"
+"The dark mode feature is no longer needed, please remove it"
 ```
 
-## 📁 プロジェクト構成
+## 📁 Project Structure
 
 ```
 my-project/
 ├── .claude/
 │   └── commands/
-│       └── kiro.md        # 仕様初期化コマンド
-├── CLAUDE.md              # プロジェクトルール
+│       └── kiro.md        # Specification initialization command
+├── CLAUDE.md              # Project rules
 ├── specs/
-│   ├── requirements.md    # 要件定義
-│   ├── design.md          # 設計文書
-│   └── tasks.md           # タスク一覧
-└── specs-todoapp-example  # 仕様ファイルの例（参照用なので削除可能）
+│   ├── requirements.md    # Requirements definition
+│   ├── design.md          # Design document
+│   └── tasks.md           # Task list
+└── specs-todoapp-example  # Specification file example (reference only, can be deleted)
 ```
 
-## 📝 ライセンス
+## 📝 License
 
 MIT License
+
+## 🙏 Acknowledgements
+
+This project is based on the original work by [tomada1114](https://github.com/tomada1114/kiro_style_claude_code). We thank the original author for creating the Kiro Style Specification-Driven Development framework.
