@@ -39,11 +39,10 @@ curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/m
 unzip main.zip
 # Navigate into the extracted directory
 cd kiro_style_claude_code-main
-# Ensure the parent directory exists and copy the necessary files and directories
-mkdir -p ../.claude ../specs
-cp -r .claude ../
-cp -r specs ../
-cp CLAUDE.md ../
+# Copy the necessary files and directories from example-project to the parent directory
+cp -r example-project/.claude ../
+cp -r example-project/specs ../
+cp example-project/CLAUDE.md ../
 # Navigate back to the parent directory
 cd ..
 # Clean up
