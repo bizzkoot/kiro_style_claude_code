@@ -39,15 +39,20 @@ cd my-project/
 curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
 # Extract using unzip (common on most systems)
 unzip main.zip
-# Alternative extraction using tar (if unzip is not available)
-# tar -xf main.zip
+# Move contents from the extracted folder to the current directory
 mv kiro_style_claude_code-main/.claude .
 mv kiro_style_claude_code-main/specs .
 mv kiro_style_claude_code-main/CLAUDE.md .
+# Clean up
 rm -rf kiro_style_claude_code-main main.zip
 
 # Alternative using wget (if curl is not available)
 # wget https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
+# unzip main.zip
+# mv kiro_style_claude_code-main/.claude .
+# mv kiro_style_claude_code-main/specs .
+# mv kiro_style_claude_code-main/CLAUDE.md .
+# rm -rf kiro_style_claude_code-main main.zip
 ```
 
 ### 2. Start Development with Claude Code
