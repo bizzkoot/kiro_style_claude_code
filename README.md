@@ -33,25 +33,33 @@ cp -r path/to/example-project/specs .
 cp path/to/example-project/CLAUDE.md .
 
 # Method 3: Direct download from GitHub
-mkdir my-project
-cd my-project/
 # Using curl (more common on macOS and many Linux distributions)
 curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
 # Extract using unzip (common on most systems)
 unzip main.zip
-# Move contents from the extracted folder to the current directory
-mv kiro_style_claude_code-main/.claude .
-mv kiro_style_claude_code-main/specs .
-mv kiro_style_claude_code-main/CLAUDE.md .
+# Navigate into the extracted directory
+cd kiro_style_claude_code-main
+# Copy the necessary files and directories to the parent directory
+cp -r .claude ../
+cp -r specs ../
+cp CLAUDE.md ../
+# Navigate back to the parent directory
+cd ..
 # Clean up
 rm -rf kiro_style_claude_code-main main.zip
 
 # Alternative using wget (if curl is not available)
 # wget https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
 # unzip main.zip
-# mv kiro_style_claude_code-main/.claude .
-# mv kiro_style_claude_code-main/specs .
-# mv kiro_style_claude_code-main/CLAUDE.md .
+# Navigate into the extracted directory
+# cd kiro_style_claude_code-main
+# Copy the necessary files and directories to the parent directory
+# cp -r .claude ../
+# cp -r specs ../
+# cp CLAUDE.md ../
+# Navigate back to the parent directory
+# cd ..
+# Clean up
 # rm -rf kiro_style_claude_code-main main.zip
 ```
 
@@ -106,7 +114,7 @@ Examples:
 ## 📁 Project Structure
 
 ```
-my-project/
+your-project-directory/
 ├── .claude/
 │   └── commands/
 │       └── kiro.md        # Specification initialization command
