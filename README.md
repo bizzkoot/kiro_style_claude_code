@@ -21,97 +21,96 @@ Kiro-style specification-driven development is a methodology that advances devel
 
 ### 1. Project Initialization
 
+Choose one of these methods to set up your project:
+
+<details>
+<summary><b>Method 1:</b> Copy example project (quickest)</summary>
+
 ```bash
-# Method 1: Copy example-project
 cp -r example-project/ my-project/
 cd my-project/
+```
+</details>
 
-# Method 2: Add to existing project
+<details>
+<summary><b>Method 2:</b> Add to an existing project</summary>
+
+```bash
 cd your-existing-project/
 cp -r path/to/example-project/.claude .
 cp -r path/to/example-project/specs .
 cp path/to/example-project/CLAUDE.md .
+```
+</details>
 
-# Method 3: Direct download from GitHub
-# Using curl (more common on macOS and many Linux distributions)
+<details>
+<summary><b>Method 3:</b> Download directly from GitHub</summary>
+
+```bash
+# Using curl
 curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
-# Extract using unzip (common on most systems)
 unzip main.zip
-# Navigate into the extracted directory
-cd kiro_style_claude_code-main
-# Copy the necessary files and directories from example-project to the parent directory
-cp -r example-project/.claude ../
-cp -r example-project/specs ../
-cp example-project/CLAUDE.md ../
-# Navigate back to the parent directory
-cd ..
+
+# Copy required files to your project directory
+cp -r kiro_style_claude_code-main/example-project/.claude ./
+cp -r kiro_style_claude_code-main/example-project/specs ./
+cp kiro_style_claude_code-main/example-project/CLAUDE.md ./
+
 # Clean up
 rm -rf kiro_style_claude_code-main main.zip
-
-# Alternative using wget (if curl is not available)
-# wget https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
-# unzip main.zip
-# Navigate into the extracted directory
-# cd kiro_style_claude_code-main
-# Copy the necessary files and directories to the parent directory
-# cp -r .claude ../
-# cp -r specs ../
-# cp CLAUDE.md ../
-# Navigate back to the parent directory
-# cd ..
-# Clean up
-# rm -rf kiro_style_claude_code-main main.zip
 ```
+</details>
 
-### 2. Start Development with Claude Code
+### 2. Start Claude Code
 
 ```bash
 claude
 ```
 
-### 3. Feature Development Flow
+### 3. Development Workflow
 
-#### Create Specifications for New Features
+#### Step 1: Create Feature Specifications
 
 ```
 /kiro Create TODO app
 ```
 
-This command now creates a new directory for the feature's specifications. For example, `specs/create-todo-app/`. Inside this new directory, it will generate the following files:
+This creates a new directory for the feature specifications:
+- `specs/create-todo-app/requirements.md` - User stories and acceptance criteria
+- `specs/create-todo-app/design.md` - Technical architecture and components
+- `specs/create-todo-app/tasks.md` - Implementation checklist
 
-- `specs/create-todo-app/requirements.md`
-- `specs/create-todo-app/design.md`
-- `specs/create-todo-app/tasks.md`
-
-This ensures that specifications for different features are kept separate.
-
-#### How to Proceed with Development
+#### Step 2: Review and Refine Specifications
 
 ```
-# 1. Review and approve requirements
+# Review requirements first
 Approve requirements.md
 
-# 2. Review and approve design
+# Then review design
 Approve design.md
-
-# 3. Implement tasks sequentially
-Please implement Task 1
-  or
-Proceed with development according to the `tasks.md` inside the new feature directory.
 ```
 
-#### Responding to Specification Changes
+#### Step 3: Implement Tasks
 
-When there are changes to specifications, please communicate the changes to Claude Code.
-Update all related specification files (requirements.md, design.md, tasks.md) while maintaining consistency.
+```
+# Either implement a specific task
+Please implement Task 1
 
-Examples:
+# Or proceed with the development plan
+Proceed with development according to the tasks.md
+```
+
+#### Step 4: Handle Specification Changes
+
+When requirements change, clearly communicate the changes to Claude Code:
 
 ```
 "I want to add user authentication functionality"
 "I want to change the database from PostgreSQL to MongoDB"
 "The dark mode feature is no longer needed, please remove it"
 ```
+
+Claude will update all related specification files while maintaining consistency.
 
 ## 📁 Project Structure
 
@@ -122,11 +121,11 @@ your-project-directory/
 │       └── kiro.md        # Specification initialization command
 ├── CLAUDE.md              # Project rules
 ├── specs/
-│   └── create-todo-app/     # Each feature gets its own specification directory
+│   └── create-todo-app/   # Each feature gets its own directory
 │       ├── requirements.md
 │       ├── design.md
 │       └── tasks.md
-└── specs-todoapp-example      # Specification file example (reference only, can be deleted)
+└── specs-todoapp-example  # Reference example (can be deleted)
 ```
 
 ## 📝 License
