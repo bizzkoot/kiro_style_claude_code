@@ -20,3 +20,17 @@ Then, for the "$ARGUMENTS" feature, please create the following specification fi
 *   **Dependencies**: Specify any dependencies between tasks.
 
 Please create and confirm the `requirements.md` file first before creating the other files.
+
+---
+
+**4. Completion**
+
+When all tasks in the `tasks.md` checklist for a feature are marked as complete (`[x]`), please perform the following archival steps:
+
+1.  **Create `specs/done` directory**: If it does not already exist, create a new directory named `done` inside the `specs/` folder.
+2.  **Move the feature directory**: Move the entire directory for the completed feature (e.g., `specs/{feature-name}/`) into the `specs/done/` directory.
+3.  **Rename the specification files**: Inside the new `specs/done/{feature-name}/` directory, rename the three specification files by adding a `DONE_` prefix:
+    *   `requirements.md` becomes `DONE_requirements.md`
+    *   `design.md` becomes `DONE_design.md`
+    *   `tasks.md` becomes `DONE_tasks.md`
+4.  **Confirm Archival**: Inform the user that the feature's specifications have been successfully archived.
