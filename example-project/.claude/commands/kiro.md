@@ -40,7 +40,15 @@ Please create and confirm the `requirements.md` file first before creating the o
 When all tasks in the `tasks.md` checklist for a feature are marked as complete (`[x]`), please:
 
 1.  **Verify completion**: Confirm all tasks are marked with `[x]`.
-2.  **Create `specs/done` directory**: If it doesn't exist already.
-3.  **Move the feature directory**: Move `specs/{feature-name}/` to `specs/done/`.
-4.  **Rename files with completion date**: Add `DONE_[YYYY-MM-DD]_` prefix to all files.
-5.  **Confirm**: Inform the user that archiving was successful.
+2.  **Build verification**: Run a test build of the feature to check for errors.
+    * Review `specs/{feature-name}/tasks.md` to understand the implementation details
+    * Suggest appropriate build/test commands based on the project type
+    * If errors occur, analyze them in context of the specific tasks implemented
+    * Match errors to specific tasks in the tasks.md file where possible
+    * Suggest targeted solutions based on the implementation details
+    * Ask user to confirm corrections before implementing them
+    * Only proceed with archiving if build succeeds
+3.  **Create `specs/done` directory**: If it doesn't exist already.
+4.  **Move the feature directory**: Move `specs/{feature-name}/` to `specs/done/`.
+5.  **Rename files with completion date**: Add `DONE_[YYYY-MM-DD]_` prefix to all files.
+6.  **Confirm**: Inform the user that verification and archiving were successful.
