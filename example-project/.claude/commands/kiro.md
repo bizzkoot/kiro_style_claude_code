@@ -1,17 +1,22 @@
-For the $ARGUMENTS feature, please create the following specification files:
+First, create a directory for the feature based on the user's request, "$ARGUMENTS". The directory name should be a `kebab-case` version of the feature name. For example, "Create a TODO app" becomes "create-a-todo-app". Place this new directory inside the `specs/` folder.
 
-1. **specs/requirements.md**
-   - User story format: "As a [user], I want [goal] so that [benefit]"
-   - Include acceptance criteria for each story
+Then, for the "$ARGUMENTS" feature, please create the following specification files inside the new `specs/{feature-name}/` directory:
 
-2. **specs/design.md**
-   - System architecture
-   - Technology stack selection
-   - Component structure
+1.  **`specs/{feature-name}/requirements.md`**
+    *   **Introduction**: Start with a clear summary of the feature.
+    *   **User Stories**: Use the format: "As a [user], I want [goal] so that [benefit]".
+    *   **Acceptance Criteria**: For each story, provide a numbered list of criteria, preferably in EARS format (e.g., "WHEN [event] THEN [system] SHALL [response]").
 
-3. **specs/tasks.md**
-   - List of implementation tasks
-   - Add [ ] checkbox to each task
-   - Specify dependencies
+2.  **`specs/{feature-name}/design.md`**
+    *   **Overview**: Briefly describe the technical approach.
+    *   **Architecture**: Describe how the feature fits into the existing system. Include a Mermaid diagram if it helps clarity.
+    *   **Components and Interfaces**: List new or modified components (UI, API, database) and their interactions.
+    *   **Data Models**: Detail any new data structures or schema changes.
 
-Please confirm the requirements first before creating the other files.
+3.  **`specs/{feature-name}/tasks.md`**
+    *   **Implementation Plan**: Provide a brief overview of the strategy.
+    *   **Task Checklist**: Create a detailed checklist using `[ ]` for small, concrete steps (e.g., "Create login form UI").
+    *   **Grouping**: Group related tasks under subheadings (e.g., "Frontend," "Backend").
+*   **Dependencies**: Specify any dependencies between tasks.
+
+Please create and confirm the `requirements.md` file first before creating the other files.

@@ -77,11 +77,13 @@ claude
 /kiro Create TODO app
 ```
 
-This will generate (update) the following files.
+This command now creates a new directory for the feature's specifications. For example, `specs/create-todo-app/`. Inside this new directory, it will generate the following files:
 
-- `specs/requirements.md` - Requirements definition in user story format
-- `specs/design.md` - System architecture and technical design
-- `specs/tasks.md` - Implementation tasks and checklist
+- `specs/create-todo-app/requirements.md`
+- `specs/create-todo-app/design.md`
+- `specs/create-todo-app/tasks.md`
+
+This ensures that specifications for different features are kept separate.
 
 #### How to Proceed with Development
 
@@ -95,7 +97,7 @@ Approve design.md
 # 3. Implement tasks sequentially
 Please implement Task 1
   or
-Proceed with development according to specs/tasks.md
+Proceed with development according to the `tasks.md` inside the new feature directory.
 ```
 
 #### Responding to Specification Changes
@@ -120,10 +122,11 @@ your-project-directory/
 │       └── kiro.md        # Specification initialization command
 ├── CLAUDE.md              # Project rules
 ├── specs/
-│   ├── requirements.md    # Requirements definition
-│   ├── design.md          # Design document
-│   └── tasks.md           # Task list
-└── specs-todoapp-example  # Specification file example (reference only, can be deleted)
+│   └── create-todo-app/     # Each feature gets its own specification directory
+│       ├── requirements.md
+│       ├── design.md
+│       └── tasks.md
+└── specs-todoapp-example      # Specification file example (reference only, can be deleted)
 ```
 
 ## 📝 License
