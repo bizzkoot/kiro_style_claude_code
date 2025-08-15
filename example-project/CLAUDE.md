@@ -4,9 +4,9 @@ This project adopts Kiro-style specification-driven development.
 
 ## Specification Files
 
-- **specs/requirements.md**: User stories and requirements
-- **specs/design.md**: Technical architecture
-- **specs/tasks.md**: Implementation tasks and progress
+- **specs/{feature-name}/requirements.md**: User stories and acceptance criteria
+- **specs/{feature-name}/design.md**: Technical architecture and components
+- **specs/{feature-name}/tasks.md**: Implementation tasks and progress tracking
 
 ## Development Flow
 
@@ -14,10 +14,15 @@ This project adopts Kiro-style specification-driven development.
 2. Design → Document in design.md
 3. Task Division → Document in tasks.md
 4. Implementation → Implement each task sequentially
+5. Verification → Test build and resolve any errors
+6. Archival → Move completed features to specs/done/
 
 ## Commands
 
 - `/kiro`: Initialize specifications for a new feature
+- Ask "Approve requirements.md" to confirm requirements
+- Ask "Approve design.md" to confirm design
+- Ask "Please implement Task X" for implementation
 
 ## Development Rules
 
@@ -25,6 +30,15 @@ This project adopts Kiro-style specification-driven development.
 2. Proceed to design after approving requirements
 3. Proceed to implementation after approving design
 4. Tasks should be independently testable
+5. Mark tasks as completed using `[x]` notation
+6. All tasks must pass verification before archiving
+
+## Task Completion
+
+When a task is completed:
+1. Update tasks.md by changing `[ ]` to `[x]`
+2. Update the progress counter at the top of tasks.md
+3. Proceed to the next task only after confirming current task works
 
 ## Responding to Specification Changes
 
