@@ -24,40 +24,37 @@ Kiro-style specification-driven development is a methodology that advances devel
 Choose one of these methods to set up your project:
 
 <details>
-<summary><b>Method 1:</b> Copy example project (quickest)</summary>
+<summary><b>Method 1:</b> Clone from GitHub (recommended)</summary>
 
 ```bash
-cp -r example-project/ my-project/
-cd my-project/
-```
-</details>
-
-<details>
-<summary><b>Method 2:</b> Add to an existing project</summary>
-
-```bash
-cd your-existing-project/
-cp -r path/to/example-project/.claude .
-cp -r path/to/example-project/specs .
-cp path/to/example-project/CLAUDE.md .
-```
-</details>
-
-<details>
-<summary><b>Method 3:</b> Download directly from GitHub</summary>
-
-```bash
-# Using curl
-curl -LO https://github.com/bizzkoot/kiro_style_claude_code/archive/refs/heads/main.zip
-unzip main.zip
+# Clone the repository
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
 
 # Copy required files to your project directory
-cp -r kiro_style_claude_code-main/example-project/.claude ./
-cp -r kiro_style_claude_code-main/example-project/specs ./
-cp kiro_style_claude_code-main/example-project/CLAUDE.md ./
+cp -r kiro_style_claude_code/example-project/.claude ./
+cp kiro_style_claude_code/example-project/CLAUDE.md ./
+
+# Optional: Copy example specifications for reference
+# cp -r kiro_style_claude_code/example-project/specs/* ./specs/
 
 # Clean up
-rm -rf kiro_style_claude_code-main main.zip
+rm -rf kiro_style_claude_code
+```
+</details>
+
+<details>
+<summary><b>Method 2:</b> Use as a template for a new project</summary>
+
+```bash
+# Clone the repository
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+
+# Copy the entire example project as your starting point
+cp -r kiro_style_claude_code/example-project/ my-new-project/
+cd my-new-project/
+
+# Clean up
+rm -rf ../kiro_style_claude_code
 ```
 </details>
 
@@ -124,18 +121,42 @@ Claude will update all related specification files while maintaining consistency
 
 ## 📁 Project Structure
 
+Initial setup:
 ```
 your-project-directory/
 ├── .claude/
 │   └── commands/
-│       └── kiro.md        # Specification initialization command
-├── CLAUDE.md              # Project rules
+│       └── kiro.md        # Specification initialization command with templates
+└── CLAUDE.md              # Project rules
+```
+
+After running `/kiro Create TODO app`:
+```
+your-project-directory/
+├── .claude/
+│   └── commands/
+│       └── kiro.md
+├── CLAUDE.md
+└── specs/                 # Created automatically
+    └── create-todo-app/   # Feature-specific directory
+        ├── requirements.md
+        ├── design.md
+        └── tasks.md
+```
+
+After feature completion and archiving:
+```
+your-project-directory/
+├── .claude/
+│   └── commands/
+│       └── kiro.md
+├── CLAUDE.md
 ├── specs/
-│   └── create-todo-app/   # Each feature gets its own directory
-│       ├── requirements.md
-│       ├── design.md
-│       └── tasks.md
-└── specs-todoapp-example  # Reference example (can be deleted)
+└── specs/done/            # Archive directory
+    └── create-todo-app/   # Archived feature
+        ├── DONE_2025-08-15_requirements.md
+        ├── DONE_2025-08-15_design.md
+        └── DONE_2025-08-15_tasks.md
 ```
 
 ## 📝 License
