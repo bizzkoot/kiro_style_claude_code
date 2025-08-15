@@ -57,7 +57,6 @@ Then, for the "$ARGUMENTS" feature, please create the following specification fi
     
     ## Component Structure
     
-    ```
     [Component diagram]
     ├── Component A
     │   └── Role: [Description]
@@ -65,7 +64,6 @@ Then, for the "$ARGUMENTS" feature, please create the following specification fi
     │   └── Role: [Description]
     └── Component C
         └── Role: [Description]
-    ```
     
     ## Data Flow
     
