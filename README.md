@@ -61,11 +61,21 @@ rm -rf kiro_style_claude_code-main main.zip
 ```
 </details>
 
-### 2. Start Claude Code
+### 2. Initialize Claude Code
 
 ```bash
+# Start Claude Code
 claude
+
+# Initialize while preserving the existing CLAUDE.md content
+/init "Please run initialization while preserving the existing CLAUDE.md content. Add project structure details without overwriting the Kiro workflow information."
 ```
+
+This initialization step is important as it:
+- Analyzes your project structure
+- Enhances the provided CLAUDE.md with project-specific details without overwriting existing Kiro workflow instructions
+- Creates a knowledge base that all future `/kiro` commands will use
+- Avoids redundant project scanning on each command
 
 ### 3. Development Workflow
 
