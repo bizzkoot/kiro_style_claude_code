@@ -1,4 +1,4 @@
-First, create a directory for the feature based on the user's request, "$ARGUMENTS". The directory name should be a clean `kebab-case` version of the feature name (lowercase, spaces to hyphens). For example, "Create a TODO app" becomes "create-a-todo-app". Place this new directory inside the `specs/` folder.
+First, use the project context stored in CLAUDE.md to understand the existing implementation. Then create a directory for the feature based on the user's request, "$ARGUMENTS". The directory name should be a clean `kebab-case` version of the feature name (lowercase, spaces to hyphens). For example, "Create a TODO app" becomes "create-a-todo-app". Place this new directory inside the `specs/` folder.
 
 Then, for the "$ARGUMENTS" feature, please create the following specification files inside the new `specs/{feature-name}/` directory:
 
@@ -6,6 +6,7 @@ Then, for the "$ARGUMENTS" feature, please create the following specification fi
     *   **Introduction**: Clear summary of the feature and its value.
     *   **User Stories**: Format as "As a [user], I want [goal] so that [benefit]".
     *   **Acceptance Criteria**: For each story, list criteria using EARS format: "WHEN [event] THEN [system] SHALL [response]".
+    *   Align requirements with the project architecture described in CLAUDE.md.
 
 2.  **`specs/{feature-name}/design.md`**
     *   **Overview**: Brief technical approach description.
