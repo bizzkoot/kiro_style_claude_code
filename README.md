@@ -1,6 +1,9 @@
 # Kiro Style Specification-Driven Development for Claude Code
 
-A simple system that reproduces the Kiro editor workflow in Claude Code.
+<div style="text-align: center;">
+    <img src="ICON.png" alt="Alt text" width="200" height="200">
+    <p>A simple system that reproduces the Kiro editor workflow in Claude Code.</p>
+</div>
 
 ## 🎯 Concept
 
