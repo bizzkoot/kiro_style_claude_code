@@ -40,6 +40,27 @@ When a task is completed:
 2. Update the progress counter at the top of tasks.md
 3. Proceed to the next task only after confirming current task works
 
+## Agent Specialization
+
+This project supports specialized agent roles for different phases of development:
+
+### Agent Commands
+- `/kiro [feature-name]` - Full workflow (all phases)
+- `/kiro-researcher [feature-name]` - Requirements specialist
+- `/kiro-architect [feature-name]` - Design specialist
+- `/kiro-implementer [feature-name]` - Implementation specialist
+
+### Agent Workflow
+1. Start with `/kiro-researcher [feature-name]` to create requirements.md
+2. After approval, continue with `/kiro-architect [feature-name]` to create design.md
+3. After approval, finish with `/kiro-implementer [feature-name]` to create tasks.md and implement
+
+### Benefits
+- More thorough analysis at each phase
+- Optimized context utilization
+- Better preservation of implementation details
+- Enhanced specialization for complex features
+
 ## Responding to Specification Changes
 
 When specifications change, update all related specification files (requirements.md, design.md, tasks.md) while maintaining consistency.
