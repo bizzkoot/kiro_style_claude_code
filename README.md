@@ -79,16 +79,43 @@ This initialization step is important as it:
 
 ### 3. Development Workflow
 
-#### Step 1: Create Feature Specifications
+You can choose between two approaches:
 
+#### Option A: Full Workflow (All phases)
 ```
 /kiro Create TODO app
 ```
 
-This creates a new directory for the feature specifications:
+This creates a complete feature specification in one step:
 - `specs/create-todo-app/requirements.md` - User stories and acceptance criteria
 - `specs/create-todo-app/design.md` - Technical architecture and components
 - `specs/create-todo-app/tasks.md` - Implementation checklist
+
+#### Option B: Specialized Agent Workflow (Recommended for complex features)
+
+**Step 1: Requirements Analysis**
+```
+/kiro-researcher Create TODO app
+```
+Creates comprehensive requirements with stakeholder analysis and edge cases.
+
+**Step 2: Technical Design**
+```
+/kiro-architect
+```
+Automatically detects the feature from Step 1 and creates detailed technical architecture. If multiple features exist, presents a selection menu.
+
+**Step 3: Implementation Planning**
+```
+/kiro-implementer
+```
+Automatically detects the feature and creates detailed task breakdown with dependencies and testing strategies.
+
+**Benefits of Specialized Agents:**
+- More thorough analysis at each phase
+- Optimized context utilization
+- Better preservation of implementation details
+- Enhanced specialization for complex features
 
 #### Step 2: Review and Refine Specifications
 
@@ -129,8 +156,11 @@ Initial setup:
 your-project-directory/
 ├── .claude/
 │   └── commands/
-│       └── kiro.md        # Specification initialization command with templates
-└── CLAUDE.md              # Project rules
+│       ├── kiro.md              # Full workflow command
+│       ├── kiro-researcher.md   # Requirements specialist
+│       ├── kiro-architect.md    # Design specialist
+│       └── kiro-implementer.md  # Implementation specialist
+└── CLAUDE.md                    # Project rules
 ```
 
 After running `/kiro Create TODO app`:
