@@ -1,7 +1,7 @@
+# Kiro Command
+
 **Context**: Review CLAUDE.md for project context first.
-
 Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generate:
-
 1.  **`requirements.md`**
     ```markdown
     # Requirements Document
@@ -26,7 +26,6 @@ Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generat
     - **Security**: [Requirements]
     - **Usability**: [Requirements]
     ```
-
 2.  **`design.md`**
     ```markdown
     # Design Document
@@ -60,7 +59,6 @@ Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generat
     |--------|------|-------------|
     | id | INTEGER | Primary Key |
     ```
-
 3.  **`tasks.md`**
     ```markdown
     # Task List
@@ -77,13 +75,9 @@ Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generat
     ## Phase 3: Testing
     - [ ] **Task 5**: Unit Tests - [Details] - Req: All - Deps: Task 3,4
     ```
-
 Create requirements.md first, then design.md, then tasks.md.
-
 ---
-
 **Task Updates**: Change `[ ]` to `[x]` and update progress count.
-
 **Completion**: When 100% complete:
 1. Verify all tasks marked `[x]`
 2. Test feature functionality 
