@@ -1,87 +1,130 @@
-# Kiro Command
+# Kiro Command - Traceable Agentic Development (TAD)
 
-**Context**: Review CLAUDE.md for project context first.
-Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generate:
-1.  **`requirements.md`**
-    ```markdown
-    # Requirements Document
-    ## Project Overview
-    [Feature description and business value]
-    
-    ## Requirements
-    ### Requirement 1: [Name]
-    **As a** [User] **I want** [Goal] **So that** [Benefit]
-    **Acceptance Criteria:**
-    1.1. WHEN [condition] THEN [system] SHALL [response]
-    1.2. WHEN [condition] THEN [system] SHALL [response]
-    
-    ### Requirement 2: [Name]
-    **As a** [User] **I want** [Goal] **So that** [Benefit]
-    **Acceptance Criteria:**
-    2.1. WHEN [condition] THEN [system] SHALL [response]
-    2.2. WHEN [condition] THEN [system] SHALL [response]
-    
-    ## Non-functional Requirements
-    - **Performance**: [Requirements]
-    - **Security**: [Requirements]
-    - **Usability**: [Requirements]
-    ```
-2.  **`design.md`**
-    ```markdown
-    # Design Document
-    ## Architecture Overview
-    [How feature integrates with existing system]
-    
-    ## Technology Stack
-    - **Language**: [e.g., TypeScript]
-    - **Framework**: [e.g., React]
-    - **Database**: [e.g., PostgreSQL]
-    
-    ## Components and Interfaces
-    ### Modified: [ExistingComponent] - [Changes needed]
-    ### New: [NewComponent] - [Purpose]
-    
-    ```typescript
-    // Key implementation structure
-    ```
-    
-    ## Data Flow
-    1. [Step 1]
-    2. [Step 2] 
-    3. [Step 3]
-    
-    ## API Design
-    - `GET /api/[resource]` - [Description]
-    - `POST /api/[resource]` - [Description]
-    
-    ## Database Schema
-    | Column | Type | Description |
-    |--------|------|-------------|
-    | id | INTEGER | Primary Key |
-    ```
-3.  **`tasks.md`**
-    ```markdown
-    # Task List
-    ## Progress: 0/0 Complete, 0 In Progress, 0 Not Started
-    
-    ## Phase 1: Foundation
-    - [ ] **Task 1**: [Name] - [Details] - Req: 1.1,1.2 - Deps: None
-    - [ ] **Task 2**: [Name] - [Details] - Req: 1.3,2.1 - Deps: Task 1
-    
-    ## Phase 2: Implementation  
-    - [ ] **Task 3**: [Name] - [Details] - Req: 2.1,2.2 - Deps: Task 2
-    - [ ] **Task 4**: [Name] - [Details] - Req: 1.1,2.2 - Deps: Task 2
-    
-    ## Phase 3: Testing
-    - [ ] **Task 5**: Unit Tests - [Details] - Req: All - Deps: Task 3,4
-    ```
-Create requirements.md first, then design.md, then tasks.md.
+Context: Review CLAUDE.md for project context first.
+Trigger: /kiro "Feature Name"
+Action: Create specs/{kebab-case-feature-name}/ with semantic traceability chain.
+
+## Phase 1: Generation Sequence
+
+### 1. requirements.md (Semantic Anchor)
+```markdown
+# Requirements: [Feature Name]
+## Meta-Context
+- Feature UUID: FEAT-{8-char-hash}
+- Parent Context: [CLAUDE.md links]
+- Dependency Graph: [Auto-detected]
+
+## Functional Requirements
+### REQ-{UUID}-001: [Name]
+Intent Vector: {AI semantic summary}
+As a [User] I want [Goal] So that [Benefit]
+Business Value: {1-10} | Complexity: {XS/S/M/L/XL}
+
+Acceptance Criteria:
+- AC-{REQ-ID}-01: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+- AC-{REQ-ID}-02: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+
+Validation Hooks: {testable assertions}
+Risk Factors: {auto-identified}
+
+## Non-functional Requirements
+- NFR-{UUID}-PERF-001: {measurable target}
+- NFR-{UUID}-SEC-001: {security constraint + test}
+- NFR-{UUID}-UX-001: {usability metric}
+
+## Traceability Manifest
+Upstream: [dependencies] | Downstream: [impact] | Coverage: [AI-calculated]
+```
+
+### 2. design.md (Architecture Mirror)
+```markdown
+# Design: [Feature Name]
+## ADRs (Architectural Decision Records)
+### ADR-001: [Decision]
+Status: Proposed | Context: [background] | Decision: [what] | Rationale: [why]
+Requirements: REQ-{UUID}-001,002 | Confidence: X% | Alternatives: [rejected options]
+
+## Components
+### Modified: [Component] → Fulfills: AC-{REQ-ID}-01
+Changes: [specific modifications]
+
+### New: [Component] → Responsibility: {requirement-linked purpose}
+Interface:
+```typescript
+interface Component {
+  method1(): Promise<T> // AC-{REQ-ID}-01
+  method2(input: I): O  // AC-{REQ-ID}-02
+}
+```
+
+## API Matrix
+| Endpoint | Method | Requirements | Test Strategy | Errors |
+|----------|--------|-------------|---------------|--------|
+| /api/x | POST | AC-{REQ-ID}-01,02 | Unit+Integration | [auto] |
+
+## Data Flow + Traceability
+1. Input Validation → NFR-{UUID}-SEC-001
+2. Business Logic → REQ-{UUID}-001  
+3. Output → AC-{REQ-ID}-01
+
+## Quality Gates
+- ADRs: >80% confidence to requirements
+- Interfaces: trace to acceptance criteria
+- NFRs: measurable test plans
+```
+
+### 3. tasks.md (Execution Blueprint)
+```markdown
+# Tasks: [Feature Name]
+## Metadata
+Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {estimate}
+
+## Progress: 0/X Complete, 0 In Progress, 0 Not Started, 0 Blocked
+
+## Phase 1: Foundation
+- [ ] TASK-{UUID}-001: [Name]
+  Trace: REQ-{UUID}-001 | Design: NewComponent | AC: AC-{REQ-ID}-01
+  DoD: [criteria] | Risk: Low | Deps: None | Effort: 2pts
+
+- [ ] TASK-{UUID}-002: [Name]  
+  Trace: REQ-{UUID}-001,002 | Design: method1() | AC: AC-{REQ-ID}-01,02
+  DoD: [criteria] | Risk: Medium | Deps: TASK-001 | Effort: 5pts
+
+## Phase 2: Integration
+- [ ] TASK-{UUID}-003: API Implementation
+  Trace: REQ-{UUID}-002 | Design: POST /api/x | AC: AC-{REQ-ID}-02
+  DoD: [criteria] | Risk: Low | Deps: TASK-002 | Effort: 3pts
+
+## Phase 3: QA
+- [ ] TASK-{UUID}-004: Test Suite
+  Trace: ALL AC-* | Design: Test impl | AC: 100% coverage + NFR validation
+  DoD: [criteria] | Risk: Medium | Deps: All prev | Effort: 4pts
+
+## Verification Checklist
+- [ ] Every REQ-* → implementing task
+- [ ] Every AC-* → test coverage  
+- [ ] Every NFR-* → measurable validation
+- [ ] All design elements → specific tasks
+- [ ] Risk mitigation for Medium+ risks
+```
+
+### 4. Auto-Verification (Internal)
+Before completion, run AI validation:
+1. Forward/Backward/Bi-directional traceability check
+2. Gap analysis (missing coverage, orphaned elements)
+3. Confidence scoring (requirements: X%, design: X%, tasks: X%)
+4. Risk assessment and recommendations
+5. Output: "Traceability Check: PASSED/FAILED" + improvement suggestions
+
 ---
-**Task Updates**: Change `[ ]` to `[x]` and update progress count.
-**Completion**: When 100% complete:
-1. Verify all tasks marked `[x]`
-2. Test feature functionality 
-3. Create `specs/done/` if needed
-4. Move `specs/{feature-name}/` to `specs/done/`
-5. Rename files: `DONE_[YYYY-MM-DD]_filename.md`
-6. Confirm archival
+
+## Phase 2: Lifecycle Management
+
+**Task Updates**: Change [ ] to [x], update progress count, AI monitors for scope drift/timeline deviation
+
+**Smart Completion** (100% progress):
+1. Auto-validate acceptance criteria vs implementation
+2. Execute full test suite against original requirements  
+3. Generate requirement satisfaction + quality metrics report
+4. Archive: Create specs/done/, move specs/{feature}/, rename DONE_{date}_{hash}_filename.md
+5. Generate retrospective + update semantic knowledge base
