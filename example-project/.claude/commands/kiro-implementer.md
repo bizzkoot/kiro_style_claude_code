@@ -1,88 +1,87 @@
-# Kiro Implementer Command
+# Kiro Implementer Command - TAD
+Context: Read requirements + design for full context.
+Trigger: /kiro-implementer "{feature-name}"
+Action:
+1. Scan specs/ for available features (exclude specs/done/)
+2. If multiple found, present selection menu
+3. Read specs/{selected}/requirements.md + design.md
+4. Generate tasks.md with implementation traceability
 
-As an implementation specialist, analyze requirements and design to create detailed implementation tasks.
-
-**Process:**
-1. Check if `specs/{kebab-case-feature-name}/` exists for "$ARGUMENTS"
-2. If target folder doesn't exist, scan `specs/` for available feature folders (exclude `specs/done/`)
-3. If multiple folders found, present selection:
-   ```
-   Multiple feature folders found. Please select:
-   1. {folder-name-1}
-   2. {folder-name-2}
-   3. {folder-name-3}
-   > 
-   ```
-4. After confirmation/selection, read `specs/{selected-feature}/requirements.md` and `specs/{selected-feature}/design.md`
-5. Generate tasks.md in the selected folder
-
-**`tasks.md`**
+### tasks.md (Execution Blueprint)
 ```markdown
-# Task List - Created by Implementer Agent
-## Progress: 0/0 Complete, 0 In Progress, 0 Not Started
+# Tasks: [Feature Name] - Implementer Agent
+## Context Summary
+Feature UUID: FEAT-{UUID} | Architecture: [Key patterns] | Risk: {Overall score}
 
-## Implementation Strategy
-[Overall approach to implementing this feature]
+## Metadata
+Complexity: {AI-calc from design} | Critical Path: {ADR dependencies}
+Timeline: {Estimate from NFRs} | Quality Gates: {From architecture}
+
+## Progress: 0/X Complete, 0 In Progress, 0 Not Started, 0 Blocked
 
 ## Phase 1: Foundation
-- [ ] **Task 1**: [Detailed name] - [Comprehensive implementation details] - Req: 1.1,1.2 - Deps: None
-  - **Implementation Approach**: [Specific approach]
-  - **Testing Strategy**: [How to verify this task]
-  - **Estimated Complexity**: [Low/Medium/High]
-  - **Technical Considerations**: [Special technical notes]
+- [ ] TASK-{UUID}-001: [Component Setup]
+  Trace: REQ-{UUID}-001 | Design: NewComponent | AC: AC-{REQ-ID}-01
+  ADR: ADR-001 | Approach: [Specific implementation method]
+  DoD: [Criteria from architecture] | Risk: Low | Effort: 2pts
+  Test Strategy: [Unit test approach] | Dependencies: None
 
-- [ ] **Task 2**: [Detailed name] - [Comprehensive implementation details] - Req: 1.3,2.1 - Deps: Task 1
-  - **Implementation Approach**: [Specific approach]
-  - **Testing Strategy**: [How to verify this task]
-  - **Estimated Complexity**: [Low/Medium/High]
-  - **Technical Considerations**: [Special technical notes]
+- [ ] TASK-{UUID}-002: [Core Logic Implementation]  
+  Trace: REQ-{UUID}-001,002 | Design: method1() | AC: AC-{REQ-ID}-01,02
+  ADR: ADR-001,002 | Approach: [Business logic implementation]
+  DoD: [Criteria] | Risk: Medium | Effort: 5pts
+  Test Strategy: [BDD scenarios] | Dependencies: TASK-001
 
-## Phase 2: Implementation  
-- [ ] **Task 3**: [Detailed name] - [Comprehensive implementation details] - Req: 2.1,2.2 - Deps: Task 2
-  - **Implementation Approach**: [Specific approach]
-  - **Testing Strategy**: [How to verify this task]
-  - **Estimated Complexity**: [Low/Medium/High]
-  - **Technical Considerations**: [Special technical notes]
+## Phase 2: Integration
+- [ ] TASK-{UUID}-003: [API Implementation]
+  Trace: REQ-{UUID}-002 | Design: POST /api/x | AC: AC-{REQ-ID}-02
+  ADR: ADR-002 | Approach: [Endpoint implementation]
+  DoD: [Performance + security criteria] | Risk: Low | Effort: 3pts
+  Test Strategy: [Integration tests] | Dependencies: TASK-002
 
-- [ ] **Task 4**: [Detailed name] - [Comprehensive implementation details] - Req: 1.1,2.2 - Deps: Task 2
-  - **Implementation Approach**: [Specific approach]
-  - **Testing Strategy**: [How to verify this task]
-  - **Estimated Complexity**: [Low/Medium/High]
-  - **Technical Considerations**: [Special technical notes]
+## Phase 3: Quality Assurance
+- [ ] TASK-{UUID}-004: [Comprehensive Testing]
+  Trace: ALL AC-* + NFR-* | Design: Test architecture
+  ADR: All | Approach: [Testing strategy from design]
+  DoD: [Coverage + performance benchmarks] | Risk: Medium | Effort: 4pts
+  Test Strategy: [E2E scenarios] | Dependencies: All previous
 
-## Phase 3: Testing
-- [ ] **Task 5**: Comprehensive Unit Tests - [Detailed testing strategy] - Req: All - Deps: Task 3,4
-  - **Test Coverage Goals**: [Coverage metrics]
-  - **Test Cases**: [Key test scenarios]
-  - **Mock Requirements**: [Mocking strategy]
-
-## Phase 4: Integration and Deployment
-- [ ] **Task 6**: Integration Testing - [Details] - Req: All - Deps: Task 5
-- [ ] **Task 7**: Documentation - [Details] - Req: All - Deps: Task 6
-- [ ] **Task 8**: Deployment - [Details] - Req: All - Deps: Task 7
+## Phase 4: Deployment
+- [ ] TASK-{UUID}-005: [Production Readiness]
+  Trace: NFR-{UUID}-* | Design: Deployment architecture
+  DoD: [Monitoring + scaling ready] | Risk: Low | Effort: 2pts
+  Dependencies: TASK-004
 
 ## Dependency Graph
-```
-Task 1 → Task 2 → Task 3 → Task 5 → Task 6 → Task 7 → Task 8
-         └→ Task 4 ─┘
+Task 1 → Task 2 → Task 3 → Task 4 → Task 5
+
+## Implementation Context
+Critical Path: [Architecture decisions blocking implementation]
+Risk Mitigation: [Strategies for Medium+ risks from design]
+Context Compression: [Implementation roadmap summary]
+
+## Verification Checklist
+- [ ] Every REQ-* → implementing task
+- [ ] Every AC-* → test coverage
+- [ ] Every NFR-* → measurable validation  
+- [ ] Every ADR-* → implementation task
+- [ ] All quality gates → verification tasks
 ```
 
-## Implementation Notes
-[Any additional implementation considerations or developer guidance]
+**Specialized Role**: As the Implementer Agent, I focus on breaking down architecture into detailed, actionable tasks with clear dependencies, testing strategies, complexity assessments, and risk mitigation. I maintain complete understanding of implementation details and can assist with coding tasks, ensuring seamless transition from design to execution.
+
+**Next Steps**: 
+- To implement tasks: `Please implement Task X`
+- Update progress: Change [ ] to [x] and update progress count
+- For assistance: Reference specific task numbers for implementation guidance
+
+Task Updates: Change [ ] to [x], update progress count
+Smart Completion (100%): Auto-validate vs requirements+design, archive to specs/done/
 ```
 
-**Specialized Role**: As the Implementer Agent, my focus is on breaking down the implementation into detailed, actionable tasks with clear dependencies, testing strategies, and complexity assessments. I maintain a complete understanding of the implementation details to assist with coding tasks.
+## Resume Commands
+- /kiro-researcher resume "{feature-name}" - Continue requirements analysis
+- /kiro-architect resume "{feature-name}" - Continue design work  
+- /kiro-implementer resume "{feature-name}" - Continue implementation planning
 
-**Next Steps**:
-To implement tasks:
-1. Request implementation: `Please implement Task 1`
-2. Update tasks when complete: Change `[ ]` to `[x]` and update progress count
----
-**Task Updates**: Change `[ ]` to `[x]` and update progress count.
-**Completion**: When 100% complete:
-1. Verify all tasks marked `[x]`
-2. Test feature functionality 
-3. Create `specs/done/` if needed
-4. Move `specs/{feature-name}/` to `specs/done/`
-5. Rename files: `DONE_[YYYY-MM-DD]_filename.md`
-6. Confirm archival
+Each agent reads ALL previous artifacts for full semantic context.

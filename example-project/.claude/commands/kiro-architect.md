@@ -1,83 +1,76 @@
-# Kiro Architect Command
+# Kiro Architect Command - TAD
+Context: Read existing requirements first.
+Trigger: /kiro-architect "{feature-name}"
+Action: 
+1. Scan specs/ for available features (exclude specs/done/)
+2. If multiple found, present selection menu
+3. Read specs/{selected}/requirements.md for full context
+4. Generate design.md with architectural traceability
 
-As a design specialist, analyze requirements and create optimal technical architecture.
-
-**Process:**
-1. Check if `specs/{kebab-case-feature-name}/` exists for "$ARGUMENTS"
-2. If target folder doesn't exist, scan `specs/` for available feature folders (exclude `specs/done/`)
-3. If multiple folders found, present selection:
-   ```
-   Multiple feature folders found. Please select:
-   1. {folder-name-1}
-   2. {folder-name-2}
-   3. {folder-name-3}
-   > 
-   ```
-4. After confirmation/selection, read `specs/{selected-feature}/requirements.md`
-5. Generate design.md in the selected folder
-
-**`design.md`**
+### design.md (Architecture Mirror)
 ```markdown
-# Design Document - Created by Architect Agent
-## Architecture Overview
-[Detailed description of how feature integrates with existing system]
+# Design: [Feature Name] - Architect Agent
+## Requirements Context Summary
+Feature UUID: FEAT-{UUID} | Stakeholders: [Key types] | Priority: [Level]
 
-## Technology Stack Analysis
-- **Language**: [e.g., TypeScript] - [Justification]
-- **Framework**: [e.g., React] - [Justification]
-- **Database**: [e.g., PostgreSQL] - [Justification]
-- **Alternative Options Considered**: [Alternatives and why they were rejected]
+## ADRs (Architectural Decision Records)
+### ADR-001: [Core Architecture Decision]
+Status: Proposed | Context: [Requirements driving this]
+Decision: [Technical choice] | Rationale: [Why optimal for requirements]
+Requirements: REQ-{UUID}-001,002 | Confidence: X%
+Alternatives: [Rejected options + rationale]
+Impact: [Performance/Security/Scalability implications]
+
+### ADR-002: [Technology Stack Decision]
+Status: Proposed | Context: [NFR drivers]
+Stack: [Language/Framework/Database] | Rationale: [Optimization rationale]
+Requirements: NFR-{UUID}-PERF-001 | Confidence: X%
 
 ## Architecture Patterns
-[Description of architectural patterns being applied]
+Primary: [Pattern] → Addresses: REQ-{UUID}-001
+Secondary: [Pattern] → Addresses: NFR-{UUID}-SCALE-001
 
-## Components and Interfaces
-### Modified: [ExistingComponent] - [Detailed changes needed]
-- **Current State**: [Description of current implementation]
-- **Proposed Changes**: [Specific modifications]
-- **Impact Analysis**: [How changes affect other components]
+## Components
+### Modified: [Component] → Fulfills: AC-{REQ-ID}-01
+Current State: [Baseline] | Changes: [Specific modifications]
+Impact Analysis: [Ripple effects] | Migration Strategy: [Approach]
 
-### New: [NewComponent] - [Purpose]
-- **Responsibility**: [Component's primary responsibility]
-- **Interfaces**: [Public interfaces and methods]
-- **Dependencies**: [Other components this depends on]
-
+### New: [Component] → Responsibility: {Requirement-linked purpose}
+Interface:
 ```typescript
-// Key implementation structure with detailed comments
+interface Component {
+  method1(): Promise<T> // AC-{REQ-ID}-01
+  method2(input: I): O  // AC-{REQ-ID}-02
+}
 ```
 
-## Data Flow
-1. [Detailed Step 1]
-2. [Detailed Step 2] 
-3. [Detailed Step 3]
+## API Matrix
+| Endpoint | Method | Requirements | Performance | Security | Errors |
+|----------|--------|-------------|-------------|----------|--------|
+| /api/x | POST | AC-{REQ-ID}-01,02 | <200ms | JWT+RBAC | [auto] |
 
-## API Design
-- `GET /api/[resource]` - [Comprehensive description with request/response format]
-- `POST /api/[resource]` - [Comprehensive description with request/response format]
-
-## Database Schema
-| Column | Type | Description | Constraints |
-|--------|------|-------------|-------------|
-| id | INTEGER | Primary Key | NOT NULL, AUTO INCREMENT |
-| [field] | [type] | [description] | [constraints] |
-
-## Performance Considerations
-[Analysis of performance impact and optimization strategies]
-
-## Security Considerations
-[Detailed security analysis and mitigation strategies]
-
-## Technical Debt Prevention
-[Strategies to prevent accumulation of technical debt]
-
-## Context Transfer
-- **Key Decisions**: [Important architectural decisions]
-- **Open Questions**: [Technical issues that need resolution in implementation]
-- **Context Compression**: [Summary of technical research that informed this design]
+## Data Schema + Traceability
+```sql
+-- Supports: REQ-{UUID}-001
+CREATE TABLE entity (
+  id SERIAL PRIMARY KEY, -- AC-{REQ-ID}-01
+  field TYPE CONSTRAINTS -- AC-{REQ-ID}-02
+);
 ```
 
-**Specialized Role**: As the Architect Agent, my focus is on creating a comprehensive technical design that addresses all requirements while considering architectural patterns, performance, security, and maintainability. After approval, suggest continuing with `/kiro-implementer` to break down the implementation tasks.
+## Quality Gates
+- ADRs: >80% confidence to requirements
+- Interfaces: trace to acceptance criteria  
+- NFRs: measurable validation strategy
+- Security: threat model for each endpoint
+- Performance: benchmarks for each NFR
 
-**Next Steps**:
-After design is approved:
-1. Continue with the implementer agent: `/kiro-implementer [feature-name]`
+## Architecture Context Transfer
+Key Decisions: [Technical choices with requirement rationale]
+Open Questions: [Implementation details needing resolution]
+Context Compression: [Architecture synthesis for implementation]
+```
+
+**Specialized Role**: As the Architect Agent, I focus on creating comprehensive technical design that addresses all requirements while optimizing for architectural patterns, performance, security, maintainability, and scalability. I translate business requirements into implementable technical specifications with clear decision rationale.
+
+**Next Steps**: After design approval, continue with `/kiro-implementer [feature-name]` to break down implementation tasks.

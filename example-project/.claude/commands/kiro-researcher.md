@@ -1,56 +1,52 @@
-# Kiro Researcher Command
+## 1. Kiro Researcher Agent
 
-**Context**: Review CLAUDE.md for project context first.
-As a requirements specialist, analyze project needs and create comprehensive requirements.
-
-Create `specs/{kebab-case-feature-name}/` directory for "$ARGUMENTS" and generate:
-
-**`requirements.md`**
 ```markdown
-# Requirements Document - Created by Researcher Agent
-## Project Overview
-[Comprehensive feature description and detailed business value analysis]
+# Kiro Researcher Command - TAD
+Context: Review CLAUDE.md for project context first.
+Trigger: /kiro-researcher "Feature Name"
+Action: Create specs/{kebab-case-feature-name}/ with semantic requirements anchor.
+
+### requirements.md (Semantic Anchor)
+```markdown
+# Requirements: [Feature Name] - Researcher Agent
+## Meta-Context
+- Feature UUID: FEAT-{8-char-hash}
+- Parent Context: [CLAUDE.md links]
+- Stakeholder Map: [Primary/Secondary/Tertiary users]
+- Market Context: [Competitive analysis summary]
 
 ## Stakeholder Analysis
-[Identification of all stakeholders and their specific needs]
+### Primary: [User Type] - [Needs/Goals/Pain Points]
+### Secondary: [User Type] - [Needs/Goals/Pain Points] 
+### Tertiary: [User Type] - [Needs/Goals/Pain Points]
 
-## Requirements
-### Requirement 1: [Name]
-**As a** [User] **I want** [Goal] **So that** [Benefit]
-**Acceptance Criteria:**
-1.1. WHEN [condition] THEN [system] SHALL [response]
-1.2. WHEN [condition] THEN [system] SHALL [response]
-**Edge Cases:**
-- [Edge case 1]
-- [Edge case 2]
+## Functional Requirements
+### REQ-{UUID}-001: [Name]
+Intent Vector: {AI semantic summary}
+As a [User] I want [Goal] So that [Benefit]
+Business Value: {1-10} | Complexity: {XS/S/M/L/XL} | Priority: {P0/P1/P2/P3}
 
-### Requirement 2: [Name]
-**As a** [User] **I want** [Goal] **So that** [Benefit]
-**Acceptance Criteria:**
-2.1. WHEN [condition] THEN [system] SHALL [response]
-2.2. WHEN [condition] THEN [system] SHALL [response]
-**Edge Cases:**
-- [Edge case 1]
-- [Edge case 2]
+Acceptance Criteria:
+- AC-{REQ-ID}-01: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+- AC-{REQ-ID}-02: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+
+Edge Cases: [Auto-identified scenarios]
+Market Validation: [Competitive research findings]
+Risk Factors: {Auto-identified from stakeholder analysis}
 
 ## Non-functional Requirements
-- **Performance**: [Detailed requirements with metrics]
-- **Security**: [Comprehensive security considerations]
-- **Usability**: [User experience requirements]
-- **Maintainability**: [Long-term maintenance considerations]
-- **Scalability**: [Growth and scaling requirements]
+- NFR-{UUID}-PERF-001: {Measurable performance target}
+- NFR-{UUID}-SEC-001: {Security constraint + compliance}
+- NFR-{UUID}-UX-001: {Usability metric + accessibility}
+- NFR-{UUID}-SCALE-001: {Scalability requirement}
+- NFR-{UUID}-MAINT-001: {Maintainability standard}
 
-## Market Research
-[Competitive analysis and market positioning]
-
-## Context Transfer
-- **Key Decisions**: [Important decisions that influenced requirements]
-- **Open Questions**: [Issues that need resolution in design phase]
-- **Context Compression**: [Summary of research that informed these requirements]
+## Research Context Transfer
+Key Decisions: [Rationale for requirement prioritization]
+Open Questions: [Items needing architectural input]
+Context Compression: [Research synthesis for next phase]
 ```
 
-**Specialized Role**: As the Researcher Agent, my focus is on creating comprehensive requirements with thorough stakeholder analysis, detailed acceptance criteria, and careful consideration of edge cases. After approval, suggest continuing with `/kiro-architect` to create the technical design based on these requirements.
+**Specialized Role**: As the Researcher Agent, I focus on comprehensive requirements with stakeholder analysis, market validation, edge case identification, and business value quantification. I establish the semantic foundation that drives all subsequent technical decisions.
 
-**Next Steps**:
-After requirements are approved:
-1. Continue with the architect agent: `/kiro-architect [feature-name]`
+**Next Steps**: After requirements approval, continue with `/kiro-architect [feature-name]` to create technical design based on these requirements.
