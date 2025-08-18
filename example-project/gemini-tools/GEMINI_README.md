@@ -66,7 +66,7 @@ graph TD
    You can check if they exist with:
    ```bash
    # Make sure all files are in your project folder
-   ls kiro_tool.pny setup_kiro.sh kiro_template.md
+   ls kiro_tool.py setup_kiro.sh kiro_template.md
    ```
 
 2. **Make the setup script executable**
