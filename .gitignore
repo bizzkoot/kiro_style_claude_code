@@ -16,3 +16,5 @@ build/
 ehthumbs.db
 Icon?
 Thumbs.db
+
+.env
