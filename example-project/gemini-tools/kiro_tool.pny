@@ -1,0 +1,263 @@
+import pathlib
+import re
+from google.generativeai.function_calling import tool
+
+# This model instance is a placeholder for the actual generative model
+# that will be used by the Gemini CLI to execute the tool's logic.
+# The tool's code itself doesn't call the model; it defines prompts
+# that the calling model will use.
+model = None 
+
+def _kebab_case(name: str) -> str:
+    """Converts a string to kebab-case."""
+    name = re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()
+    return re.sub(r'[\s_]+', '-', name)
+
+@tool
+def kiro(command: str, feature_name: str):
+    """
+    Manages the Traceable Agentic Development (TAD) process.
+    Use 'call' to initiate a new feature specification.
+    Use 'resume' to reconstruct the context of an existing feature.
+
+    Args:
+        command (str): The action to perform. Either 'call' or 'resume'.
+        feature_name (str): The descriptive name of the feature (e.g., "User Authentication").
+    """
+    global model
+    if not model:
+        # In a real scenario, the model is provided by the execution environment.
+        # This is a fallback for direct script execution simulation.
+        print("Model not initialized. Please run within the Gemini CLI.")
+        # Configure a dummy model if needed for local testing
+        # import google.generativeai as genai
+        # genai.configure(api_key="YOUR_API_KEY")
+        # model = genai.GenerativeModel('gemini-1.5-pro-latest')
+        # if not model:
+        return "Error: Model not available."
+
+
+    # --- CALL COMMAND: GENERATE NEW FEATURE SPECS ---
+    if command.lower() == 'call':
+        feature_slug = _kebab_case(feature_name)
+        spec_path = pathlib.Path(f"specs/{feature_slug}")
+        spec_path.mkdir(parents=True, exist_ok=True)
+
+        print(f"✅ Initialized Kiro TAD process for '{feature_name}' in '{spec_path}/'")
+
+        # --- Phase 1: Generation Sequence ---
+
+        # 1. Generate requirements.md
+        requirements_prompt = f"""
+        You are a world-class principal software engineer. Your task is to generate the complete content for a `requirements.md` file for the feature named "{feature_name}".
+        You must strictly adhere to the following template, filling in all placeholders with plausible, detailed, and semantically coherent information.
+        Generate unique UUIDs where required. The parent context is 'CLAUDE.md'.
+
+        # Requirements: {feature_name}
+        ## Meta-Context
+        - Feature UUID: FEAT-{{generate a unique 8-char hash}}
+        - Parent Context: [CLAUDE.md]
+        - Dependency Graph: {{auto-detect and list potential dependencies, e.g., 'User Service', 'Database Module'}}
+
+        ## Functional Requirements
+        ### REQ-{{generate a UUID}}-001: {{A concise name for the primary requirement}}
+        Intent Vector: {{AI-generated semantic summary of the requirement}}
+        As a [User Persona] I want [Goal] So that [Benefit]
+        Business Value: {{1-10}} | Complexity: {{XS/S/M/L/XL}}
+
+        Acceptance Criteria:
+        - AC-{{REQ-ID}}-01: GIVEN [context] WHEN [action] THEN [outcome] {{confidence: generate a score, e.g., 95%}}
+        - AC-{{REQ-ID}}-02: GIVEN [context] WHEN [action] THEN [outcome] {{confidence: generate a score, e.g., 90%}}
+
+        Validation Hooks: {{list testable assertions, e.g., 'user.is_authenticated() == true'}}
+        Risk Factors: {{auto-identify potential risks, e.g., 'Credential stuffing attack'}}
+
+        ## Non-functional Requirements
+        - NFR-{{generate a UUID}}-PERF-001: {{a measurable performance target, e.g., 'API response time < 200ms'}}
+        - NFR-{{generate a UUID}}-SEC-001: {{a security constraint, e.g., 'Passwords must be hashed using bcrypt'}}
+        - NFR-{{generate a UUID}}-UX-001: {{a usability metric, e.g., 'Login flow completion rate > 99%'}}
+
+        ## Traceability Manifest
+        Upstream: [{{list dependencies}}] | Downstream: [{{list potential impacts on other features}}] | Coverage: [{{AI-calculated percentage}}]
+        """
+        print("📄 Generating requirements.md...")
+        requirements_content = model.generate_content(requirements_prompt).text
+        (spec_path / "requirements.md").write_text(requirements_content)
+        print("   -> Done.")
+
+        # 2. Generate design.md
+        design_prompt = f"""
+        You are a world-class software architect. Given the following `requirements.md` for the feature "{feature_name}", generate the corresponding `design.md` file.
+        Ensure every design decision, component, and API endpoint traces directly back to the provided requirements and acceptance criteria.
+        Use the exact IDs (REQ-..., AC-..., NFR-...) from the requirements content.
+
+        **Requirements Context:**
+        ---
+        {requirements_content}
+        ---
+
+        **Your Task:**
+        Generate the `design.md` file using this template:
+
+        # Design: {feature_name}
+        ## ADRs (Architectural Decision Records)
+        ### ADR-001: {{A key architectural decision}}
+        Status: Proposed | Context: {{background for the decision}} | Decision: {{the chosen approach}} | Rationale: {{why this approach was chosen}}
+        Requirements: {{Link to specific REQ-ID(s)}} | Confidence: {{generate a score, e.g., 95%}} | Alternatives: [{{list rejected options}}]
+
+        ## Components
+        ### Modified: [{{Name of an existing component to be changed}}] → Fulfills: {{Link to specific AC-ID(s)}}
+        Changes: {{specific modifications to be made}}
+
+        ### New: [{{Name of a new component}}] → Responsibility: {{requirement-linked purpose}}
+        Interface:
+        ```typescript
+        interface NewComponent {{
+          // Link methods to specific acceptance criteria
+          method1(): Promise<T> // Fulfills: AC-...-01
+          method2(input: I): O  // Fulfills: AC-...-02
+        }}
+        ```
+
+        ## API Matrix
+        | Endpoint | Method | Requirements | Test Strategy | Errors |
+        |----------|--------|--------------|---------------|--------|
+        | /api/x   | POST   | {{Link to AC-IDs}} | Unit+Integration | {{auto-suggest potential errors}} |
+
+        ## Data Flow + Traceability
+        {{Briefly describe the data flow, linking steps to NFRs and REQs}}
+        1. Input Validation → {{Link to NFR-SEC-ID}}
+        2. Business Logic → {{Link to REQ-ID}}
+        3. Output → {{Link to AC-ID}}
+
+        ## Quality Gates
+        - ADRs: >80% confidence to requirements
+        - Interfaces: trace to acceptance criteria
+        - NFRs: measurable test plans
+        """
+        print("🏗️  Generating design.md...")
+        design_content = model.generate_content(design_prompt).text
+        (spec_path / "design.md").write_text(design_content)
+        print("   -> Done.")
+
+        # 3. Generate tasks.md
+        tasks_prompt = f"""
+        You are an expert technical project manager. Based on the provided requirements and design for the feature "{feature_name}", generate a `tasks.md` execution blueprint.
+        Break down the work into logical, actionable tasks. Ensure every task traces back to specific elements in the design and requirements documents.
+        Use the exact IDs from the provided context.
+
+        **Requirements Context:**
+        ---
+        {requirements_content}
+        ---
+
+        **Design Context:**
+        ---
+        {design_content}
+        ---
+
+        **Your Task:**
+        Generate the `tasks.md` file using this template:
+
+        # Tasks: {feature_name}
+        ## Metadata
+        Complexity: {{AI-calculated S/M/L}} | Critical Path: {{sequence of crucial tasks}} | Risk: {{score}} | Timeline: {{rough estimate}}
+
+        ## Progress: 0/X Complete, 0 In Progress, 0 Not Started, 0 Blocked
+
+        ## Phase 1: Foundation
+        - [ ] TASK-{{generate a UUID}}-001: {{Descriptive task name}}
+          Trace: {{Link to REQ-ID}} | Design: {{Link to Design Component/ADR}} | AC: {{Link to AC-ID}}
+          DoD: [{{Definition of Done criteria}}] | Risk: Low | Deps: None | Effort: {{story points}}
+
+        - [ ] TASK-{{generate a UUID}}-002: {{Descriptive task name}}
+          Trace: {{Link to REQ-ID}} | Design: {{Link to Design method/element}} | AC: {{Link to AC-ID}}
+          DoD: [{{Definition of Done criteria}}] | Risk: Medium | Deps: TASK-...-001 | Effort: {{story points}}
+
+        ## Phase 2: Integration & QA
+        - [ ] TASK-{{generate a UUID}}-003: API Implementation
+          Trace: {{Link to REQ-ID}} | Design: POST /api/x | AC: {{Link to AC-ID}}
+          DoD: [{{Definition of Done criteria}}] | Risk: Low | Deps: TASK-...-002 | Effort: {{story points}}
+
+        - [ ] TASK-{{generate a UUID}}-004: Create Test Suite
+          Trace: ALL AC-* | Design: Test implementation | AC: 100% coverage + NFR validation
+          DoD: [{{Definition of Done criteria}}] | Risk: Medium | Deps: All prev | Effort: {{story points}}
+
+        ## Verification Checklist
+        - [ ] Every REQ-* → implementing task
+        - [ ] Every AC-* → test coverage
+        - [ ] Every NFR-* → measurable validation
+        - [ ] All design elements → specific tasks
+        - [ ] Risk mitigation for Medium+ risks
+        """
+        print("📋 Generating tasks.md...")
+        tasks_content = model.generate_content(tasks_prompt).text
+        (spec_path / "tasks.md").write_text(tasks_content)
+        print("   -> Done.")
+
+        # 4. Auto-Verification & CLAUDE.md Assessment
+        assessment_prompt = f"""
+        You are a project governance AI. Review the following three generated files for the feature "{feature_name}".
+        1. Perform a traceability check (forward, backward, bi-directional) and a gap analysis. State if the check PASSED or FAILED and list any gaps.
+        2. Perform the "CLAUDE.md Update Assessment". Analyze if the design introduces major architectural changes that would require updating the parent 'CLAUDE.md' context.
+        Provide a concise, final report in markdown format.
+
+        **Requirements:**
+        {requirements_content}
+
+        **Design:**
+        {design_content}
+
+        **Tasks:**
+        {tasks_content}
+        """
+        print("🔎 Performing auto-verification and assessment...")
+        assessment_report = model.generate_content(assessment_prompt).text
+        print("---")
+        print(assessment_report)
+        print("---")
+
+        return f"✅ Kiro process complete for '{feature_name}'. Files are in '{spec_path}'."
+
+    # --- RESUME COMMAND: RECONSTRUCT CONTEXT ---
+    elif command.lower() == 'resume':
+        feature_slug = _kebab_case(feature_name)
+        spec_path = pathlib.Path(f"specs/{feature_slug}")
+
+        if not spec_path.exists():
+            return f"❌ Error: No specifications found for feature '{feature_name}' at '{spec_path}'."
+
+        try:
+            req_content = (spec_path / "requirements.md").read_text()
+            des_content = (spec_path / "design.md").read_text()
+            tsk_content = (spec_path / "tasks.md").read_text()
+        except FileNotFoundError as e:
+            return f"❌ Error: Missing a file in the spec directory: {e.filename}"
+
+        resume_prompt = f"""
+        You are an AI agent resuming work on the feature "{feature_name}". You have just been provided with the complete project specification files.
+        Your task is to read, understand, and reconstruct the full semantic context and traceability graph in your memory.
+        Then, provide a concise summary of the project's current state (requirements intent, key design decisions, and task progress).
+        Conclude by confirming you are ready to proceed with the full context maintained.
+
+        **Requirements File Content:**
+        ---
+        {req_content}
+        ---
+
+        **Design File Content:**
+        ---
+        {des_content}
+        ---
+
+        **Tasks File Content:**
+        ---
+        {tsk_content}
+        ---
+        """
+        print(f"🧠 Resuming context for '{feature_name}'...")
+        resume_summary = model.generate_content(resume_prompt).text
+        return resume_summary
+
+    else:
+        return f"❌ Invalid command '{command}'. Please use 'call' or 'resume'."
