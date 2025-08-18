@@ -59,7 +59,7 @@ graph TD
 1. **Download the required files**
    
    Make sure you have the following files in your project folder:
-   - [`kiro_tool.pny`](./kiro_tool.pny)
+   - [`kiro_tool.py`](./kiro_tool.py)
    - [`setup_kiro.sh`](./setup_kiro.sh)
    - [`kiro_template.md`](./kiro_template.md)
 
