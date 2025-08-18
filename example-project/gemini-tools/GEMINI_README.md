@@ -59,14 +59,14 @@ graph TD
 1. **Download the required files**
    
    Make sure you have the following files in your project folder:
-   - [`kiro_tool.py`](./kiro_tool.py)
+   - [`kiro_tool.pny`](./kiro_tool.pny)
    - [`setup_kiro.sh`](./setup_kiro.sh)
-   - [`GEMINI.md`](./GEMINI.md)
+   - [`kiro_template.md`](./kiro_template.md)
 
    You can check if they exist with:
    ```bash
    # Make sure all files are in your project folder
-   ls kiro_tool.py setup_kiro.sh GEMINI.md
+   ls kiro_tool.pny setup_kiro.sh kiro_template.md
    ```
 
 2. **Make the setup script executable**
@@ -92,14 +92,26 @@ After installation, activate the command by either:
 
 ### **Setup GEMINI.md**
 
-The `GEMINI.md` file is crucial for the Kiro agent to understand the context of your project. It contains information about your project structure, development conventions, and other important details.
+The `GEMINI.md` file is crucial for the Kiro agent to understand your project's context. It should contain both a fresh analysis of your codebase from Gemini and the standard Kiro workflow information.
 
-To create and initialize this file, run the following command in your terminal:
+Here is the best practice for creating and updating it:
 
-```bash
-/init "Please run initialization while preserving the existing GEMINI.md content. Add project structure details without overwriting the Kiro workflow information."
-```
-This will create a `GEMINI.md` file in your project's root directory. The Kiro agent will then use this file to generate more accurate and relevant specifications for your features.
+1.  **Store the Kiro Workflow:**
+    Keep your standard Kiro workflow text in a separate file named `kiro_template.md`. The content for this file is what was originally in `GEMINI.md`.
+
+2.  **Initialize and Merge:**
+    To create or update your `GEMINI.md`, run the following commands. This process ensures you always start with a fresh analysis from Gemini and then add your workflow.
+
+    ```bash
+    # Step 1: Run Gemini's /init to get a fresh analysis of the codebase.
+    # (This will overwrite the existing GEMINI.md)
+    /init "Analyze the current project and generate a detailed overview."
+
+    # Step 2: Append your Kiro workflow template to the newly generated file.
+    cat kiro_template.md >> GEMINI.md
+    ```
+
+This two-step command sequence ensures your `GEMINI.md` is always a proper reflection of the codebase while consistently including your required Kiro development process.
 
 ## 💡 Using Kiro
 
