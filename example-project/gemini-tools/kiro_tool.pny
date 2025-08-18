@@ -253,7 +253,7 @@ def _comprehensive_verification(feature_name, requirements_content, design_conte
        - Identify high-risk elements based on complexity and gaps
        - Provide risk mitigation recommendations
     
-    Provide your verification results in this format:
+    Provide your verification results in this format: 
     
     ## Traceability Verification
     - Status: PASSED/FAILED
@@ -282,16 +282,16 @@ def _comprehensive_verification(feature_name, requirements_content, design_conte
     
     return model.generate_content(verification_prompt).text
 
-def _claude_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model):
+def _gemini_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model):
     """
-    Performs a detailed assessment of whether CLAUDE.md needs updating
+    Performs a detailed assessment of whether GEMINI.md needs updating
     based on the new feature specifications.
     """
     assessment_prompt = f"""
-    You are a project governance AI. Assess whether the parent CLAUDE.md file needs 
+    You are a project governance AI. Assess whether the parent GEMINI.md file needs 
     updating based on this new feature "{feature_name}".
     
-    Carefully examine these triggers for a CLAUDE.md update:
+    Carefully examine these triggers for a GEMINI.md update:
     1. New technology stack (framework, database, architecture pattern)
     2. Major architectural decisions that change project direction
     3. New domain concepts or business logic that affects project context
@@ -313,9 +313,9 @@ def _claude_md_update_assessment(feature_name, requirements_content, design_cont
     ---
     
     Assessment Process:
-    1. Compare the generated design.md ADRs against current CLAUDE.md project context
+    1. Compare the generated design.md ADRs against current GEMINI.md project context
     2. Identify semantic gaps between new requirements and existing project description
-    3. Check if new NFRs introduce constraints not reflected in CLAUDE.md
+    3. Check if new NFRs introduce constraints not reflected in GEMINI.md
     
     Provide your assessment in this format:
     - Update Needed: YES/NO
@@ -370,13 +370,13 @@ def kiro(command: str, feature_name: str, **kwargs):
         requirements_prompt = f"""
         You are a world-class principal software engineer. Your task is to generate the complete content for a `requirements.md` file for the feature named "{feature_name}".
         You must strictly adhere to the following template, filling in all placeholders with plausible, detailed, and semantically coherent information.
-        Generate unique UUIDs where required. The parent context is 'CLAUDE.md'.
+        Generate unique UUIDs where required. The parent context is 'GEMINI.md'.
 
         ```markdown
         # Requirements: {feature_name}
         ## Meta-Context
         - Feature UUID: FEAT-{{generate a unique 8-char hash}}
-        - Parent Context: [CLAUDE.md]
+        - Parent Context: [GEMINI.md]
         - Dependency Graph: {{auto-detect and list potential dependencies, e.g., 'User Service', 'Database Module'}}
 
         ## Functional Requirements
@@ -528,16 +528,16 @@ def kiro(command: str, feature_name: str, **kwargs):
         verification_report = _comprehensive_verification(feature_name, requirements_content, design_content, tasks_content, model)
         print("   -> Done.")
 
-        # 5. CLAUDE.md Update Assessment
-        print("🔄 Assessing CLAUDE.md update needs...")
-        claude_assessment = _claude_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model)
+        # 5. GEMINI.md Update Assessment
+        print("🔄 Assessing GEMINI.md update needs...")
+        gemini_assessment = _gemini_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model)
         print("   -> Done.")
 
         # Display reports
         print("\n---VERIFICATION REPORT---")
         print(verification_report)
-        print("\n---CLAUDE.MD ASSESSMENT---")
-        print(claude_assessment)
+        print("\n---GEMINI.MD ASSESSMENT---")
+        print(gemini_assessment)
         print("---")
 
         return f"✅ Kiro process complete for '{feature_name}'. Files are in '{spec_path}'."
@@ -601,7 +601,7 @@ def kiro(command: str, feature_name: str, **kwargs):
         tasks_file = spec_path / "tasks.md"
         tasks_content = tasks_file.read_text()
         
-        total_tasks = len(re.findall(r"- \[[x~ !\]]\]", tasks_content))
+        total_tasks = len(re.findall(r"- \[ [x~ !] \]", tasks_content))
         completed_tasks = len(re.findall(r"- \[x\]", tasks_content))
         
         if completed_tasks < total_tasks:

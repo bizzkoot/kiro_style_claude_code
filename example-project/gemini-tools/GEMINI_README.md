@@ -57,9 +57,16 @@ graph TD
 ### Installation in 3 Simple Steps
 
 1. **Download the required files**
+   
+   Make sure you have the following files in your project folder:
+   - [`kiro_tool.pny`](./kiro_tool.pny)
+   - [`setup_kiro.sh`](./setup_kiro.sh)
+   - [`GEMINI.md`](./GEMINI.md)
+
+   You can check if they exist with:
    ```bash
-   # Make sure both files are in your project folder
-   ls kiro_tool.py setup_kiro.sh
+   # Make sure all files are in your project folder
+   ls kiro_tool.pny setup_kiro.sh GEMINI.md
    ```
 
 2. **Make the setup script executable**
@@ -83,6 +90,17 @@ After installation, activate the command by either:
 - Opening a new terminal window, or
 - Running: `source ~/.zshrc` (or `~/.bashrc` depending on your shell)
 
+### **Setup GEMINI.md**
+
+The `GEMINI.md` file is crucial for the Kiro agent to understand the context of your project. It contains information about your project structure, development conventions, and other important details.
+
+To create and initialize this file, run the following command in your terminal:
+
+```bash
+/init "Please run initialization while preserving the existing GEMINI.md content. Add project structure details without overwriting the Kiro workflow information."
+```
+This will create a `GEMINI.md` file in your project's root directory. The Kiro agent will then use this file to generate more accurate and relevant specifications for your features.
+
 ## 💡 Using Kiro
 
 Kiro now supports a complete feature lifecycle with four powerful commands:
@@ -102,7 +120,7 @@ flowchart LR
     C --> D[Generate design.md]
     D --> E[Generate tasks.md]
     E --> F[Run comprehensive verification]
-    F --> G[CLAUDE.md update assessment]
+    F --> G[GEMINI.md update assessment]
     G --> H[Display summary reports]
 
     style C fill:#d4f1f9,stroke:#0099cc
@@ -316,9 +334,9 @@ When a feature is 100% complete, Kiro:
 4. **Archives the feature** with standardized naming
 5. **Produces a completion report** summarizing the feature's implementation
 
-### CLAUDE.md Update Assessment
+### GEMINI.md Update Assessment
 
-After generating specifications, Kiro analyzes if CLAUDE.md needs updating based on:
+After generating specifications, Kiro analyzes if GEMINI.md needs updating based on:
 
 - New technology stack introductions
 - Major architectural decisions
