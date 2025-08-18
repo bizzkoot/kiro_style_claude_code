@@ -59,14 +59,14 @@ graph TD
 1. **Download the required files**
    
    Make sure you have the following files in your project folder:
-   - [`kiro_tool.pny`](./kiro_tool.pny)
+   - [`kiro_tool.py`](./kiro_tool.py)
    - [`setup_kiro.sh`](./setup_kiro.sh)
    - [`GEMINI.md`](./GEMINI.md)
 
    You can check if they exist with:
    ```bash
    # Make sure all files are in your project folder
-   ls kiro_tool.pny setup_kiro.sh GEMINI.md
+   ls kiro_tool.py setup_kiro.sh GEMINI.md
    ```
 
 2. **Make the setup script executable**
