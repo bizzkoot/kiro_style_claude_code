@@ -128,3 +128,18 @@ Before completion, run AI validation:
 3. Generate requirement satisfaction + quality metrics report
 4. Archive: Create specs/done/, move specs/{feature}/, rename DONE_{date}_{hash}_filename.md
 5. Generate retrospective + update semantic knowledge base
+
+**Learning Loop**: Pattern recognition for estimates, risk prediction, process optimization
+
+---
+
+## Resume Command
+/kiro resume "{feature-name}"
+Action: 
+1. Read specs/{feature-name}/requirements.md for full requirement context
+2. Read specs/{feature-name}/design.md for architectural decisions + rationale  
+3. Read specs/{feature-name}/tasks.md for current progress state
+4. Reconstruct semantic traceability graph from all three documents
+5. Continue with full TAD framework context maintained
+
+This ensures AI agents understand WHY decisions were made, not just WHAT needs to be done.
