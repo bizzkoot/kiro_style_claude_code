@@ -85,3 +85,43 @@ Smart Completion (100%): Auto-validate vs requirements+design, archive to specs/
 - /kiro-implementer resume "{feature-name}" - Continue implementation planning
 
 Each agent reads ALL previous artifacts for full semantic context.
+```
+
+### CLAUDE.md Context Validation (Pre-Implementation)
+Before generating tasks.md, validate if current project context supports implementation:
+
+**Context Validation Checklist:**
+- [ ] Technology stack in CLAUDE.md matches design.md specifications
+- [ ] Project constraints align with proposed implementation approach  
+- [ ] Domain context accurately reflects new business logic
+- [ ] Development rules support proposed task structure
+
+**If context misalignment detected:**
+```bash
+"⚠️ Context Misalignment Detected:
+Current CLAUDE.md describes: [current context]
+But design.md requires: [new requirements]
+
+Recommend updating CLAUDE.md sections:
+- [Section 1]: [specific update needed]
+- [Section 2]: [specific update needed]
+
+Should I propose CLAUDE.md updates before proceeding with implementation planning?"
+```
+
+**Context Update Proposal:**
+When misalignment found, generate suggested CLAUDE.md updates:
+```markdown
+## Proposed CLAUDE.md Updates
+
+### Current State:
+[Extract relevant sections from current CLAUDE.md]
+
+### Proposed Changes:
+[Updated sections with rationale]
+
+### Impact:
+- Improved agent decision-making for future features
+- Better alignment between project context and implementation reality
+- Enhanced semantic traceability for TAD framework
+```

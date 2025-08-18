@@ -116,6 +116,36 @@ Before completion, run AI validation:
 4. Risk assessment and recommendations
 5. Output: "Traceability Check: PASSED/FAILED" + improvement suggestions
 
+### 5. CLAUDE.md Update Assessment (Post-Generation)
+After generating all three files, analyze if major architectural changes require CLAUDE.md updates:
+
+**Triggers for CLAUDE.md Update:**
+- New technology stack (framework, database, architecture pattern)
+- Major architectural decisions that change project direction
+- New domain concepts or business logic that affects project context
+- Significant changes to development approach or constraints
+
+**Assessment Process:**
+1. Compare generated design.md ADRs against current CLAUDE.md project context
+2. Identify semantic gaps between new requirements and existing project description
+3. Check if new NFRs introduce constraints not reflected in CLAUDE.md
+
+**If update needed:**
+```bash
+"The generated specifications introduce significant architectural changes. 
+Should I update CLAUDE.md to reflect:
+- [Specific change 1]
+- [Specific change 2] 
+- [Specific change 3]
+
+This will improve future agent decisions and maintain project context accuracy."
+```
+
+**If no update needed:**
+```bash
+"CLAUDE.md context remains accurate for this feature. No updates required."
+```
+
 ---
 
 ## Phase 2: Lifecycle Management
