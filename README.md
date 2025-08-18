@@ -2,23 +2,26 @@
 
 <div align="center">
     <img src="ICON.png" alt="Alt text" width="200" height="200">
-    <p>A simple system that reproduces the Kiro editor workflow in Claude Code.</p>
+    <p>A simple system that reproduces the Kiro editor workflow in Claude Code with Traceable Agentic Development (TAD) framework.</p>
 </div>
 
 ## 🎯 Concept
 
-Kiro-style specification-driven development is a methodology that advances development centered around three files.
+Kiro-style specification-driven development is a methodology that advances development centered around three files with **semantic traceability** and **AI-powered validation**.
 
-1. **requirements.md** - What to build (User Stories)
-2. **design.md** - How to build it (Technical Design)
-3. **tasks.md** - Implementation steps (Task Management)
+1. **requirements.md** - What to build (User Stories with semantic anchoring)
+2. **design.md** - How to build it (Technical Design with ADRs)
+3. **tasks.md** - Implementation steps (Task Management with bi-directional traceability)
 
-### Benefits
+### TAD Framework Benefits
 
-- **Clear Development Process** - Always clear what to do next
-- **Efficient Collaboration with AI** - AI can easily understand structured specifications
-- **Easy Change Tracking** - Clear specification change history
-- **Suitable for Team Development** - Clear specifications make it easy to align understanding
+- **Semantic Traceability** - AI understands requirement relationships contextually using UUID-based linking
+- **Multi-Agent Validation** - Agents verify each other's work automatically with confidence scoring
+- **Dynamic Risk Assessment** - Continuous monitoring and adjustment of risk factors
+- **Self-Improving System** - Learning system that optimizes estimates and processes over time
+- **Golden Thread Maintenance** - Requirements → Design → Implementation maintained by AI throughout lifecycle
+- **Architectural Decision Records** - Captures not just what was decided, but why and what alternatives were considered
+- **Resume Capability** - Seamlessly continue work on any feature while preserving full semantic context
 
 ## 🚀 How to Use
 
@@ -61,120 +64,186 @@ rm -rf ../kiro_style_claude_code
 ```
 </details>
 
-### 2. Initialize Claude Code
+### 2. 🚀 Initialize Claude Code
 
 ```bash
 # Start Claude Code
 claude
 
-# Initialize while preserving the existing CLAUDE.md content
+# Initialize with Kiro workflow preservation
 /init "Please run initialization while preserving the existing CLAUDE.md content. Add project structure details without overwriting the Kiro workflow information."
 ```
 
-This initialization step is important as it:
-- Analyzes your project structure
-- Enhances the provided CLAUDE.md with project-specific details without overwriting existing Kiro workflow instructions
-- Creates a knowledge base that all future `/kiro` commands will use
-- Avoids redundant project scanning on each command
+> **💡 Why this matters:** This creates a knowledge base that all `/kiro` commands will use, avoiding redundant project scanning and preserving your workflow setup.
 
-### 3. Development Workflow
+---
 
-You can choose between two approaches:
+## 🎯 Development Workflows
 
-#### Option A: Full Workflow (All phases)
-```
-/kiro Create TODO app
-```
+### Option A: 🚀 Full TAD Workflow (One-Command Complete)
 
-This creates a complete feature specification in one step:
-- `specs/create-todo-app/requirements.md` - User stories and acceptance criteria
-- `specs/create-todo-app/design.md` - Technical architecture and components
-- `specs/create-todo-app/tasks.md` - Implementation checklist
+<details>
+<summary><b>Quick Start - Single Command</b></summary>
 
-#### Option B: Specialized Agent Workflow (Recommended for complex features)
-
-**Step 1: Requirements Analysis**
-```
-/kiro-researcher Create TODO app
-```
-Creates comprehensive requirements with stakeholder analysis and edge cases.
-
-**Step 2: Technical Design**
-```
-/kiro-architect
-```
-Automatically detects the feature from Step 1 and creates detailed technical architecture. If multiple features exist, presents a selection menu.
-
-**Step 3: Implementation Planning**
-```
-/kiro-implementer
-```
-Automatically detects the feature and creates detailed task breakdown with dependencies and testing strategies.
-
-**Benefits of Specialized Agents:**
-- More thorough analysis at each phase
-- Optimized context utilization
-- Better preservation of implementation details
-- Enhanced specialization for complex features
-
-#### Step 2: Review and Refine Specifications
-
-```
-# Review requirements first
-Approve requirements.md
-
-# Then review design
-Approve design.md
+```bash
+/kiro "Create TODO app"
 ```
 
-#### Step 3: Implement Tasks
-
+**✨ Creates instantly:**
 ```
-# Either implement a specific task
-Please implement Task 1
-
-# Or proceed with the development plan
-Proceed with development according to the tasks.md
+specs/create-todo-app/
+├── requirements.md    # 📋 User stories + semantic anchoring + stakeholder analysis
+├── design.md         # 🏗️ Technical architecture + ADRs + quality gates  
+└── tasks.md          # ✅ Implementation checklist + bi-directional traceability
 ```
 
-#### Step 4: Handle Specification Changes
+**Perfect for:** Simple features, prototyping, or when you want everything generated at once.
 
-When requirements change, clearly communicate the changes to Claude Code:
+</details>
 
+---
+
+### Option B: 🎯 Specialized Agent Workflow (Recommended)
+
+<details>
+<summary><b>Step-by-Step Expert Analysis</b></summary>
+
+#### 🔍 **Step 1: Requirements Research**
+```bash
+/kiro-researcher "Create TODO app"
 ```
-"I want to add user authentication functionality"
-"I want to change the database from PostgreSQL to MongoDB"
-"The dark mode feature is no longer needed, please remove it"
+**🎯 Focus:** Deep requirements analysis
+- 👥 Stakeholder mapping & market research
+- 🔗 Semantic anchoring with UUID-based linking  
+- ⚠️ Edge case identification & business value scoring
+- 📊 Risk factors & validation hooks
+
+#### 🏗️ **Step 2: Technical Architecture**  
+```bash
+/kiro-architect "create-todo-app"
+```
+**🎯 Focus:** Optimal technical design
+- 📝 Architectural Decision Records (ADRs) with rationale
+- 🔧 Component design with explicit requirement mapping
+- 🛡️ Security analysis & performance considerations
+- 📈 Technical debt prevention strategies
+
+#### ⚡ **Step 3: Implementation Planning**
+```bash
+/kiro-implementer "create-todo-app"
+```
+**🎯 Focus:** Detailed execution roadmap  
+- 🔄 Bi-directional traceability to requirements & design
+- 📊 Dependency mapping & critical path analysis
+- 🧪 Testing strategies & complexity assessments
+- ⚠️ Risk mitigation & implementation guidance
+
+</details>
+
+**🏆 Benefits of Specialized Agents:**
+- 🎯 **Deep Expertise** - Each agent optimized for its domain
+- 🧠 **Enhanced Context** - Better preservation of decision rationale  
+- 🔗 **Semantic Continuity** - Maintains golden thread across phases
+- ✅ **AI Validation** - Multi-agent verification & gap detection
+
+---
+
+## 🔄 Resume Development (Continue Where You Left Off)
+
+<details>
+<summary><b>Resume Any Feature Seamlessly</b></summary>
+
+#### 🚀 **Resume Full Workflow**
+```bash
+/kiro resume "create-todo-app"
+```
+Reads **all three files** and reconstructs complete context.
+
+#### 🎯 **Resume Specific Agents**
+```bash
+# Continue requirements work
+/kiro-researcher resume "create-todo-app"
+
+# Continue design work  
+/kiro-architect resume "create-todo-app"
+
+# Continue implementation planning
+/kiro-implementer resume "create-todo-app"
 ```
 
-Claude will update all related specification files while maintaining consistency.
+**🎯 Resume Benefits:**
+- 🧠 **Full Context** - AI knows WHY decisions were made, not just WHAT
+- 🔗 **Semantic Continuity** - Preserves requirement relationships & rationale
+- ⚠️ **Risk Awareness** - Maintains risk assessments & mitigation strategies  
+- 📊 **Progress Tracking** - Continues from exact pause point
+
+</details>
+
+---
+
+## 📋 Development Process
+
+### ✅ **Review & Approve**
+```bash
+# Review each phase
+"Approve requirements.md"    # ✅ Check stakeholder needs & confidence scores
+"Approve design.md"         # ✅ Verify ADR rationale & traceability  
+"Approve tasks.md"          # ✅ Confirm implementation plan
+```
+
+### 🛠️ **Implement Tasks**
+```bash
+# Start implementation
+"Please implement Task 1"
+
+# Follow the roadmap
+"Proceed with development according to tasks.md"
+```
+
+### 🔄 **Handle Changes**
+When requirements evolve, TAD framework automatically maintains traceability:
+
+```bash
+"Add user authentication functionality"
+"Change database from PostgreSQL to MongoDB"  
+"Remove the dark mode feature"
+```
+
+**🤖 Claude automatically:**
+- ✅ Updates all related specification files
+- 🔗 Maintains semantic traceability links  
+- 📊 Recalculates confidence scores & risk assessments
+- 📝 Preserves architectural decision rationale
 
 ## 📁 Project Structure
 
-Initial setup:
+Initial setup with TAD framework:
 ```
 your-project-directory/
 ├── .claude/
 │   └── commands/
-│       ├── kiro.md              # Full workflow command
-│       ├── kiro-researcher.md   # Requirements specialist
-│       ├── kiro-architect.md    # Design specialist
-│       └── kiro-implementer.md  # Implementation specialist
+│       ├── kiro.md              # Full TAD workflow command
+│       ├── kiro-researcher.md   # Requirements specialist with TAD
+│       ├── kiro-architect.md    # Design specialist with ADRs
+│       └── kiro-implementer.md  # Implementation specialist with traceability
 └── CLAUDE.md                    # Project rules
 ```
 
-After running `/kiro Create TODO app`:
+After running `/kiro "Create TODO app"` with TAD:
 ```
 your-project-directory/
 ├── .claude/
 │   └── commands/
-│       └── kiro.md
+│       ├── kiro.md              # Full TAD workflow command
+│       ├── kiro-researcher.md   # Requirements specialist with TAD
+│       ├── kiro-architect.md    # Design specialist with ADRs
+│       └── kiro-implementer.md  # Implementation specialist with traceability
 ├── CLAUDE.md
 └── specs/                 # Created automatically
     └── create-todo-app/   # Feature-specific directory
-        ├── requirements.md
-        ├── design.md
-        └── tasks.md
+        ├── requirements.md    # With semantic anchoring and UUIDs
+        ├── design.md         # With ADRs and traceability matrix
+        └── tasks.md          # With bi-directional requirement mapping
 ```
 
 After feature completion and archiving:
@@ -182,15 +251,40 @@ After feature completion and archiving:
 your-project-directory/
 ├── .claude/
 │   └── commands/
-│       └── kiro.md
+│       ├── kiro.md              # Full TAD workflow command
+│       ├── kiro-researcher.md   # Requirements specialist with TAD
+│       ├── kiro-architect.md    # Design specialist with ADRs
+│       └── kiro-implementer.md  # Implementation specialist with traceability
 ├── CLAUDE.md
 ├── specs/
 └── specs/done/            # Archive directory
-    └── create-todo-app/   # Archived feature
-        ├── DONE_2025-08-15_requirements.md
-        ├── DONE_2025-08-15_design.md
-        └── DONE_2025-08-15_tasks.md
+    └── create-todo-app/   # Archived feature with semantic hash
+        ├── DONE_2025-08-15_a1b2c3d4_requirements.md
+        ├── DONE_2025-08-15_a1b2c3d4_design.md
+        └── DONE_2025-08-15_a1b2c3d4_tasks.md
 ```
+
+## 🔄 TAD Framework Features
+
+### Semantic Traceability
+- **UUID-based Linking** - Every requirement, design element, and task has semantic relationships
+- **Intent Vectors** - AI-generated summaries that help agents understand contextual relationships
+- **Confidence Scoring** - Quantified certainty levels for all decisions and estimates
+
+### Multi-Agent Validation
+- **Auto-Verification Loops** - Agents automatically check each other's work for gaps and inconsistencies
+- **Gap Detection** - Proactive identification of missing coverage or orphaned elements
+- **Quality Gates** - Measurable criteria that must be met before proceeding to next phase
+
+### Dynamic Risk Assessment
+- **Continuous Monitoring** - Risk factors are tracked and updated throughout development
+- **Impact Analysis** - Understanding how changes affect the entire system
+- **Mitigation Strategies** - Specific approaches for handling identified risks
+
+### Self-Improving System
+- **Pattern Recognition** - Learn from completed features to improve future estimations
+- **Process Optimization** - Suggest improvements based on delivery metrics
+- **Retrospective Intelligence** - Generate insights and lessons learned for knowledge base
 
 ## 📝 License
 
@@ -199,3 +293,5 @@ MIT License
 ## 🙏 Acknowledgements
 
 This project is based on the original work by [tomada1114](https://github.com/tomada1114/kiro_style_claude_code). We thank the original author for creating the Kiro Style Specification-Driven Development framework.
+
+The TAD (Traceable Agentic Development) enhancements incorporate cutting-edge agentic coding practices and requirements traceability methodologies to create an intelligent development orchestrator that maintains the "golden thread" between requirements, design, and implementation throughout the entire development lifecycle.
