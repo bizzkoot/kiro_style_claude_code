@@ -19,41 +19,40 @@ This project adopts Kiro-style specification-driven development.
 
 ## Commands
 
-- `/kiro`: Initialize specifications for a new feature
-- Ask "Approve requirements.md" to confirm requirements
-- Ask "Approve design.md" to confirm design
-- Ask "Please implement Task X" for implementation
+The primary way to interact with the Kiro agent is through the `kiro` command in your terminal.
+
+- `kiro "<feature name>"`: Initializes the specification-driven workflow for a new feature.
+- `kiro resume "<feature name>"`: Resumes an in-progress feature development workflow.
+
+During the workflow, the agent will prompt for approvals at key stages:
+- **Approve requirements.md**: To confirm user stories and acceptance criteria.
+- **Approve design.md**: To confirm the technical architecture and design.
+- **Please implement Task X**: To proceed with individual implementation tasks.
 
 ## Development Rules
 
-1. All features start with requirements definition
-2. Proceed to design after approving requirements
-3. Proceed to implementation after approving design
-4. Tasks should be independently testable
-5. Mark tasks as completed using `[x]` notation
-6. All tasks must pass verification before archiving
+1. All features start with a requirements definition.
+2. Proceed to design only after the requirements are approved.
+3. Proceed to implementation only after the design is approved.
+4. Tasks should be defined to be independently testable.
+5. Mark tasks as completed in `tasks.md` using `[x]`.
+6. All tasks must pass verification before the feature is archived.
 
 ## Task Completion
 
 When a task is completed:
-1. Update tasks.md by changing `[ ]` to `[x]`
-2. Update the progress counter at the top of tasks.md
-3. Proceed to the next task only after confirming current task works
+1. Update `tasks.md` by changing `[ ]` to `[x]` for the completed task.
+2. Update the progress counter at the top of `tasks.md`.
+3. Ensure the implementation for the current task is working before proceeding to the next one.
 
-## Agent Specialization
+## Agent Workflow
 
-This project supports specialized agent roles for different phases of development:
+The `kiro` command initiates a structured, multi-phase development process. While you interact with a single `kiro` command, the agent intelligently handles the different phases of development (requirements, design, implementation) behind the scenes.
 
-### Agent Commands
-- `/kiro [feature-name]` - Full workflow (all phases)
-- `/kiro-researcher [feature-name]` - Requirements specialist
-- `/kiro-architect [feature-name]` - Design specialist
-- `/kiro-implementer [feature-name]` - Implementation specialist
-
-### Agent Workflow
-1. Start with `/kiro-researcher [feature-name]` to create requirements.md
-2. After approval, continue with `/kiro-architect [feature-name]` to create design.md
-3. After approval, finish with `/kiro-implementer [feature-name]` to create tasks.md and implement
+1. **Start**: Run `kiro "<feature name>"` in your terminal.
+2. **Requirements**: The agent will first act as a requirements specialist to create `requirements.md`.
+3. **Design**: After the requirements are approved, the agent will take on the role of an architect to create `design.md`.
+4. **Implementation**: Once the design is approved, the agent will function as an implementer, creating and executing tasks from `tasks.md`.
 
 ### Benefits
 - More thorough analysis at each phase
