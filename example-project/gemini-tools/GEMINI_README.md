@@ -1,6 +1,6 @@
 # 🤖 Kiro Agent - Traceable Agentic Development (TAD)
 
-> **Kiro** brings structure, traceability, and consistency to your development workflow by automating the creation of high-quality specification documents and managing the entire feature lifecycle.
+> **Kiro** brings structure, traceability, and consistency to your development workflow by automating the creation of high-quality specification documents and managing the entire feature lifecycle through optimized Gemini CLI interactions.
 
 ## What is TAD?
 
@@ -9,228 +9,145 @@
 ## 🌟 Key Benefits
 
 | Benefit | Description |
-|---------|-------------|
-| 📝 **Automatic Documentation** | Generate comprehensive specs in seconds |
-| 🔄 **Complete Traceability** | Every task links back to design and requirements |
-| 🧠 **Context Preservation** | Reload feature context at any time |
-| 🔍 **Built-in Verification** | Validate traceability before coding begins |
-| 📊 **Progress Tracking** | Monitor task status and feature completion |
-| 📈 **Smart Completion** | Validate, measure, and archive completed features |
-
-## 📊 How Kiro Works
-
-```mermaid
-graph TD
-    A[Developer runs kiro command] --> B[Kiro generates spec directory]
-    B --> C[requirements.md]
-    B --> D[design.md]
-    B --> E[tasks.md]
-    C --> F[Defines WHY and WHAT]
-    D --> G[Defines HOW]
-    E --> H[Defines WHO and WHEN]
-    F --> I[Traceability chain established]
-    G --> I
-    H --> I
-    I --> J[Development begins with complete context]
-    
-    J --> K[Update task progress]
-    K --> L[Complete feature]
-    L --> M[Validation & Metrics]
-    M --> N[Archival]
-    N --> O[Feature Retrospective]
-
-    style C fill:#d4f1f9,stroke:#0099cc
-    style D fill:#d4f1f9,stroke:#0099cc
-    style E fill:#d4f1f9,stroke:#0099cc
-    style I fill:#ccffcc,stroke:#009900
-    style L fill:#ffddcc,stroke:#ff9966
-    style O fill:#ccffcc,stroke:#009900
-```
+|---|---|
+| 📝 **Automatic Documentation** | Generate comprehensive specs in seconds with intelligent context awareness |
+| 🔄 **Complete Traceability** | Every task links back to design and requirements with semantic connections |
+| 🧠 **Context Preservation** | Reload complete feature context at any time with optimized token usage |
+| 🔍 **Built-in Verification** | Validate traceability before coding begins with smart checks |
+| 📊 **Progress Tracking** | Monitor task status and feature completion with visual dashboards |
+| 📈 **Smart Completion** | Validate, measure, and archive completed features with quality metrics |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- **Google Gemini CLI**: Kiro runs within the Gemini CLI environment
-- **Unix-like Terminal**: Compatible with bash or zsh shells
+* **Google Gemini CLI**: Kiro tools are designed specifically for the Gemini agent with optimized prompt structures.
+* **uv**: The Python installer and virtual environment manager. Install with `pip install uv`.
+* **Unix-like Terminal**: Compatible with bash or zsh shells.
 
 ### Installation in 3 Simple Steps
 
-1. **Download the required files**
-   
-   Make sure you have the following files in your project folder:
-   - [`kiro_tool.py`](./kiro_tool.py)
-   - [`setup_kiro.sh`](./setup_kiro.sh)
-   - [`kiro_template.md`](./kiro_template.md)
+1.  **Download the required files**  
+    Make sure you have the following files in your project folder:
+    * [kiro_tool.py](./kiro_tool.py)
+    * [setup_kiro.sh](./setup_kiro.sh)
+    * [kiro_template.md](./kiro_template.md)
 
-   You can check if they exist with:
-   ```bash
-   # Make sure all files are in your project folder
-   ls kiro_tool.py setup_kiro.sh kiro_template.md
-   ```
-
-2. **Make the setup script executable**
-   ```bash
-   chmod +x setup_kiro.sh
-   ```
-
-3. **Run the installer**
-   ```bash
-   ./setup_kiro.sh
-   ```
-
-The script will:
-- Create a tools directory (`~/gemini-tools/`)
-- Move the Kiro tool there
-- Add the `kiro` command to your shell configuration
-
-### Activating the Command
-
-After installation, activate the command by either:
-- Opening a new terminal window, or
-- Running: `source ~/.zshrc` (or `~/.bashrc` depending on your shell)
-
-### **Setup GEMINI.md**
-
-The `GEMINI.md` file is crucial for the Kiro agent to understand your project's context. It should contain both a fresh analysis of your codebase from Gemini and the standard Kiro workflow information.
-
-Here is the best practice for creating and updating it:
-
-1.  **Store the Kiro Workflow:**
-    Keep your standard Kiro workflow text in a separate file named `kiro_template.md`. The content for this file is what was originally in `GEMINI.md`.
-
-2.  **Initialize and Merge:**
-    To create or update your `GEMINI.md`, run the following commands. This process ensures you always start with a fresh analysis from Gemini and then add your workflow.
-
+2.  **Make the setup script executable**
     ```bash
-    # Step 1: Run Gemini's /init to get a fresh analysis of the codebase.
-    # (This will overwrite the existing GEMINI.md)
-    /init "Analyze the current project and generate a detailed overview."
-
-    # Step 2: Append your Kiro workflow template to the newly generated file.
-    cat kiro_template.md >> GEMINI.md
+    chmod +x setup_kiro.sh
     ```
 
-This two-step command sequence ensures your `GEMINI.md` is always a proper reflection of the codebase while consistently including your required Kiro development process.
+3.  **Run the installer in your project directory**
+    ```bash
+    ./setup_kiro.sh
+    ```
+    The script will set up a Python virtual environment and create a `kiro_server.py` file for you.
 
-## 💡 Using Kiro
+## 💡 How to Use Kiro Tools with Gemini CLI
 
-Kiro now supports a complete feature lifecycle with four powerful commands:
+Kiro operates as a set of tools for the Gemini CLI agent, exposed via an MCP server. You interact with it using natural language in a two-terminal setup, with optimized prompts that leverage Gemini's advanced reasoning capabilities.
 
-### 1. Creating a New Feature
-
+### 1. Start the Kiro MCP Server
+In your **first terminal**, start the server from your project directory:
 ```bash
-kiro "User Authentication with Two-Factor Auth"
+# Activate the environment
+source .venv/bin/activate
+
+# Run the server
+python kiro_server.py
 ```
+Keep this terminal running.
 
-This command performs the following actions:
-
-```mermaid
-flowchart LR
-    A[kiro command] --> B[Create directory structure]
-    B --> C[Generate requirements.md]
-    C --> D[Generate design.md]
-    D --> E[Generate tasks.md]
-    E --> F[Run comprehensive verification]
-    F --> G[GEMINI.md update assessment]
-    G --> H[Display summary reports]
-
-    style C fill:#d4f1f9,stroke:#0099cc
-    style D fill:#d4f1f9,stroke:#0099cc
-    style E fill:#d4f1f9,stroke:#0099cc
-    style F fill:#ffddcc,stroke:#ff9966
-    style H fill:#ccffcc,stroke:#009900
-```
-
-The verification process now includes:
-- Forward, backward, and bi-directional traceability analysis
-- Confidence scoring of requirements, design, and tasks
-- Gap analysis to identify missing coverage
-- Risk assessment with mitigation recommendations
-
-### 2. Resuming Work on a Feature
-
-To reload the context of an existing feature:
-
+### 2. Connect Gemini CLI
+In a **new terminal**, connect the Gemini CLI to your server:
 ```bash
-kiro resume "User Authentication with Two-Factor Auth"
+# Start the Gemini CLI
+gemini
+
+# Inside the CLI, connect to the server
+/mcp connect http://127.0.0.1:8080/mcp/
 ```
 
-This command:
+### Interacting with Kiro Tools - Advanced Prompting Techniques
 
-```mermaid
-flowchart LR
-    A[kiro resume] --> B[Read specification files]
-    B --> C[Reconstruct semantic context]
-    C --> D[Generate feature summary]
-    D --> E[Ready for continued work]
+Once connected, you can use these optimized prompt structures to achieve better results from the Gemini agent. The agent will discover and call the correct functions from `kiro_tool.py`.
 
-    style B fill:#d4f1f9,stroke:#0099cc
-    style C fill:#ffddcc,stroke:#ff9966
-    style E fill:#ccffcc,stroke:#009900
+#### 1. Creating a New Feature with Context-Rich Prompts
+To generate comprehensive specification documents with detailed context:
+```
+> Use the Kiro tools to generate specs for a 'User Authentication with Two-Factor Auth' feature. The system should support SMS and authenticator app verification, with fallback options for account recovery. Consider security best practices and potential integration with OAuth providers.
 ```
 
-### 3. Updating Task Status (NEW!)
-
-Track progress by updating task status:
-
-```bash
-kiro update "User Authentication with Two-Factor Auth" --task_id TASK-abc123-001 --status done
+#### 2. Resuming Work with Semantic Memory Prompts
+To reload the context of an existing feature with enhanced recall:
+```
+> Resume work on the 'User Authentication with Two-Factor Auth' feature using the Kiro context tool. Focus on the security implementation details and the user experience flow we previously defined.
 ```
 
-Supported statuses:
-- `done` - Task is completed
-- `in-progress` - Work has started on this task
-- `blocked` - Task is blocked by dependencies or issues
+#### 3. Updating Task Status with Specific Task Reasoning
+To track progress by updating a task's status with reasoning:
+```
+> Use the Kiro tool to update the task 'TASK-abc123-001' in the 'User Authentication' feature to 'done'. We've implemented the SMS verification service with retry logic and proper error handling as specified in the requirements.
+```
+Supported statuses are `done`, `in-progress`, and `blocked`.
 
-This command automatically updates the progress metrics in the tasks.md file:
+#### 4. Completing a Feature with Quality Assessment
+When all tasks are done, run the smart completion process with quality verification:
+```
+> Run the Kiro smart completion process for the 'User Authentication' feature. Please verify that all acceptance criteria have been met and generate detailed metrics on code quality and test coverage.
+```
+This will validate, generate reports, and archive the feature documentation.
 
-```mermaid
-flowchart LR
-    A[kiro update] --> B[Locate task in tasks.md]
-    B --> C[Update task checkbox]
-    C --> D[Recalculate progress metrics]
-    D --> E[Write updated file]
-    E --> F[Display new progress status]
+## 📚 Advanced Prompt Patterns for Kiro Tools
 
-    style C fill:#ffddcc,stroke:#ff9966
-    style F fill:#ccffcc,stroke:#009900
+### Chain-of-Thought Reasoning for Complex Features
+When describing complex features, use this pattern for better results:
+```
+> Generate Kiro specs for a "Real-time Collaboration System" with the following reasoning:
+1. First, let's consider the core user requirements: [describe primary use cases]
+2. Next, let's identify the technical challenges: [list major technical hurdles]
+3. Now, let's define the necessary components: [outline main system components]
+4. Finally, let's consider integration points: [describe how it connects to existing systems]
 ```
 
-### 4. Completing a Feature (NEW!)
+### Few-Shot Examples for Consistent Task Generation
+For consistent task breakdowns, provide examples in your prompts:
+```
+> Generate tasks for the "Payment Processing" feature using this pattern:
+Example task 1: "Implement Stripe API integration for payment processing"
+- Small scope, clear acceptance criteria
+- Single responsibility
+- Testable independently
 
-When all tasks are complete, run the smart completion process:
+Example task 2: "Create payment confirmation UI with status indicators"
+- Frontend-focused
+- Clear user experience goal
+- Visual acceptance criteria
 
-```bash
-kiro complete "User Authentication with Two-Factor Auth"
+Now, create tasks for our payment feature that follow this same pattern.
 ```
 
-This comprehensive process:
-
-```mermaid
-flowchart TD
-    A[kiro complete] --> B{All tasks done?}
-    B -->|No| C[Warning to complete tasks first]
-    B -->|Yes| D[Validate acceptance criteria]
-    D --> E[Generate quality metrics]
-    E --> F[Create retrospective analysis]
-    F --> G[Archive feature documentation]
-    G --> H[Generate completion report]
-
-    style D fill:#d4f1f9,stroke:#0099cc
-    style E fill:#d4f1f9,stroke:#0099cc
-    style F fill:#ffddcc,stroke:#ff9966
-    style H fill:#ccffcc,stroke:#009900
+### System-Level Thinking for Architecture Design
+For architectural decisions, prompt the system to consider broader impacts:
+```
+> Design the database schema for our "Customer Analytics Dashboard" feature. Consider:
+- Current system data models and how they'll be extended
+- Performance implications for reporting queries
+- Data privacy considerations for different user roles
+- Future extensibility for additional analytics metrics
 ```
 
-The smart completion process generates:
-1. **Validation Report**: Verifies all acceptance criteria are satisfied
-2. **Quality Metrics**: Measures requirement satisfaction, code quality, test coverage, etc.
-3. **Retrospective**: Analyzes what went well, what could be improved, and lessons learned
-4. **Archival**: Moves all documentation to `specs/done/` with standardized naming
-5. **Completion Report**: Summarizes the feature's implementation and quality
+## 📋 Command Reference (Advanced Prompt Examples)
 
-## 📁 Generated Documentation Structure
+| Action | Example Prompt | Tool Called | Optimization Technique |
+|---|---|---|---|
+| Generate new feature specs | `> Generate Kiro specs for "New Billing Dashboard" with focus on real-time payment processing, historical transaction viewing, and export capabilities. Consider integration with our existing payment providers and accounting system.` | `generate_feature_specs` | Context enrichment |
+| Reload context | `> Resume work on the "New Billing Dashboard" feature, particularly focusing on the transaction history visualization component we were designing. Recall that we decided to use a paginated table with sortable columns and downloadable receipts.` | `resume_feature_context` | Memory priming |
+| Update task progress | `> Update task TASK-xyz-002 "Implement transaction filter UI" in "New Billing Dashboard" to in-progress. We've started implementing the date range picker and payment status filters as specified in the design document.` | `update_task_status` | Detail amplification |
+| Run smart completion | `> Complete the "New Billing Dashboard" feature with comprehensive validation. Verify that all export formats (PDF, CSV, JSON) work correctly and that the dashboard updates in real-time when new transactions occur.` | `complete_feature` | Quality specification |
+
+## 🗂️ Generated Documentation Structure
 
 ```
 specs/
@@ -240,7 +157,7 @@ specs/
     └── tasks.md         # The execution plan with progress tracking
 
 specs/done/
-└── DONE_20250818_a1b2c3d4_*  # Archived completed features
+└── DONE_20250818_a1b2c3d4_.../  # Archived completed features
     ├── requirements.md
     ├── design.md
     ├── tasks.md
@@ -249,125 +166,52 @@ specs/done/
     └── retrospective.md
 ```
 
-### Document Purposes
+## 🔧 Optimizing Gemini CLI for Kiro Development
 
-| Document | Purpose | Contains |
-|----------|---------|----------|
-| **requirements.md** | Defines the feature's intent | Functional/non-functional requirements, acceptance criteria |
-| **design.md** | Outlines the implementation approach | Architecture decisions, component designs, API specifications |
-| **tasks.md** | Provides execution blueprint | Actionable tasks linked to design elements, progress tracking |
-| **validation.md** (on completion) | Verifies implementation | Acceptance criteria validation, coverage analysis |
-| **metrics.md** (on completion) | Measures quality | Satisfaction scores, quality assessment, test coverage |
-| **retrospective.md** (on completion) | Captures lessons learned | Successes, improvements, insights for future features |
+To maximize the effectiveness of Gemini CLI when working with Kiro tools:
 
-## 🔄 Traceability Visualization
+### Custom System Instructions
 
-```mermaid
-flowchart TD
-    subgraph Requirements [requirements.md]
-        R1[REQ-001: Primary Requirement]
-        R2[REQ-002: Secondary Requirement]
-        AC1[AC-001: Acceptance Criteria]
-        AC2[AC-002: Acceptance Criteria]
-        NFR1[NFR-001: Performance Requirement]
-    end
-    
-    subgraph Design [design.md]
-        D1[ADR-001: Architecture Decision]
-        D2[Component: UserAuth]
-        D3[API: /api/auth]
-    end
-    
-    subgraph Tasks [tasks.md]
-        T1[TASK-001: Implement Auth Flow]
-        T2[TASK-002: Create Database Schema]
-        T3[TASK-003: Build API Endpoint]
-        T4[TASK-004: Performance Testing]
-    end
-    
-    subgraph Completion [completion reports]
-        V1[Validation Report]
-        M1[Quality Metrics]
-        RT1[Retrospective]
-    end
-    
-    R1 --> D1
-    R1 --> D2
-    R2 --> D3
-    NFR1 --> D1
-    
-    D2 --> T1
-    D2 --> T2
-    D3 --> T3
-    NFR1 --> T4
-    
-    AC1 --> T1
-    AC2 --> T3
-    
-    T1 --> V1
-    T2 --> V1
-    T3 --> V1
-    T4 --> V1
-    
-    V1 --> M1
-    M1 --> RT1
-    
-    style Requirements fill:#ffeecc,stroke:#ff9900
-    style Design fill:#d4f1f9,stroke:#0099cc
-    style Tasks fill:#ccffcc,stroke:#009900
-    style Completion fill:#f0e6ff,stroke:#9966ff
+Create a `.gemini/system.md` file in your project root with these specialized instructions:
+
+```markdown
+# Kiro TAD Development Assistant
+
+You are an expert software development assistant specializing in:
+- Traceable agentic development
+- Technical specification creation
+- Task breakdown and estimation
+- Feature lifecycle management
+
+When working with Kiro tools:
+1. Consider the full project context before generating content
+2. Create detailed, implementation-ready specifications
+3. Break down tasks into independently testable units
+4. Trace all design decisions back to specific requirements
+5. Provide reasoning for architectural choices
+6. Consider cross-cutting concerns like security and performance
+
+Always respond with thoughtful, complete answers optimized for software development workflows.
 ```
 
-## 🛠️ Phase 2: Lifecycle Management
+### Effective Command Aliases
 
-Kiro now supports the complete feature lifecycle with these additional capabilities:
+Set up these aliases for common Kiro workflows:
 
-### Task Status Tracking
+```bash
+# Add to your .bashrc or .zshrc
+alias kiro-new='gemini "Generate Kiro specs for a feature that"'
+alias kiro-resume='gemini "Resume work on the feature using Kiro context tool"'
+alias kiro-update='gemini "Update task status in Kiro for"'
+alias kiro-complete='gemini "Run the Kiro smart completion process for"'
+```
 
-- Update task statuses: `done`, `in-progress`, `blocked`
-- Automatic progress calculation
-- Visual indicators of feature completeness
+### Enhancing Gemini CLI's Context Window
 
-### Smart Completion Process
+For complex features, increase Gemini CLI's context window:
 
-When a feature is 100% complete, Kiro:
+```bash
+export GEMINI_CONTEXT_WINDOW=100000  # Adjust based on your needs
+```
 
-1. **Auto-validates acceptance criteria** against implementation
-2. **Generates quality metrics** including:
-   - Requirements satisfaction scores
-   - Code quality assessment
-   - Test coverage analysis
-   - Risk mitigation effectiveness
-3. **Creates a retrospective** identifying:
-   - What went well
-   - What could be improved
-   - Lessons learned
-   - Recommendations for future features
-4. **Archives the feature** with standardized naming
-5. **Produces a completion report** summarizing the feature's implementation
-
-### GEMINI.md Update Assessment
-
-After generating specifications, Kiro analyzes if GEMINI.md needs updating based on:
-
-- New technology stack introductions
-- Major architectural decisions
-- New domain concepts
-- Changes to development constraints
-
-## 📜 Command Reference
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `kiro "Feature Name"` | Generate new feature specs | `kiro "User Authentication"` |
-| `kiro resume "Feature Name"` | Reload context | `kiro resume "User Authentication"` |
-| `kiro update "Feature Name" --task_id ID --status STATUS` | Update task progress | `kiro update "User Authentication" --task_id TASK-abc-001 --status done` |
-| `kiro complete "Feature Name"` | Run smart completion | `kiro complete "User Authentication"` |
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a pull request or open an issue to discuss proposed changes.
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This allows Kiro to maintain more comprehensive context during development sessions.

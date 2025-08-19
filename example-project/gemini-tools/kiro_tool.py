@@ -3,611 +3,758 @@ import re
 import datetime
 import hashlib
 import uuid
+import json
+from typing import Dict, List, Optional, Any, Tuple
 from google.generativeai.function_calling import tool
 
-# This model instance is a placeholder for the actual generative model
-# that will be used by the Gemini CLI to execute the tool's logic.
-# The tool's code itself doesn't call the model; it defines prompts
-# that the calling model will use.
-model = None 
+# ==============================================================================
+# Kiro TAD Workflow Tools for Gemini CLI
+# ==============================================================================
+# This script has been enhanced with state-of-the-art prompt engineering techniques
+# and optimizations specifically for the Gemini CLI agent.
+#
+# Advanced Architectural Principles:
+# 1.  **Optimized Delegation to Host Agent**: The tools provide rich semantic context
+#     to the Gemini CLI's built-in ReAct agent, leveraging its advanced reasoning.
+#     Each tool returns detailed prompts with reasoning structures that improve 
+#     the quality of generated content.
+# 2.  **Context-Preserving Tools**: Functions now include metadata and context
+#     preservation mechanisms to maintain semantic coherence across interactions.
+# 3.  **Chain-of-Thought Workflow Generation**: Tools now return step-by-step
+#     reasoning prompts that guide the Gemini agent through complex processes with
+#     explicit reasoning chains.
+# 4.  **Enhanced Token Efficiency**: All prompts are optimized for token usage
+#     while preserving semantic richness, using proven patterns from recent 
+#     prompt engineering research.
+# ==============================================================================
+
 
 def _kebab_case(name: str) -> str:
-    """Converts a string to kebab-case."""
+    """Converts a string to kebab-case for file-safe naming."""
     name = re.sub(r'(?<!^)(?=[A-Z])', '-', name).lower()
     return re.sub(r'[\s_]+', '-', name)
 
-def _generate_uuid():
-    """Generates a short UUID (8 characters)."""
-    return uuid.uuid4().hex[:8]
 
-def _update_task_status(spec_path: pathlib.Path, task_id: str, status: str):
-    """
-    Updates the status of a specific task in tasks.md.
-    
-    Args:
-        spec_path: Path to the specification directory
-        task_id: ID of the task to update (e.g., 'TASK-123-001')
-        status: New status ('done', 'in-progress', 'blocked')
-    """
-    tasks_file = spec_path / "tasks.md"
-    content = tasks_file.read_text()
-    
-    # Update checkbox based on status
-    if status.lower() == 'done':
-        # Change [ ] to [x] for the specific task
-        pattern = fr"- \[ \] ({task_id}:.*?)\n"
-        replacement = fr"- [x] \1\n"
-        updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-    elif status.lower() == 'in-progress':
-        # Change [ ] to [~] for the specific task
-        pattern = fr"- \[ \] ({task_id}:.*?)\n"
-        replacement = fr"- [~] \1\n"
-        updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-    elif status.lower() == 'blocked':
-        # Change [ ] to [!] for the specific task
-        pattern = fr"- \[ \] ({task_id}:.*?)\n"
-        replacement = fr"- [!] \1\n"
-        updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-    
-    # Update progress counts in the "Progress" line
-    completed = len(re.findall(r"- \[x\]", updated_content))
-    in_progress = len(re.findall(r"- \[~\]", updated_content))
-    not_started = len(re.findall(r"- \[ \]", updated_content))
-    blocked = len(re.findall(r"- \[!\]", updated_content))
-    total = completed + in_progress + not_started + blocked
-    
-    progress_line = f"## Progress: {completed}/{total} Complete, {in_progress} In Progress, {not_started} Not Started, {blocked} Blocked"
-    updated_content = re.sub(r"## Progress:.*", progress_line, updated_content)
-    
-    # Write updated content back to file
-    tasks_file.write_text(updated_content)
-    
-    return f"✅ Task {task_id} updated to '{status}'. Progress: {completed}/{total} complete."
+def _generate_uuid(prefix: str = "") -> str:
+    """Generates a short UUID (8 characters) with optional prefix."""
+    return f"{prefix}{uuid.uuid4().hex[:8]}"
 
-def _smart_completion(spec_path: pathlib.Path, model, feature_name: str):
-    """
-    Executes the smart completion process for a feature that's 100% complete.
-    
-    Args:
-        spec_path: Path to the specification directory
-        model: The generative model instance
-        feature_name: The name of the feature
-    """
-    # Read all specification files
-    req_content = (spec_path / "requirements.md").read_text()
-    design_content = (spec_path / "design.md").read_text()
-    tasks_content = (spec_path / "tasks.md").read_text()
-    
-    # 1. Auto-validate acceptance criteria
-    validate_prompt = f"""
-    You are a quality assurance AI. Review the completed feature specifications and validate 
-    that all acceptance criteria have been satisfied by the completed tasks.
-    
-    **Requirements:**
-    ---
-    {req_content}
-    ---
-    
-    **Design:**
-    ---
-    {design_content}
-    ---
-    
-    **Tasks (Completed):**
-    ---
-    {tasks_content}
-    ---
-    
-    For each acceptance criteria (AC-*) in the requirements, verify if there is corresponding 
-    task evidence showing it has been implemented and tested. Generate a validation report.
-    """
-    print("🔍 Validating acceptance criteria...")
-    validation_report = model.generate_content(validate_prompt).text
-    print("   -> Done.")
-    
-    # 2. Generate quality metrics report
-    metrics_prompt = f"""
-    You are a software metrics AI. Generate a comprehensive quality metrics report 
-    for the completed feature. Include:
-    
-    1. Requirements Satisfaction Score (how well implementation meets requirements)
-    2. Code Quality Assessment (inferred from tasks and design)
-    3. Test Coverage Analysis
-    4. Risk Mitigation Effectiveness
-    5. Final Feature Complexity Assessment
-    
-    **Requirements:**
-    ---
-    {req_content}
-    ---
-    
-    **Design:**
-    ---
-    {design_content}
-    ---
-    
-    **Tasks (Completed):**
-    ---
-    {tasks_content}
-    ---
-    """
-    print("📊 Generating quality metrics...")
-    metrics_report = model.generate_content(metrics_prompt).text
-    print("   -> Done.")
-    
-    # 3. Generate retrospective
-    retro_prompt = f"""
-    You are a project retrospective AI. Analyze the completed feature and generate 
-    a retrospective report that identifies:
-    
-    1. What went well
-    2. What could be improved
-    3. Lessons learned
-    4. Recommendations for future features
-    
-    Base your analysis on the requirements, design, and completed tasks.
-    
-    **Requirements:**
-    ---
-    {req_content}
-    ---
-    
-    **Design:**
-    ---
-    {design_content}
-    ---
-    
-    **Tasks (Completed):**
-    ---
-    {tasks_content}
-    ---
-    """
-    print("🔄 Creating retrospective...")
-    retrospective = model.generate_content(retro_prompt).text
-    print("   -> Done.")
-    
-    # 4. Archive the completed feature
-    done_dir = pathlib.Path("specs/done")
-    done_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Generate a unique hash for the archive
-    feature_hash = hashlib.md5(feature_name.encode()).hexdigest()[:8]
-    today = datetime.date.today().strftime("%Y%m%d")
-    
-    # Create archive files
-    print("📦 Archiving feature documentation...")
-    (done_dir / f"DONE_{today}_{feature_hash}_requirements.md").write_text(req_content)
-    (done_dir / f"DONE_{today}_{feature_hash}_design.md").write_text(design_content)
-    (done_dir / f"DONE_{today}_{feature_hash}_tasks.md").write_text(tasks_content)
-    (done_dir / f"DONE_{today}_{feature_hash}_validation.md").write_text(validation_report)
-    (done_dir / f"DONE_{today}_{feature_hash}_metrics.md").write_text(metrics_report)
-    (done_dir / f"DONE_{today}_{feature_hash}_retrospective.md").write_text(retrospective)
-    print("   -> Done.")
-    
-    # Generate consolidated completion report
-    completion_report = f"""
-    # Completion Report: {feature_name}
-    
-    ## Feature Summary
-    - Feature Name: {feature_name}
-    - Completion Date: {datetime.date.today().strftime("%Y-%m-%d")}
-    - Archive ID: {feature_hash}
-    
-    ## Validation Summary
-    {validation_report[:500]}... [full report in validation.md]
-    
-    ## Quality Metrics
-    {metrics_report[:500]}... [full report in metrics.md]
-    
-    ## Retrospective Highlights
-    {retrospective[:500]}... [full report in retrospective.md]
-    
-    ## Archival Information
-    All feature documentation has been archived in specs/done/ with prefix DONE_{today}_{feature_hash}_
-    """
-    
-    return completion_report
 
-def _comprehensive_verification(feature_name, requirements_content, design_content, tasks_content, model):
-    """
-    Performs a comprehensive verification of the generated specifications.
-    """
-    verification_prompt = f"""
-    You are a project governance AI specializing in traceability analysis. Perform a 
-    comprehensive verification of the specifications for the feature "{feature_name}".
-    
-    **Requirements:**
-    ---
-    {requirements_content}
-    ---
-    
-    **Design:**
-    ---
-    {design_content}
-    ---
-    
-    **Tasks:**
-    ---
-    {tasks_content}
-    ---
-    
-    Perform these verification steps:
-    
-    1. Traceability Analysis:
-       - Forward Traceability: Verify each requirement traces to design elements and tasks
-       - Backward Traceability: Verify each task traces back to requirements
-       - Bi-directional Traceability: Verify complete chains exist in both directions
-    
-    2. Gap Analysis:
-       - Missing Coverage: Identify requirements without design elements or tasks
-       - Orphaned Elements: Identify design elements or tasks not linked to requirements
-       - Incomplete Chains: Identify broken traceability chains
-    
-    3. Confidence Scoring:
-       - Requirements Clarity: Score 0-100%
-       - Design Completeness: Score 0-100%
-       - Task Specificity: Score 0-100%
-       - Overall Traceability: Score 0-100%
-    
-    4. Risk Assessment:
-       - Identify high-risk elements based on complexity and gaps
-       - Provide risk mitigation recommendations
-    
-    Provide your verification results in this format: 
-    
-    ## Traceability Verification
-    - Status: PASSED/FAILED
-    - Forward Traceability: X/Y requirements fully traced (Z%)
-    - Backward Traceability: X/Y tasks properly traced (Z%)
-    - Bi-directional Traceability: X/Y complete chains (Z%)
-    
-    ## Gap Analysis
-    - Missing Coverage: [List requirements without full traceability]
-    - Orphaned Elements: [List design elements or tasks without requirements]
-    - Incomplete Chains: [List broken traceability chains]
-    
-    ## Confidence Scores
-    - Requirements Clarity: X%
-    - Design Completeness: X%
-    - Task Specificity: X%
-    - Overall Traceability: X%
-    
-    ## Risk Assessment
-    - High-Risk Elements: [List with reasons]
-    - Mitigation Recommendations: [List specific recommendations]
-    
-    ## Improvement Suggestions
-    [List specific actions to improve the specifications]
-    """
-    
-    return model.generate_content(verification_prompt).text
+def _get_date_stamp() -> str:
+    """Returns the current date in YYYYMMDD format."""
+    return datetime.datetime.now().strftime("%Y%m%d")
 
-def _gemini_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model):
-    """
-    Performs a detailed assessment of whether GEMINI.md needs updating
-    based on the new feature specifications.
-    """
-    assessment_prompt = f"""
-    You are a project governance AI. Assess whether the parent GEMINI.md file needs 
-    updating based on this new feature "{feature_name}".
+
+class ContextMetadata:
+    """Maintains metadata about the current development context for richer prompts."""
     
-    Carefully examine these triggers for a GEMINI.md update:
-    1. New technology stack (framework, database, architecture pattern)
-    2. Major architectural decisions that change project direction
-    3. New domain concepts or business logic that affects project context
-    4. Significant changes to development approach or constraints
+    def __init__(self):
+        self.last_feature: Optional[str] = None
+        self.feature_history: List[str] = []
+        self.interaction_count: int = 0
+        self.creation_date = _get_date_stamp()
     
-    **Requirements:**
-    ---
-    {requirements_content}
-    ---
+    def update_feature_context(self, feature_name: str) -> None:
+        """Updates the feature context with a new feature."""
+        if self.last_feature != feature_name:
+            self.last_feature = feature_name
+            if feature_name not in self.feature_history:
+                self.feature_history.append(feature_name)
+        self.interaction_count += 1
     
-    **Design:**
-    ---
-    {design_content}
-    ---
-    
-    **Tasks:**
-    ---
-    {tasks_content}
-    ---
-    
-    Assessment Process:
-    1. Compare the generated design.md ADRs against current GEMINI.md project context
-    2. Identify semantic gaps between new requirements and existing project description
-    3. Check if new NFRs introduce constraints not reflected in GEMINI.md
-    
-    Provide your assessment in this format:
-    - Update Needed: YES/NO
-    - Reason: [Explain why update is or isn't needed]
-    - If update needed, list specific changes required:
-      * [Change 1]
-      * [Change 2]
-      * [Change 3]
-    """
-    
-    return model.generate_content(assessment_prompt).text
+    def get_context_summary(self) -> Dict[str, Any]:
+        """Returns a summary of the current context for rich prompts."""
+        return {
+            "last_feature": self.last_feature,
+            "feature_history": self.feature_history,
+            "interaction_count": self.interaction_count,
+            "session_age": f"{int((datetime.datetime.now() - datetime.datetime.strptime(self.creation_date, '%Y%m%d')).total_seconds() / 60)} minutes"
+        }
+
+
+# Global context tracker to enhance prompt quality
+context_tracker = ContextMetadata()
+
 
 @tool
-def kiro(command: str, feature_name: str, **kwargs):
+def generate_feature_specs(feature_name: str, description: Optional[str] = None):
     """
-    Manages the Traceable Agentic Development (TAD) process.
-    
+    Generates a multi-step plan for the Gemini CLI agent to create a complete
+    set of specification documents (requirements, design, tasks) for a new feature.
+    Uses advanced prompt engineering with chain-of-thought reasoning.
+
     Args:
-        command (str): The action to perform. Options:
-            - 'call': Generate new feature specifications
-            - 'resume': Reconstruct context for an existing feature
-            - 'update': Update task progress status
-            - 'complete': Run smart completion process
-        feature_name (str): The descriptive name of the feature.
-        **kwargs: Additional arguments specific to each command.
-            - For 'update': task_id (str), status (str)
+        feature_name (str): The descriptive name of the new feature.
+        description (str, optional): Additional context or description for the feature.
+
+    Returns:
+        str: A detailed prompt with explicit reasoning steps for the agent.
     """
-    global model
-    if not model:
-        # In a real scenario, the model is provided by the execution environment.
-        # This is a fallback for direct script execution simulation.
-        print("Model not initialized. Please run within the Gemini CLI.")
-        # Configure a dummy model if needed for local testing
-        # import google.generativeai as genai
-        # genai.configure(api_key="YOUR_API_KEY")
-        # model = genai.GenerativeModel('gemini-1.5-pro-latest')
-        # if not model:
-        return "Error: Model not available."
-
     feature_slug = _kebab_case(feature_name)
-    spec_path = pathlib.Path(f"specs/{feature_slug}")
+    spec_path = f"specs/{feature_slug}"
+    feature_uuid = _generate_uuid("FEAT-")
+    
+    # Update context for richer future interactions
+    context_tracker.update_feature_context(feature_name)
+    
+    # This enhanced prompt uses explicit reasoning steps and context preservation
+    # to achieve higher quality results from the Gemini agent
+    return f"""
+    I'll help you generate comprehensive specifications for the feature '{feature_name}'. This will involve creating three interconnected documents following the Traceable Agentic Development (TAD) methodology.
 
-    # --- CALL COMMAND: GENERATE NEW FEATURE SPECS ---
-    if command.lower() == 'call':
-        spec_path.mkdir(parents=True, exist_ok=True)
+    **Context Assessment:**
+    - Feature Name: {feature_name}
+    - Feature UUID: {feature_uuid}
+    - Feature Path: {spec_path}
+    - Additional Context: {description if description else "None provided"}
 
-        print(f"✅ Initialized Kiro TAD process for '{feature_name}' in '{spec_path}/'")
+    **Reasoning Process:**
+    I'll approach this methodically, starting with understanding the core requirements, then designing the technical solution, and finally breaking down the implementation into actionable tasks. Each document will maintain semantic traceability to the others.
 
-        # --- Phase 1: Generation Sequence ---
+    **Step 1: Requirements Analysis**
+    Let me generate the `requirements.md` file with:
+    - A clear feature purpose statement
+    - Functional requirements with unique IDs
+    - Acceptance criteria for each requirement
+    - Non-functional requirements (performance, security, etc.)
+    - Traceability links to existing system components
 
-        # 1. Generate requirements.md
-        requirements_prompt = f"""
-        You are a world-class principal software engineer. Your task is to generate the complete content for a `requirements.md` file for the feature named "{feature_name}".
-        You must strictly adhere to the following template, filling in all placeholders with plausible, detailed, and semantically coherent information.
-        Generate unique UUIDs where required. The parent context is 'GEMINI.md'.
+    **Step 2: Design Solution**
+    Based on the requirements, I'll create `design.md` with:
+    - Architectural decisions with explicit reasoning
+    - Component diagrams and relationships
+    - API specifications that fulfill specific requirements
+    - Data models and state management approach
+    - Security and performance considerations
+
+    **Step 3: Implementation Planning**
+    Using both requirements and design, I'll develop `tasks.md` with:
+    - Task breakdown by implementation phase
+    - Clear traceability to requirements and design elements
+    - Estimated effort and complexity
+    - Dependencies between tasks
+    - Progress tracking mechanisms
+
+    **Step 4: Documentation Organization**
+    I'll ensure all documents are saved in the correct location with consistent formatting and cross-referencing.
+
+    **Plan Execution:**
+
+    1.  **Generate requirements.md:**
+        I'll create a comprehensive requirements document with the following structure:
 
         ```markdown
         # Requirements: {feature_name}
         ## Meta-Context
-        - Feature UUID: FEAT-{{generate a unique 8-char hash}}
+        - Feature UUID: {feature_uuid}
         - Parent Context: [GEMINI.md]
-        - Dependency Graph: {{auto-detect and list potential dependencies, e.g., 'User Service', 'Database Module'}}
+        - Dependency Graph: {{I'll analyze and list potential dependencies}}
 
         ## Functional Requirements
-        ### REQ-{{generate a UUID}}-001: {{A concise name for the primary requirement}}
-        Intent Vector: {{AI-generated semantic summary of the requirement}}
-        As a [User Persona] I want [Goal] So that [Benefit]
-        Business Value: {{1-10}} | Complexity: {{XS/S/M/L/XL}}
-
-        Acceptance Criteria:
-        - AC-{{REQ-ID}}-01: GIVEN [context] WHEN [action] THEN [outcome] {{confidence: generate a score, e.g., 95%}}
-        - AC-{{REQ-ID}}-02: GIVEN [context] WHEN [action] THEN [outcome] {{confidence: generate a score, e.g., 90%}}
-
-        Validation Hooks: {{list testable assertions, e.g., 'user.is_authenticated() == true'}}
-        Risk Factors: {{auto-identify potential risks, e.g., 'Credential stuffing attack'}}
+        {{I'll create 3-5 detailed requirements with unique IDs, each with:}}
+        - Intent vector (semantic summary)
+        - User story format
+        - Business value and complexity rating
+        - 2-3 specific acceptance criteria
+        - Validation hooks and risk factors
 
         ## Non-functional Requirements
-        - NFR-{{generate a UUID}}-PERF-001: {{a measurable performance target, e.g., 'API response time < 200ms'}}
-        - NFR-{{generate a UUID}}-SEC-001: {{a security constraint, e.g., 'Passwords must be hashed using bcrypt'}}
-        - NFR-{{generate a UUID}}-UX-001: {{a usability metric, e.g., 'Login flow completion rate > 99%'}}
+        {{I'll define measurable non-functional requirements for:}}
+        - Performance expectations
+        - Security constraints
+        - Usability metrics
+        - Reliability standards
 
         ## Traceability Manifest
-        Upstream: [{{list dependencies}}] | Downstream: [{{list potential impacts on other features}}] | Coverage: [{{AI-calculated percentage}}]
+        {{I'll identify upstream and downstream connections to other system components}}
         ```
-        """
-        print("📝 Generating requirements.md...")
-        requirements_content = model.generate_content(requirements_prompt).text
-        (spec_path / "requirements.md").write_text(requirements_content)
-        print("   -> Done.")
 
-        # 2. Generate design.md
-        design_prompt = f"""
-        You are a world-class software architect. Given the following `requirements.md` for the feature "{feature_name}", generate the corresponding `design.md` file.
-        Ensure every design decision, component, and API endpoint traces directly back to the provided requirements and acceptance criteria.
-        Use the exact IDs (REQ-..., AC-..., NFR-...) from the requirements content.
-
-        **Requirements Context:**
-        ---
-        {requirements_content}
-        ---
-
-        **Your Task:**
-        Generate the `design.md` file using this EXACT template:
+    2.  **Create design.md:**
+        Using the requirements as my foundation, I'll develop a detailed design document:
 
         ```markdown
         # Design: {feature_name}
-        ## ADRs (Architectural Decision Records)
-        ### ADR-001: {{A key architectural decision}}
-        Status: Proposed | Context: {{background for the decision}} | Decision: {{the chosen approach}} | Rationale: {{why this approach was chosen}}
-        Requirements: {{Link to specific REQ-ID(s)}} | Confidence: {{generate a score, e.g., 95%}} | Alternatives: [{{list rejected options}}]
+        ## Architectural Decision Records
+        {{I'll create 2-3 ADRs that explicitly trace back to specific requirements}}
+        - Status and context
+        - Decision with explicit reasoning
+        - Considered alternatives
+        - Implementation consequences
 
         ## Components
-        ### Modified: [{{Name of an existing component to be changed}}] → Fulfills: {{Link to specific AC-ID(s)}}
-        Changes: {{specific modifications to be made}}
+        {{I'll define the component structure with interfaces that fulfill specific requirements}}
+        - New and modified components
+        - Responsibility mappings to requirements
+        - Interface definitions with parameter types
 
-        ### New: [{{Name of a new component}}] → Responsibility: {{requirement-linked purpose}}
-        Interface:
-        ```typescript
-        interface NewComponent {{
-          // Link methods to specific acceptance criteria
-          method1(): Promise<T> // Fulfills: AC-...-01
-          method2(input: I): O  // Fulfills: AC-...-02
-        }}
-        ```
+        ## Data Models
+        {{I'll define any data structures needed}}
 
         ## API Matrix
-        | Endpoint | Method | Requirements | Test Strategy | Errors |
-        |----------|--------|--------------|---------------|--------|
-        | /api/x   | POST   | {{Link to AC-IDs}} | Unit+Integration | {{auto-suggest potential errors}} |
-
-        ## Data Flow + Traceability
-        {{Briefly describe the data flow, linking steps to NFRs and REQs}}
-        1. Input Validation → {{Link to NFR-SEC-ID}}
-        2. Business Logic → {{Link to REQ-ID}}
-        3. Output → {{Link to AC-ID}}
-
-        ## Quality Gates
-        - ADRs: >80% confidence to requirements
-        - Interfaces: trace to acceptance criteria
-        - NFRs: measurable test plans
+        {{I'll create a comprehensive API table with requirement traceability}}
         ```
-        """
-        print("🗄️ Generating design.md...")
-        design_content = model.generate_content(design_prompt).text
-        (spec_path / "design.md").write_text(design_content)
-        print("   -> Done.")
 
-        # 3. Generate tasks.md
-        tasks_prompt = f"""
-        You are an expert technical project manager. Based on the provided requirements and design for the feature "{feature_name}", generate a `tasks.md` execution blueprint.
-        Break down the work into logical, actionable tasks. Ensure every task traces back to specific elements in the design and requirements documents.
-        Use the exact IDs from the provided context.
-
-        **Requirements Context:**
-        ---
-        {requirements_content}
-        ---
-
-        **Design Context:**
-        ---
-        {design_content}
-        ---
-
-        **Your Task:**
-        Generate the `tasks.md` file using this EXACT template:
+    3.  **Develop tasks.md:**
+        Drawing from both requirements and design, I'll create an implementation plan:
 
         ```markdown
         # Tasks: {feature_name}
         ## Metadata
-        Complexity: {{AI-calculated S/M/L}} | Critical Path: {{sequence of crucial tasks}} | Risk: {{score}} | Timeline: {{rough estimate}}
+        {{I'll calculate complexity metrics and identify the critical path}}
 
-        ## Progress: 0/X Complete, 0 In Progress, 0 Not Started, 0 Blocked
+        ## Progress: 0/X Complete, 0 In Progress, X Not Started, 0 Blocked
 
-        ## Phase 1: Foundation
-        - [ ] TASK-{{generate a UUID}}-001: {{Descriptive task name}}
-          Trace: {{Link to REQ-ID}} | Design: {{Link to Design Component/ADR}} | AC: {{Link to AC-ID}}
-          DoD: [{{Definition of Done criteria}}] | Risk: Low | Deps: None | Effort: {{story points}}
-
-        - [ ] TASK-{{generate a UUID}}-002: {{Descriptive task name}}
-          Trace: {{Link to REQ-ID}} | Design: {{Link to Design method/element}} | AC: {{Link to AC-ID}}
-          DoD: [{{Definition of Done criteria}}] | Risk: Medium | Deps: TASK-...-001 | Effort: {{story points}}
-
-        ## Phase 2: Integration
-        - [ ] TASK-{{generate a UUID}}-003: API Implementation
-          Trace: {{Link to REQ-ID}} | Design: POST /api/x | AC: {{Link to AC-ID}}
-          DoD: [{{Definition of Done criteria}}] | Risk: Low | Deps: TASK-...-002 | Effort: {{story points}}
-
-        ## Phase 3: QA
-        - [ ] TASK-{{generate a UUID}}-004: Test Suite
-          Trace: ALL AC-* | Design: Test implementation | AC: 100% coverage + NFR validation
-          DoD: [{{Definition of Done criteria}}] | Risk: Medium | Deps: All prev | Effort: {{story points}}
-
-        ## Verification Checklist
-        - [ ] Every REQ-* → implementing task
-        - [ ] Every AC-* → test coverage
-        - [ ] Every NFR-* → measurable validation
-        - [ ] All design elements → specific tasks
-        - [ ] Risk mitigation for Medium+ risks
+        ## Implementation Phases
+        {{I'll organize tasks into logical phases with clear dependencies}}
+        - Each task will have a unique ID
+        - Explicit traces to requirements and design elements
+        - Definition of Done criteria
+        - Risk assessment and effort estimation
         ```
 
-        The tasks must be complete, realistic, and fully trace back to the requirements and design elements. Ensure every task has a clear Definition of Done (DoD) that can be objectively verified.
-        """
-        print("📋 Generating tasks.md...")
-        tasks_content = model.generate_content(tasks_prompt).text
-        (spec_path / "tasks.md").write_text(tasks_content)
-        print("   -> Done.")
+    I'll now execute this plan step by step, generating high-quality content for each document and saving them to the correct location. I'll ensure strong semantic connections between all documents to maintain complete traceability throughout the development lifecycle.
+    """
 
-        # 4. Auto-Verification
-        print("🔎 Performing comprehensive verification...")
-        verification_report = _comprehensive_verification(feature_name, requirements_content, design_content, tasks_content, model)
-        print("   -> Done.")
 
-        # 5. GEMINI.md Update Assessment
-        print("🔄 Assessing GEMINI.md update needs...")
-        gemini_assessment = _gemini_md_update_assessment(feature_name, requirements_content, design_content, tasks_content, model)
-        print("   -> Done.")
+@tool
+def _apply_task_update_logic(tasks_content: str, task_id: str, status: str) -> str:
+    """
+    A pure function tool that applies status update logic to the string content of a tasks.md file.
+    It performs regex replacements to update a task's checkbox and the overall progress summary line.
+    This tool does NO file I/O.
 
-        # Display reports
-        print("\n---VERIFICATION REPORT---")
-        print(verification_report)
-        print("\n---GEMINI.MD ASSESSMENT---")
-        print(gemini_assessment)
-        print("---")
+    Args:
+        tasks_content (str): The full string content of the tasks.md file.
+        task_id (str): The ID of the task to update (e.g., 'TASK-123-001').
+        status (str): The new status ('done', 'in-progress', 'blocked').
 
-        return f"✅ Kiro process complete for '{feature_name}'. Files are in '{spec_path}'."
+    Returns:
+        str: The updated string content of the tasks.md file.
+    """
+    content = tasks_content
+    status_map = {
+        'done': ('- [x]', r'- \[ \] ({task_id}:.*?)'),
+        'in-progress': ('- [~]', r'- \[ \] ({task_id}:.*?)'),
+        'blocked': ('- [!]', r'- \[ \] ({task_id}:.*?)'),
+    }
 
-    # --- RESUME COMMAND: RECONSTRUCT CONTEXT ---
-    elif command.lower() == 'resume':
-        if not spec_path.exists():
-            return f"❌ Error: No specifications found for feature '{feature_name}' at '{spec_path}'."
+    if status.lower() in status_map:
+        replacement_char, pattern_template = status_map[status.lower()]
+        pattern = pattern_template.format(task_id=re.escape(task_id))
+        replacement = fr"{replacement_char} \1"
+        content = re.sub(pattern, replacement, content, flags=re.DOTALL | re.MULTILINE)
 
-        try:
-            req_content = (spec_path / "requirements.md").read_text()
-            des_content = (spec_path / "design.md").read_text()
-            tsk_content = (spec_path / "tasks.md").read_text()
-        except FileNotFoundError as e:
-            return f"❌ Error: Missing a file in the spec directory: {e.filename}"
+    # Recalculate progress counts from the updated content
+    completed = len(re.findall(r"-\s\[x\]", content))
+    in_progress = len(re.findall(r"-\s\[~\]", content))
+    not_started = len(re.findall(r"-\s\[ \]", content))
+    blocked = len(re.findall(r"-\s\[!\]", content))
+    total = completed + in_progress + not_started + blocked
 
-        resume_prompt = f"""
-        You are an AI agent resuming work on the feature "{feature_name}". You have just been provided with the complete project specification files.
-        Your task is to read, understand, and reconstruct the full semantic context and traceability graph in your memory.
-        Then, provide a concise summary of the project's current state (requirements intent, key design decisions, and task progress).
-        Conclude by confirming you are ready to proceed with the full context maintained.
+    progress_line = f"## Progress: {completed}/{total} Complete, {in_progress} In Progress, {not_started} Not Started, {blocked} Blocked"
+    updated_content = re.sub(r"## Progress:.*", progress_line, content)
 
-        **Requirements File Content:**
-        ---
-        {req_content}
-        ---
+    return updated_content
 
-        **Design File Content:**
-        ---
-        {des_content}
-        ---
 
-        **Tasks File Content:**
-        ---
-        {tsk_content}
-        ---
-        """
-        print(f"🧠 Resuming context for '{feature_name}'...")
-        resume_summary = model.generate_content(resume_prompt).text
-        return resume_summary
+@tool
+def update_task_status(feature_name: str, task_id: str, status: str, reasoning: Optional[str] = None):
+    """
+    Generates a plan for the Gemini CLI agent to update the status of a single task
+    in the feature's tasks.md file, with enhanced reasoning capabilities.
+
+    Args:
+        feature_name (str): The descriptive name of the feature.
+        task_id (str): The ID of the task to update.
+        status (str): The new status. Must be one of 'done', 'in-progress', or 'blocked'.
+        reasoning (str, optional): The reasoning behind the status update for documentation.
+
+    Returns:
+        str: A prompt instructing the agent on the read-modify-write workflow with reasoning.
+    """
+    feature_slug = _kebab_case(feature_name)
+    tasks_file_path = f"specs/{feature_slug}/tasks.md"
+    
+    # Update context tracker
+    context_tracker.update_feature_context(feature_name)
+    context_summary = context_tracker.get_context_summary()
+    
+    # Enhanced prompt with reasoning structure and context preservation
+    return f"""
+    I'll update task '{task_id}' to status '{status}' for the feature '{feature_name}'. I'll approach this with careful reasoning to ensure the update is correct and properly documented.
+
+    **Context Assessment:**
+    - Feature: {feature_name} (Slug: {feature_slug})
+    - Task ID: {task_id}
+    - New Status: {status}
+    - Reasoning: {reasoning if reasoning else "None provided"}
+    - Session Context: This is interaction #{context_summary["interaction_count"]} in this session
+
+    **Reasoning Process:**
+    1. First, I need to retrieve the current tasks file to understand its structure and the current state of the task.
+    2. Then I'll analyze the task's current status and ensure the update is valid.
+    3. Next, I'll apply the status change while preserving all other content.
+    4. Finally, I'll update the progress summary to reflect the new status distribution.
+
+    **Execution Plan:**
+
+    1.  **Read Current Content:** 
+        I need to retrieve the current content of `{tasks_file_path}` to understand the task's current state and context.
+
+    2.  **Analyze Current State:**
+        Once I have the content, I'll:
+        - Verify the task exists in the file
+        - Identify its current status
+        - Understand its relationship to other tasks
+        - Ensure the status change is logical
+
+    3.  **Apply Status Update:**
+        I'll use the `_apply_task_update_logic` tool to:
+        - Change the task's checkbox marker based on status:
+          - 'done' → '[x]'
+          - 'in-progress' → '[~]'
+          - 'blocked' → '[!]'
+        - Recalculate the overall progress metrics
+        - Preserve all other content and formatting
+
+    4.  **Save Updated Content:**
+        I'll write the modified content back to `{tasks_file_path}` while ensuring:
+        - No other tasks are modified
+        - The file format remains consistent
+        - The progress summary is accurate
+
+    5.  **Provide Confirmation:**
+        I'll confirm the update with:
+        - The task's new status
+        - Updated progress metrics
+        - Any relevant context from the reasoning provided
+
+    Let me execute this plan now to update the task status.
+    """
+
+
+@tool
+def complete_feature(feature_name: str, quality_focus: Optional[str] = None):
+    """
+    Generates a plan for the Gemini CLI agent to run the smart completion process.
+    This involves validating, generating reports, and archiving a completed feature.
+    Enhanced with quality focus options and reasoning structure.
+
+    Args:
+        feature_name (str): The descriptive name of the feature to complete.
+        quality_focus (str, optional): Specific quality aspects to focus on during validation
+                                       (e.g., 'security', 'performance', 'usability').
+
+    Returns:
+        str: A prompt instructing the agent on the multi-step completion workflow with explicit reasoning.
+    """
+    feature_slug = _kebab_case(feature_name)
+    spec_path = f"specs/{feature_slug}"
+    done_dir = "specs/done"
+    feature_hash = hashlib.md5(feature_name.encode()).hexdigest()[:8]
+    today = datetime.date.today().strftime("%Y%m%d")
+    
+    # Update context tracker
+    context_tracker.update_feature_context(feature_name)
+    
+    # Enhanced prompt with reasoning structure and quality focus
+    return f"""
+    I'll execute the smart completion and archival process for the feature '{feature_name}'. This process will thoroughly validate the feature's completeness, generate quality metrics, create a retrospective, and properly archive all documentation.
+
+    **Context Assessment:**
+    - Feature: {feature_name} (Slug: {feature_slug})
+    - Quality Focus: {quality_focus if quality_focus else "Balanced assessment across all quality dimensions"}
+    - Archive Identifier: DONE_{today}_{feature_hash}
+    - Archive Location: {done_dir}
+
+    **Reasoning Process:**
+    I'll approach this completion process systematically, applying critical analysis at each stage:
+
+    1. First, I'll gather and analyze all specification documents to build a complete understanding of the feature.
+    2. Then, I'll verify that all tasks are actually complete - this is a prerequisite for proceeding.
+    3. Next, I'll validate that all acceptance criteria have been met with implementation evidence.
+    4. I'll assess the overall quality and generate metrics across key dimensions.
+    5. I'll conduct a retrospective analysis to identify strengths and improvement opportunities.
+    6. Finally, I'll organize and archive all documentation for future reference.
+
+    **Execution Plan:**
+
+    1.  **Document Retrieval and Analysis:**
+        I'll read all specification documents to build a comprehensive understanding:
+        - `{spec_path}/requirements.md`: To understand the intended functionality
+        - `{spec_path}/design.md`: To verify the technical implementation approach
+        - `{spec_path}/tasks.md`: To confirm all tasks are marked complete
+
+    2.  **Completion Verification:**
+        I'll analyze the tasks file to ensure all tasks are marked as complete before proceeding.
+        This is a critical gate - if any tasks remain open, I'll stop and provide a detailed report
+        of what remains to be done.
+
+    3.  **Acceptance Criteria Validation:**
+        For each requirement, I'll:
+        - Extract all acceptance criteria
+        - Verify evidence of implementation in tasks and design
+        - Identify any gaps or inconsistencies
+        - Generate a comprehensive validation report with traceability links
+
+    4.  **Quality Metrics Assessment:**
+        I'll generate quantitative and qualitative metrics focusing on:
+        - Requirements Satisfaction: How completely the implementation meets requirements
+        - Design Integrity: Consistency between design and implementation
+        - Code Quality: Inferred from implementation descriptions
+        - Test Coverage: Extent of testing for each component
+        - {quality_focus if quality_focus else "Overall Feature Completeness"}
+
+    5.  **Retrospective Analysis:**
+        I'll perform a detailed retrospective that examines:
+        - Successful approaches and practices worth continuing
+        - Challenges encountered and how they were overcome
+        - Opportunities for process improvement
+        - Knowledge gained that could benefit future features
+
+    6.  **Archive Creation:**
+        I'll save all documents to the archive location with clear naming:
+        - Original specifications: requirements, design, tasks
+        - Generated reports: validation, metrics, retrospective
+        - All with consistent naming: DONE_{today}_{feature_hash}_[document-type].md
+
+    7.  **Summary Report Generation:**
+        I'll create a concise but comprehensive completion report summarizing:
+        - Feature overview and purpose
+        - Key implementation highlights
+        - Quality assessment summary
+        - Archive location details
+        - Next steps or recommendations
+
+    Let me now execute this plan to properly complete and archive the feature.
+    """
+
+
+@tool
+def resume_feature_context(feature_name: str, focus_area: Optional[str] = None):
+    """
+    Generates a plan for the Gemini CLI agent to read all specification files for an
+    existing feature and provide a summary to reconstruct the context.
+    Enhanced with focus area targeting and semantic summarization.
+
+    Args:
+        feature_name (str): The descriptive name of the feature to resume.
+        focus_area (str, optional): Specific aspect to focus on (e.g., 'requirements',
+                                    'design', 'implementation', 'testing').
+
+    Returns:
+        str: A prompt instructing the agent on the read-and-summarize workflow with
+             enhanced semantic understanding.
+    """
+    feature_slug = _kebab_case(feature_name)
+    spec_path = f"specs/{feature_slug}"
+    
+    # Update context tracker
+    context_tracker.update_feature_context(feature_name)
+    context_summary = context_tracker.get_context_summary()
+    
+    # Determine if this feature has been seen before
+    feature_familiarity = "This feature appears in your history" if feature_name in context_summary["feature_history"] else "This is a new feature for this session"
+    
+    # Enhanced prompt with context awareness and semantic understanding guidance
+    return f"""
+    I'll help you resume work on the feature '{feature_name}' by reconstructing its complete context from the existing specification documents. This will give you a comprehensive understanding of the feature's current state.
+
+    **Context Assessment:**
+    - Feature: {feature_name} (Slug: {feature_slug})
+    - Focus Area: {focus_area if focus_area else "Complete feature overview"}
+    - Feature Familiarity: {feature_familiarity}
+    - Documentation Path: {spec_path}
+
+    **Reasoning Process:**
+    I'll approach this systematically to build a complete mental model of the feature:
+
+    1. First, I'll gather all specification documents to understand the feature from multiple perspectives.
+    2. Then, I'll extract the core intent and key requirements to establish the fundamental purpose.
+    3. Next, I'll analyze the technical design decisions and their rationale to understand the implementation approach.
+    4. I'll examine the task breakdown to assess current progress and remaining work.
+    5. Finally, I'll synthesize all this information into a coherent semantic understanding of the entire feature.
+
+    **Execution Plan:**
+
+    1.  **Document Retrieval:**
+        I'll read all specification files to build a complete picture:
+        - `{spec_path}/requirements.md`: To understand the WHY and WHAT
+        - `{spec_path}/design.md`: To understand the HOW
+        - `{spec_path}/tasks.md`: To understand the implementation plan and progress
+
+    2.  **Requirements Analysis:**
+        I'll extract and summarize:
+        - Core feature purpose and value proposition
+        - Key functional requirements and their priority
+        - Acceptance criteria that define success
+        - Non-functional requirements that shape the solution
+
+    3.  **Design Understanding:**
+        I'll analyze and summarize:
+        - Major architectural decisions and their rationale
+        - Component structure and relationships
+        - API specifications and data models
+        - Security and performance considerations
+
+    4.  **Implementation Status Assessment:**
+        I'll evaluate:
+        - Overall progress metrics (complete/in-progress/not-started/blocked)
+        - Completed work and its alignment with requirements
+        - Current tasks in progress and their status
+        - Blocked items and their dependencies
+        - Remaining work to be done
+
+    5.  **Contextual Synthesis:**
+        I'll create a cohesive mental model that connects:
+        - Requirements to design decisions (why specific approaches were chosen)
+        - Design elements to implementation tasks (how the design is being realized)
+        - Current status to overall completion (what remains to be done)
+        {f"- Particular emphasis on {focus_area} aspects" if focus_area else ""}
+
+    Let me execute this plan to rebuild the complete context for the '{feature_name}' feature.
+    """
+
+
+@tool
+def generate_feature_roadmap(feature_names: List[str], timeline: Optional[str] = None, dependencies: Optional[Dict[str, List[str]]] = None):
+    """
+    Generates a comprehensive feature roadmap with timeline visualization and dependency tracking.
+    
+    Args:
+        feature_names (List[str]): List of feature names to include in the roadmap.
+        timeline (str, optional): Timeline specification (e.g., 'Q1-Q2 2025', '6 months').
+        dependencies (Dict[str, List[str]], optional): Dictionary mapping features to their dependencies.
         
-    # --- UPDATE COMMAND: UPDATE TASK STATUS ---
-    elif command.lower() == 'update':
-        if not spec_path.exists():
-            return f"❌ Error: No specifications found for feature '{feature_name}' at '{spec_path}'."
+    Returns:
+        str: A prompt instructing the agent to create a detailed feature roadmap with visualizations.
+    """
+    # Create consistent IDs for features
+    feature_ids = {name: _kebab_case(name) for name in feature_names}
+    
+    # Update context for richer future interactions
+    for feature in feature_names:
+        context_tracker.update_feature_context(feature)
+    
+    return f"""
+    I'll create a comprehensive feature roadmap for the specified features, incorporating timeline projections and dependency relationships.
+    
+    **Context Assessment:**
+    - Features: {", ".join(feature_names)}
+    - Timeline Scope: {timeline if timeline else "Not specified, will analyze appropriate timeframe"}
+    - Dependencies Provided: {"Yes, will incorporate into planning" if dependencies else "No, will infer logical dependencies"}
+    
+    **Reasoning Process:**
+    I'll approach this roadmap creation methodically:
+    
+    1. First, I'll gather information about each feature to understand scope and complexity.
+    2. Then, I'll analyze dependencies to establish a logical execution order.
+    3. Next, I'll distribute features across the timeline based on dependencies and capacity.
+    4. Finally, I'll create visualizations to communicate the roadmap effectively.
+    
+    **Execution Plan:**
+    
+    1.  **Feature Analysis:**
+        For each feature, I'll:
+        - Read existing specifications if available
+        - Estimate complexity and effort
+        - Identify key milestones within each feature
+        - Determine critical vs. flexible timing requirements
+    
+    2.  **Dependency Mapping:**
+        I'll create a comprehensive dependency graph:
+        - Technical dependencies (what must be built first)
+        - Resource dependencies (who needs to work on what)
+        - External dependencies (third-party integrations, etc.)
+        - Visualize as a directed graph for clarity
+    
+    3.  **Timeline Development:**
+        I'll create a timeline visualization with:
+        - Features plotted across time periods
+        - Clear indication of dependencies
+        - Milestone markers and delivery dates
+        - Resource allocation considerations
+        - Parallel development opportunities
+    
+    4.  **Roadmap Documentation:**
+        I'll produce a complete roadmap document with:
+        - Executive summary of the delivery plan
+        - Feature-by-feature breakdown with rationale
+        - Visual timeline representation
+        - Risk assessment and mitigation strategies
+        - Key decision points and alternatives
+    
+    Let me now execute this plan to create your feature roadmap.
+    """
+
+
+@tool
+def analyze_implementation_options(feature_name: str, technology_constraints: Optional[List[str]] = None, evaluation_criteria: Optional[List[str]] = None):
+    """
+    Generates a comprehensive analysis of implementation options for a feature with explicit tradeoff evaluation.
+    
+    Args:
+        feature_name (str): The name of the feature to analyze.
+        technology_constraints (List[str], optional): Technology constraints to consider.
+        evaluation_criteria (List[str], optional): Specific criteria to evaluate options against.
         
-        task_id = kwargs.get('task_id')
-        status = kwargs.get('status', 'done')
+    Returns:
+        str: A prompt instructing the agent to conduct a detailed implementation options analysis.
+    """
+    feature_slug = _kebab_case(feature_name)
+    spec_path = f"specs/{feature_slug}"
+    
+    # Update context for richer future interactions
+    context_tracker.update_feature_context(feature_name)
+    
+    # Default evaluation criteria if none provided
+    default_criteria = [
+        "development speed",
+        "maintainability",
+        "performance",
+        "security",
+        "scalability"
+    ]
+    
+    criteria = evaluation_criteria if evaluation_criteria else default_criteria
+    
+    return f"""
+    I'll conduct a thorough analysis of implementation options for the '{feature_name}' feature, evaluating different approaches against your criteria and constraints.
+    
+    **Context Assessment:**
+    - Feature: {feature_name}
+    - Technology Constraints: {", ".join(technology_constraints) if technology_constraints else "None specified"}
+    - Evaluation Criteria: {", ".join(criteria)}
+    - Documentation Path: {spec_path}
+    
+    **Reasoning Process:**
+    I'll approach this analysis systematically:
+    
+    1. First, I'll understand the feature requirements to establish evaluation baselines.
+    2. Then, I'll identify multiple viable implementation approaches.
+    3. Next, I'll evaluate each approach against the specified criteria.
+    4. Finally, I'll provide a recommendation with explicit reasoning.
+    
+    **Execution Plan:**
+    
+    1.  **Requirements Review:**
+        I'll read the feature specifications to understand:
+        - Core functionality requirements
+        - Performance and scalability needs
+        - Integration points with existing systems
+        - Non-functional requirements that impact implementation
+    
+    2.  **Implementation Options Identification:**
+        I'll develop 3-4 distinct implementation approaches, considering:
+        - Technology stacks and frameworks
+        - Architecture patterns
+        - Build vs. buy decisions
+        - Development and deployment approaches
+    
+    3.  **Comparative Analysis:**
+        For each option, I'll evaluate:
+        {chr(10).join([f"        - {criterion}: Detailed assessment with quantitative metrics where possible" for criterion in criteria])}
+        - Development resource requirements
+        - Time to market implications
+        - Risk factors and mitigation strategies
+    
+    4.  **Decision Matrix Creation:**
+        I'll create a weighted decision matrix:
+        - Each criterion with appropriate weighting
+        - Each option scored against each criterion
+        - Calculation of weighted scores
+        - Visualization of comparative strengths/weaknesses
+    
+    5.  **Recommendation Development:**
+        I'll provide a clear recommendation that includes:
+        - Preferred implementation approach with rationale
+        - Key advantages over alternatives
+        - Potential challenges and mitigation strategies
+        - Implementation plan outline
+    
+    Let me execute this plan to analyze implementation options for '{feature_name}'.
+    """
+
+
+@tool
+def generate_integration_test_plan(feature_name: str, test_environments: Optional[List[str]] = None, test_priority: Optional[str] = None):
+    """
+    Generates a comprehensive integration test plan for a feature with explicit test case design.
+    
+    Args:
+        feature_name (str): The name of the feature to create a test plan for.
+        test_environments (List[str], optional): Environments to include in the test plan.
+        test_priority (str, optional): Priority focus for testing (e.g., 'security', 'performance').
         
-        if not task_id:
-            return f"❌ Error: Missing task_id parameter for 'update' command."
-        
-        return _update_task_status(spec_path, task_id, status)
-        
-    # --- COMPLETE COMMAND: RUN SMART COMPLETION ---
-    elif command.lower() == 'complete':
-        if not spec_path.exists():
-            return f"❌ Error: No specifications found for feature '{feature_name}' at '{spec_path}'."
-            
-        # Check if all tasks are marked as complete
-        tasks_file = spec_path / "tasks.md"
-        tasks_content = tasks_file.read_text()
-        
-        total_tasks = len(re.findall(r"- \[ [x~ !] \]", tasks_content))
-        completed_tasks = len(re.findall(r"- \[x\]", tasks_content))
-        
-        if completed_tasks < total_tasks:
-            return f"⚠️ Warning: Not all tasks are complete ({completed_tasks}/{total_tasks}). Use 'kiro update' to mark tasks as complete first."
-            
-        return _smart_completion(spec_path, model, feature_name)
-        
-    else:
-        return f"❌ Invalid command '{command}'. Please use 'call', 'resume', 'update', or 'complete'."
+    Returns:
+        str: A prompt instructing the agent to create a detailed integration test plan.
+    """
+    feature_slug = _kebab_case(feature_name)
+    spec_path = f"specs/{feature_slug}"
+    
+    # Update context for richer future interactions
+    context_tracker.update_feature_context(feature_name)
+    
+    # Default test environments if none provided
+    default_environments = ["development", "staging", "production"]
+    environments = test_environments if test_environments else default_environments
+    
+    return f"""
+    I'll create a comprehensive integration test plan for the '{feature_name}' feature, designed to validate its functionality and integration with other system components.
+    
+    **Context Assessment:**
+    - Feature: {feature_name}
+    - Test Environments: {", ".join(environments)}
+    - Test Priority: {test_priority if test_priority else "Balanced testing across all aspects"}
+    - Documentation Path: {spec_path}
+    
+    **Reasoning Process:**
+    I'll develop this test plan methodically:
+    
+    1. First, I'll understand the feature requirements to identify testable aspects.
+    2. Then, I'll design specific test cases that verify functionality and integration.
+    3. Next, I'll define test data requirements and environment configurations.
+    4. Finally, I'll create a structured test execution strategy with clear pass/fail criteria.
+    
+    **Execution Plan:**
+    
+    1.  **Requirements Analysis:**
+        I'll review the feature specifications to identify:
+        - Functional requirements to validate
+        - Integration points with other components
+        - Performance and security expectations
+        - Edge cases and error handling scenarios
+    
+    2.  **Test Case Design:**
+        I'll create detailed test cases covering:
+        - Happy path scenarios that verify core functionality
+        - Edge cases that test boundary conditions
+        - Error handling and recovery scenarios
+        - Integration verification with other components
+        - {f"Enhanced focus on {test_priority} testing" if test_priority else ""}
+    
+    3.  **Test Environment Configuration:**
+        For each environment ({", ".join(environments)}), I'll specify:
+        - Required configuration parameters
+        - Test data setup requirements
+        - Mocking/stubbing strategies for dependencies
+        - Monitoring and logging considerations
+    
+    4.  **Test Execution Strategy:**
+        I'll develop an execution plan that includes:
+        - Test sequencing and dependencies
+        - Required tools and frameworks
+        - Automation opportunities and approaches
+        - Manual testing requirements
+        - Pass/fail criteria for each test case
+    
+    5.  **Test Documentation:**
+        I'll create comprehensive test documentation with:
+        - Test case inventory with traceability to requirements
+        - Test data specifications
+        - Environment setup instructions
+        - Expected results and verification methods
+        - Defect reporting procedures
+    
+    Let me execute this plan to create a detailed integration test plan for '{feature_name}'.
+    """
