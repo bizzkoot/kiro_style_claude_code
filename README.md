@@ -34,6 +34,157 @@ Kiro-style specification-driven development is a methodology that advances devel
 - **Golden Thread Maintenance** - Requirements → Design → Implementation maintained through EARS traceability
 - **Resume Capability** - Seamlessly continue work while preserving full EARS semantic context
 
+## 📊 Kiro TAD Workflow Visualization
+
+### 1. 🎯 Phase 1: Specification Generation Workflow
+
+This diagram shows how Kiro transforms a simple feature request into comprehensive specifications through intelligent Q&A and user approval gates.
+
+```mermaid
+graph TD
+    A["/kiro 'Feature Name'"] --> B[Pre-Generation Q&A]
+    B --> C[Requirements Clarification<br/>Max 3-5 focused questions]
+    B --> D[Design Clarification<br/>Max 2-3 technical questions]
+    B --> E[Tasks Clarification<br/>Scope & timeline questions]
+    
+    C --> F[Generate requirements.md]
+    D --> F
+    E --> F
+    
+    F --> G[📋 requirements.md<br/>✅ EARS Acceptance Criteria<br/>🔗 Semantic UUIDs<br/>📊 Confidence Scores]
+    G --> H{👤 User Approval?}
+    H -->|❌ No| I[Revise Requirements]
+    I --> H
+    H -->|✅ Yes| J[Generate design.md]
+    
+    J --> K[🏗️ design.md<br/>✅ ADRs with EARS rationale<br/>🔧 Behavioral contracts<br/>📈 API matrix]
+    K --> L{👤 User Approval?}
+    L -->|❌ No| M[Revise Design]
+    M --> L
+    L -->|✅ Yes| N[Generate tasks.md]
+    
+    N --> O[⚡ tasks.md<br/>✅ EARS Definition of Done<br/>🔄 Bi-directional traceability<br/>⚠️ Risk assessment]
+    O --> P{👤 User Approval?}
+    P -->|❌ No| Q[Revise Tasks]
+    Q --> P
+    P -->|✅ Yes| R[✨ Ready for Implementation]
+    
+    style A fill:#e1f5fe
+    style G fill:#f3e5f5
+    style K fill:#e8f5e8
+    style O fill:#fff3e0
+    style R fill:#e8f5e8
+```
+
+### 2. ⚡ Phase 2: Execution & Smart Completion
+
+This diagram illustrates the controlled task execution process with built-in quality gates and automatic archiving.
+
+```mermaid
+graph TD
+    A[✨ Specifications Approved] --> B[Auto-Verification Suite]
+    B --> C[Forward/Backward<br/>Traceability Check]
+    B --> D[Gap Analysis &<br/>Coverage Validation]
+    B --> E[Confidence Scoring &<br/>Risk Assessment]
+    
+    C --> F{🏗️ CLAUDE.md<br/>Update Needed?}
+    D --> F
+    E --> F
+    F -->|Yes| G[Update Project Context]
+    F -->|No| H[🚀 Start Task Execution]
+    G --> H
+    
+    H --> I[📝 Execute ONE Task Only]
+    I --> J[🔍 Validate Against<br/>EARS Acceptance Criteria]
+    J --> K{👤 User Review<br/>& Approval}
+    K -->|❌ Issues Found| L[🔧 Fix & Re-validate]
+    L --> J
+    K -->|✅ Approved| M{📋 More Tasks?}
+    M -->|Yes| I
+    M -->|No| N[🎯 Smart Completion]
+    
+    N --> O[Auto-validate ALL<br/>Acceptance Criteria]
+    O --> P[🧪 Execute Full Test Suite]
+    P --> Q[📊 Generate Quality<br/>Metrics Report]
+    Q --> R[📦 Archive to specs/done/<br/>with semantic hash]
+    R --> S[🔄 Generate Retrospective<br/>& Update Knowledge Base]
+    
+    style A fill:#e8f5e8
+    style I fill:#fff3e0
+    style N fill:#e1f5fe
+    style S fill:#f3e5f5
+```
+
+### 3. 🧠 EARS Framework Integration
+
+This diagram shows how EARS (Easy Approach to Requirements Syntax) creates unambiguous, testable specifications throughout the TAD process.
+
+```mermaid
+graph TD
+    A["💭 Vague Requirement<br/>fast login"] --> B["🎯 EARS Transformation"]
+    B --> C["📝 WHEN user clicks login<br/>system SHALL authenticate<br/>within 200ms"]
+    
+    C --> D["🧪 Direct BDD Translation"]
+    D --> E["Given user on login page<br/>When user clicks login button<br/>Then system authenticates<br/>within 200ms"]
+    
+    F["🔧 Component Interface"] --> G["EARS Behavioral Contract"]
+    G --> H["// WHEN authenticate called<br/>// SHALL return Promise User<br/>// within 200ms<br/>authenticate(): Promise User"]
+    
+    I["✅ Task Definition"] --> J["EARS Definition of Done"]
+    J --> K["WHEN task completed<br/>SHALL satisfy AC-001<br/>with 100% test coverage<br/>AND performance requirements"]
+    
+    subgraph Benefits ["EARS Benefits"]
+        L["🎯 Eliminates Ambiguity"]
+        M["📊 Measurable Outcomes"]
+        N["🔗 Direct Test Mapping"]
+        O["💾 Token Efficiency"]
+    end
+    
+    style C fill:#e8f5e8
+    style E fill:#f3e5f5
+    style H fill:#fff3e0
+    style K fill:#e1f5fe
+```
+
+### 4. 🔄 Resume & Semantic Traceability
+
+This diagram demonstrates the powerful resume capability and how semantic relationships are maintained across the entire development lifecycle.
+
+```mermaid
+graph TD
+    A["/kiro resume feature-name"] --> B["📖 Read Specifications"]
+    B --> C["requirements.md<br/>🔍 Extract semantic UUIDs<br/>📊 Restore confidence scores"]
+    B --> D["design.md<br/>🔍 Load ADR decisions<br/>🔗 Reconstruct rationale"]
+    B --> E["tasks.md<br/>🔍 Current progress state<br/>⚠️ Risk assessments"]
+    
+    C --> F["🧠 Reconstruct Full<br/>Semantic Context"]
+    D --> F
+    E --> F
+    
+    F --> G["🔗 Rebuild Traceability Graph"]
+    G --> H["REQ-UUID-001 links to AC-REQ-ID-01"]
+    G --> I["AC-REQ-ID-01 links to TASK-UUID-001"]
+    G --> J["TASK-UUID-001 links to Component.method"]
+    
+    H --> K["✅ Context Fully Restored"]
+    I --> K
+    J --> K
+    K --> L["🚀 Continue Development<br/>with Full Understanding"]
+    
+    subgraph Links ["Semantic Links Preserved"]
+        M["🆔 UUID-based Relationships"]
+        N["📊 Confidence Tracking"]
+        O["⚠️ Risk Factor Memory"]
+        P["🎯 Decision Rationale"]
+        Q["🧪 Test Coverage Maps"]
+    end
+    
+    style A fill:#fce4ec
+    style F fill:#e1f5fe
+    style K fill:#e8f5e8
+    style L fill:#f3e5f5
+```
+
 ## 🚀 How to Use
 
 ### Option 1: 🌍 Global Installation (Recommended)
