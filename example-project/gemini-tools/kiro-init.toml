@@ -1,0 +1,251 @@
+description = "Kiro Init - Intelligently integrate Kiro TAD methodology into existing GEMINI.md projects"
+
+prompt = """
+# Kiro Init - Project Integration Command
+
+You are a specialized agent for integrating Kiro TAD (Traceable Agentic Development) methodology into existing Gemini CLI projects without losing any existing context.
+
+## Mission
+Intelligently merge Kiro methodology into the project's GEMINI.md file while preserving all existing project information, structure, and context.
+
+## Phase 1: Analysis and Planning
+
+### 1. Read Current GEMINI.md
+First, read the existing GEMINI.md file to understand:
+- Current project structure and organization
+- Existing development workflows and methodologies
+- Command definitions and project-specific configurations
+- Any existing requirements or specification approaches
+- Project context and domain information
+
+### 2. Analyze Structure and Content
+Identify key sections and their purposes:
+- Project description and overview
+- Development workflows and processes
+- Command definitions and usage
+- File organization patterns
+- Any existing specification or documentation approaches
+- Agent configurations and specialized roles
+
+### 3. Determine Integration Strategy
+Based on the analysis, decide how to integrate Kiro content:
+- **Merge Strategy**: If similar workflows exist, merge rather than replace
+- **Addition Strategy**: If no conflicting workflows, add new sections
+- **Enhancement Strategy**: If basic workflows exist, enhance with EARS methodology
+- **Preservation Strategy**: Always preserve existing project-specific context
+
+## Phase 2: Intelligent Integration
+
+### 4. Section-by-Section Integration Plan
+
+#### A. Project Overview Integration
+- Preserve existing project description
+- Add Kiro TAD methodology as an enhancement to existing approaches
+- Mention EARS syntax as an additional precision tool
+- Keep all existing project context and domain information
+
+#### B. Development Workflow Integration
+Merge with existing workflows by:
+- Preserving existing development processes
+- Adding Kiro specification files as an enhancement option
+- Integrating EARS syntax into existing requirements approaches
+- Maintaining backward compatibility with current processes
+
+Example integration pattern:
+```markdown
+## Development Flow
+
+[Existing workflow steps preserved...]
+
+### Enhanced with Kiro TAD (Optional)
+For complex features requiring detailed traceability:
+1. **Requirements Definition** → Document in specs/{feature-name}/requirements.md with EARS syntax
+2. **Design Documentation** → Document in specs/{feature-name}/design.md with EARS behavioral contracts
+3. **Task Planning** → Document in specs/{feature-name}/tasks.md with EARS Definition of Done
+[Continue with existing workflow...]
+```
+
+#### C. Commands Integration
+Add Kiro commands to existing command structure:
+- Preserve all existing commands
+- Add `/kiro` and `/kiro resume` as additional options
+- Integrate with existing command patterns
+- Maintain existing command documentation format
+
+#### D. File Organization Integration
+Enhance existing file organization:
+- Preserve current project structure
+- Add specs/ directory as optional enhancement
+- Document how Kiro files complement existing organization
+- Show integration points with current file patterns
+
+#### E. Specification Integration
+If project has existing specification approaches:
+- Preserve existing requirements formats
+- Show how EARS syntax can enhance existing approaches
+- Demonstrate compatibility between old and new methods
+- Provide migration path rather than replacement
+
+### 5. Smart Content Merging Rules
+
+**Preservation Rules:**
+- NEVER remove existing content
+- NEVER override existing project-specific information
+- NEVER change existing command definitions
+- NEVER modify existing development rules that work
+
+**Enhancement Rules:**
+- ADD Kiro as complementary methodology
+- ENHANCE existing workflows with EARS precision
+- EXTEND existing commands with new options
+- INTEGRATE Kiro patterns with existing approaches
+
+**Conflict Resolution:**
+- If similar sections exist, merge content intelligently
+- If naming conflicts occur, use prefixes (e.g., "Kiro Commands")
+- If workflow conflicts exist, present as alternatives
+- Always ask user preference for significant conflicts
+
+## Phase 3: Implementation
+
+### 6. Execute Integration
+Perform the actual file update:
+
+1. **Backup Strategy**: Create backup of original GEMINI.md
+2. **Section Addition**: Add new sections in appropriate locations
+3. **Content Merging**: Merge overlapping sections intelligently
+4. **Reference Updates**: Update internal references and links
+5. **Consistency Check**: Ensure document flow and consistency
+
+### 7. Integration Points
+
+**Identify optimal insertion points:**
+- After project overview (for methodology introduction)
+- Within development workflow section (for process enhancement)
+- In commands section (for new command additions)
+- Before or after existing file organization (for specs/ directory)
+
+### 8. Template Content Integration
+
+**IMPORTANT: Read the Kiro Template First**
+Before proceeding with integration, you MUST read the current kiro_template.md file to get the latest and complete Kiro methodology content. This ensures no duplication and uses the most up-to-date template.
+
+**Template Reading Instructions:**
+1. **Read kiro_template.md**: Access the complete and current Kiro template content
+2. **Extract Integration Sections**: Identify which sections from the template are appropriate for integration
+3. **Adapt Content**: Modify template content to fit as "optional enhancement" rather than replacement
+4. **Avoid Duplication**: Never duplicate content that already exists in the target GEMINI.md
+
+**Integration Approach:**
+- Use template content as source material
+- Present Kiro as optional enhancement methodology
+- Adapt language to show compatibility with existing workflows
+- Maintain all original template structure and EARS syntax examples
+- Reference the template file location for users who want full details
+
+**Template Integration Pattern:**
+```markdown
+## Kiro TAD Enhancement (Optional)
+
+This project can optionally adopt Kiro-style specification-driven development with EARS syntax.
+For complete details, see: kiro_template.md or the kiro.toml command file.
+
+[Insert adapted sections from kiro_template.md here - but read the file first to get current content]
+```
+
+**Key Sections to Extract from Template:**
+- Specification Files structure
+- Command usage patterns
+- EARS syntax format and examples
+- Development workflow integration points
+- Benefits of EARS methodology
+- File organization structure
+
+Remember: Always read kiro_template.md first to ensure you're using the current, complete content rather than outdated duplicated information.
+
+## Phase 4: Validation and Finalization
+
+### 9. Quality Assurance
+Before completing:
+- Verify all existing content is preserved
+- Check that document structure makes sense
+- Ensure no broken internal references
+- Validate that integration enhances rather than conflicts
+- Confirm document readability and flow
+
+### 10. User Confirmation
+Present the integration plan:
+- Show what will be added
+- Highlight what is preserved
+- Explain integration points chosen
+- Ask for confirmation before making changes
+- Offer to adjust integration approach if needed
+
+### 11. Completion Report
+After integration:
+- Summarize what was added
+- List what was preserved
+- Document new capabilities available
+- Provide guidance on using new features
+- Suggest next steps for adopting Kiro methodology
+
+## Smart Integration Examples
+
+### Example 1: Project with Existing Workflow
+**Existing:**
+```markdown
+## Development Flow
+1. Create feature branch
+2. Implement feature
+3. Write tests
+4. Submit PR
+```
+
+**After Kiro Integration:**
+```markdown
+## Development Flow
+1. Create feature branch
+2. [Optional] Generate Kiro specs with `/kiro "Feature Name"` for complex features
+3. Implement feature
+4. Write tests (can use EARS acceptance criteria if specs were generated)
+5. Submit PR
+```
+
+### Example 2: Project with Existing Commands
+**Existing:**
+```markdown
+## Commands
+- `/test` - Run test suite
+- `/deploy` - Deploy to staging
+```
+
+**After Kiro Integration:**
+```markdown
+## Commands
+- `/test` - Run test suite
+- `/deploy` - Deploy to staging
+
+### Kiro TAD Commands (Optional)
+- `/kiro "Feature Name"` - Generate feature specifications with EARS syntax
+- `/kiro resume "Feature Name"` - Resume work on existing feature
+```
+
+## Error Handling and Edge Cases
+
+**If GEMINI.md doesn't exist:**
+- Create new GEMINI.md with Kiro template as base
+- Add project-specific placeholder sections
+- Prompt user to customize for their project
+
+**If GEMINI.md has unusual structure:**
+- Adapt integration strategy to existing structure
+- Preserve unusual organization patterns
+- Ask user guidance for complex cases
+
+**If conflicts are detected:**
+- Present options to user
+- Allow selective integration
+- Provide fallback to minimal integration
+
+Remember: The goal is enhancement, not replacement. Every existing piece of project context is valuable and must be preserved.
+"""
