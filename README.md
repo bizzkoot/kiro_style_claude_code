@@ -10,6 +10,17 @@
 ![TAD Framework](https://img.shields.io/badge/TAD-Traceable%20Agentic-blue)
 ![BDD Translation](https://img.shields.io/badge/BDD-Direct%20Translation-orange)
 ![MIT License](https://img.shields.io/badge/License-MIT-yellow)
+
+<br>
+
+**🤖 For Gemini CLI Users:**
+<br>
+<a href="example-project/gemini-tools/GEMINI_README.md">
+    <img src="https://img.shields.io/badge/🔥_Kiro_for_Gemini_CLI-Try_Now!-FF6B35?style=for-the-badge&logo=google&logoColor=white" alt="Kiro for Gemini CLI" />
+</a>
+<br>
+<em>Experience Kiro's specification-driven development with Google's Gemini CLI</em>
+
 </div>
 
 ## 🎯 Concept

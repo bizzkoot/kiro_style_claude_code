@@ -24,38 +24,96 @@
 * **Google Gemini CLI**: Install and configure the Gemini CLI on your system
 * **Unix-like Terminal**: Compatible with bash or zsh shells
 
-### Installation in 2 Simple Steps
+### Option 1: 🌍 Global Installation (Recommended)
 
-1.  **Download the kiro.toml file**  
-    Make sure you have the [kiro.toml](./kiro.toml) file from this repository.
+Install Kiro commands globally to use in any project with Gemini CLI:
 
-2.  **Install the command**  
-    Choose one of the following installation methods:
+```bash
+# Clone the repository
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+cd kiro_style_claude_code/example-project/gemini-tools
 
-    **Global Installation (recommended):**
-    ```bash
-    # Copy to global Gemini commands directory
-    cp kiro.toml ~/.gemini/commands/
-    ```
+# Run global installation script
+./gemini-install-global.sh
 
-    **Project-specific Installation:**
-    ```bash
-    # Create project commands directory
-    mkdir -p .gemini/commands/
-    
-    # Copy to project directory
-    cp kiro.toml .gemini/commands/
-    ```
+# Clean up
+cd ../../.. && rm -rf kiro_style_claude_code
+```
+
+**✨ Now use Kiro in any project with Gemini CLI:**
+```bash
+cd any-project/
+gemini
+/kiro-init  # Sets up Kiro workflow automatically
+```
+
+**🗑️ To uninstall globally:**
+```bash
+# Download and run uninstaller
+curl -sSL https://raw.githubusercontent.com/bizzkoot/kiro_style_claude_code/main/example-project/gemini-tools/gemini-uninstall-global.sh | bash
+
+# Or clone and run locally
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+cd kiro_style_claude_code/example-project/gemini-tools
+./gemini-uninstall-global.sh
+cd ../../.. && rm -rf kiro_style_claude_code
+```
+
+---
+
+### Option 2: 📁 Per-Project Installation
+
+Choose one of these methods for individual projects:
+
+**Method A: Manual Installation**
+```bash
+# Create project commands directory
+mkdir -p .gemini/commands/
+mkdir -p .gemini/templates/
+
+# Copy files to project directory
+cp kiro.toml .gemini/commands/
+cp kiro-init.toml .gemini/commands/
+cp kiro_template.md .gemini/templates/
+```
+
+**Method B: Clone and Copy**
+```bash
+# Clone the repository
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+
+# Copy required files to your project directory
+mkdir -p .gemini/commands .gemini/templates
+cp kiro_style_claude_code/example-project/gemini-tools/kiro.toml .gemini/commands/
+cp kiro_style_claude_code/example-project/gemini-tools/kiro-init.toml .gemini/commands/
+cp kiro_style_claude_code/example-project/gemini-tools/kiro_template.md .gemini/templates/
+
+# Clean up
+rm -rf kiro_style_claude_code
+```
 
 ## 💡 How to Use Kiro with Gemini CLI
 
 Kiro operates as a simple command for the Gemini CLI using a TOML-based system prompt. No complex setup or servers required!
 
-### Using the /kiro Command
+### 🚀 Initialize Gemini CLI (Per-Project Only)
 
-Start the Gemini CLI and use the `/kiro` command:
+For per-project installations, start with project setup:
 ```bash
 # Start the Gemini CLI
+gemini
+
+# Initialize new project with Kiro workflow
+/kiro-init
+```
+
+> **💡 Why this matters:** This copies the Kiro template to your project and sets up the directory structure for specification-driven development.
+
+### Using the /kiro Command
+
+After initialization, use the main `/kiro` command:
+```bash
+# Start the Gemini CLI (if not already running)
 gemini
 
 # Use the kiro command with your feature description
@@ -64,19 +122,25 @@ gemini
 
 ### Command Examples
 
-#### 1. Creating a New Feature
+#### 1. Project Initialization (For New Projects)
+Set up Kiro workflow in your project:
+```
+/kiro-init
+```
+
+#### 2. Creating a New Feature
 Generate comprehensive specification documents with EARS syntax:
 ```
 /kiro "User Authentication with Two-Factor Auth supporting SMS and authenticator apps"
 ```
 
-#### 2. Resuming Work on a Feature
+#### 3. Resuming Work on a Feature
 Continue work on an existing feature:
 ```
 /kiro resume "User Authentication" 
 ```
 
-#### 3. Complex Feature with Context
+#### 4. Complex Feature with Context
 Provide detailed context for better specifications:
 ```
 /kiro "Real-time Collaboration System with document editing, user presence, and conflict resolution"
@@ -111,6 +175,7 @@ To continue work on an existing feature:
 
 | Command | Purpose | Example |
 |---|---|---|
+| `/kiro-init` | Initialize new project with Kiro template | `/kiro-init` |
 | `/kiro "Feature Name"` | Generate new feature specifications | `/kiro "User Dashboard"` |
 | `/kiro resume "Feature Name"` | Resume work on existing feature | `/kiro resume "Payment System"` |
 | Natural language follow-ups | Task updates, completion, etc. | "Mark task TASK-001 as completed" |
@@ -160,14 +225,37 @@ specs/done/
 - **Measurable Success**: Every requirement has specific triggers and measurable outcomes
 - **Comprehensive Coverage**: Every acceptance criterion maps to testable conditions
 
+## 🌟 Global Installation Benefits
+
+**✨ Advantages of Global Installation:**
+- 🚀 **Instant Access** - Use Kiro commands in any project without setup
+- 🔄 **Consistent Experience** - Same workflow across all your projects  
+- 🛠️ **Easy Management** - Single install/uninstall for all projects
+- 💾 **No Duplication** - Saves disk space by avoiding file copies
+- 🔧 **Easy Updates** - Update once, affects all projects
+- 📋 **Template Reuse** - Shared templates across projects
+
+**🎯 Perfect for:**
+- Developers working on multiple projects
+- Teams standardizing on Kiro methodology
+- Quick prototyping and experimentation
+- Maintaining consistency across codebases
+
 ## 📖 Additional Resources
 
-- [kiro_template.md](./kiro_template.md) - Detailed template and examples
-- [kiro.toml](./kiro.toml) - The command specification file
+- [kiro_template.md](./kiro_template.md) - Detailed template and examples for Gemini CLI
+- [kiro.toml](./kiro.toml) - The main Kiro command specification file
+- [kiro-init.toml](./kiro-init.toml) - Project initialization command file
+- [gemini-install-global.sh](./gemini-install-global.sh) - Global installation script
+- [gemini-uninstall-global.sh](./gemini-uninstall-global.sh) - Global uninstallation script
 
 ## 🤝 Contributing
 
-To modify or extend the kiro command:
-1. Edit the `kiro.toml` file
-2. Update the prompt section with your improvements
-3. Reinstall using the installation steps above
+To modify or extend the Gemini Kiro commands:
+1. Edit the relevant `.toml` files (`kiro.toml`, `kiro-init.toml`)
+2. Update the prompt sections with your improvements
+3. Test your changes with per-project installation first
+4. For global changes, update the installation scripts:
+   - Modify `gemini-install-global.sh` for installation updates
+   - Modify `gemini-uninstall-global.sh` for uninstallation updates
+5. Reinstall using the appropriate method (global or per-project)
