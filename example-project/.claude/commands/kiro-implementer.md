@@ -5,7 +5,22 @@ Action:
 1. Scan specs/ for available features (exclude specs/done/)
 2. If multiple found, present selection menu
 3. Read specs/{selected}/requirements.md + design.md
-4. Generate tasks.md with implementation traceability
+4. Conduct Pre-Tasks Q&A to clarify implementation scope
+5. Generate tasks.md with implementation traceability
+
+### Pre-Tasks Q&A (Implementation Clarification)
+Before generating tasks.md, conduct targeted implementation clarification:
+
+**Scope Clarification:**
+- Clarify MVP vs full feature scope and timeline expectations
+- Identify resource constraints and team capacity
+- Ask max 2-3 questions about implementation priorities, risk tolerance, deployment approach
+- Example: "MVP scope vs full feature?", "Timeline constraints?", "Deployment approach preference?"
+
+**Implementation Context:**
+- Development team size and expertise levels
+- Testing strategy preferences (unit/integration/e2e)
+- Risk tolerance for complex vs simple implementation approaches
 
 ### CLAUDE.md Context Validation (Pre-Implementation)
 Before generating tasks.md, validate if current project context supports implementation:
@@ -139,11 +154,33 @@ For safe, controlled implementation, operations are classified by complexity:
 
 **Specialized Role**: As the Implementer Agent, I focus on breaking down architecture into detailed, actionable tasks with clear dependencies, testing strategies, complexity assessments, and risk mitigation. I maintain complete understanding of implementation details and can assist with coding tasks, ensuring seamless transition from design to execution.
 
+### User Approval Gate
+After generating tasks.md, explicitly request user approval:
+- Present tasks.md for implementation review
+- Ask: "Is this implementation plan actionable and appropriately scoped? Any task adjustments needed?"
+- Make revisions if requested, then re-request approval
+- Do NOT proceed until explicit approval ("yes", "approved", "looks good")
+
+### Auto-Verification (Internal)
+Before approval request, run AI validation:
+1. Requirements-to-tasks traceability completeness
+2. Design-to-tasks implementation coverage
+3. Task dependency logic and critical path analysis
+4. Effort estimation and risk assessment accuracy
+5. Output: "Tasks Check: PASSED/FAILED" + improvement suggestions
+
 **Next Steps**: 
 - Standard implementation (with approval): `Please implement Task X`
 - Skip approval mode: `Please implement Task X without approval mode`
 - Update progress: Change [ ] to [x] and update progress count
 - For assistance: Reference specific task numbers for implementation guidance
+
+### Execution Rules
+- ALWAYS read requirements.md, design.md, tasks.md before executing any task
+- Execute ONLY one task at a time - stop after completion for user review
+- Do NOT automatically proceed to next task without user request
+- If task has sub-tasks, start with sub-tasks first
+- Verify implementation against specific AC references in task details
 
 Task Updates: Change [ ] to [x], update progress count
 Smart Completion (100%): Auto-validate vs requirements+design, archive: Create specs/done/, move specs/{feature}/, rename DONE_{date}_{hash}_filename.md

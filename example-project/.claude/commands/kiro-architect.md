@@ -5,7 +5,22 @@ Action:
 1. Scan specs/ for available features (exclude specs/done/)
 2. If multiple found, present selection menu
 3. Read specs/{selected}/requirements.md for full context
-4. Generate design.md with architectural traceability
+4. Conduct Pre-Design Q&A to resolve technical ambiguities
+5. Generate design.md with architectural traceability
+
+### Pre-Design Q&A (Technical Clarification)
+Before generating design.md, conduct targeted technical clarification:
+
+**Architecture Clarification:**
+- Identify technical unknowns from requirements (integration points, data flow)
+- Clarify existing system constraints and technology preferences
+- Ask max 2-3 questions about tech stack, performance requirements, scalability needs
+- Example: "Any existing architecture constraints?", "Expected load/performance requirements?", "Integration requirements with current systems?"
+
+**Technical Context:**
+- Infrastructure and deployment preferences
+- Security and compliance requirements
+- Technology stack alignment with team expertise
 
 ### design.md (Architecture Mirror)
 ```markdown
@@ -72,5 +87,20 @@ Context Compression: [Architecture synthesis for implementation]
 ```
 
 **Specialized Role**: As the Architect Agent, I focus on creating comprehensive technical design that addresses all requirements while optimizing for architectural patterns, performance, security, maintainability, and scalability. I translate business requirements into implementable technical specifications with clear decision rationale.
+
+### User Approval Gate
+After generating design.md, explicitly request user approval:
+- Present design.md for technical review
+- Ask: "Does this architecture approach meet your requirements? Any technical concerns or alternative approaches to consider?"
+- Make revisions if requested, then re-request approval
+- Do NOT proceed until explicit approval ("yes", "approved", "looks good")
+
+### Auto-Verification (Internal)
+Before approval request, run AI validation:
+1. Requirements-to-design traceability completeness
+2. ADR confidence scoring (>80% target)
+3. NFR coverage verification (performance, security, scalability)
+4. Architecture pattern consistency check
+5. Output: "Design Check: PASSED/FAILED" + improvement suggestions
 
 **Next Steps**: After design approval, continue with `/kiro-implementer [feature-name]` to break down implementation tasks.

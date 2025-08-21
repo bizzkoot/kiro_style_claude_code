@@ -6,6 +6,20 @@ Context: Review CLAUDE.md for project context first.
 Trigger: /kiro-researcher "Feature Name"
 Action: Create specs/{kebab-case-feature-name}/ with semantic requirements anchor.
 
+### Pre-Requirements Q&A (Ambiguity Resolution)
+Before generating requirements.md, conduct targeted stakeholder and business clarification:
+
+**Stakeholder Clarification:**
+- Identify primary/secondary/tertiary users and their distinct needs
+- Clarify business value drivers and success metrics
+- Ask max 4-6 focused questions about user roles, pain points, constraints
+- Example: "Who are the primary users?", "What business problem does this solve?", "Any regulatory/compliance requirements?"
+
+**Business Context:**
+- Market validation needs and competitive landscape
+- Priority level and business impact assessment
+- Risk tolerance and success criteria definition
+
 ### requirements.md (Semantic Anchor)
 ```markdown
 # Requirements: [Feature Name] - Researcher Agent
@@ -48,5 +62,20 @@ Context Compression: [Research synthesis for next phase]
 ```
 
 **Specialized Role**: As the Researcher Agent, I focus on comprehensive requirements with stakeholder analysis, market validation, edge case identification, and business value quantification. I establish the semantic foundation that drives all subsequent technical decisions.
+
+### User Approval Gate
+After generating requirements.md, explicitly request user approval:
+- Present requirements.md for stakeholder review
+- Ask: "Do these requirements capture all user needs and business value? Any missing stakeholders or edge cases?"
+- Make revisions if requested, then re-request approval
+- Do NOT proceed until explicit approval ("yes", "approved", "looks good")
+
+### Auto-Verification (Internal)
+Before approval request, run AI validation:
+1. Stakeholder coverage completeness check
+2. Business value quantification accuracy 
+3. Acceptance criteria testability verification
+4. Risk assessment completeness
+5. Output: "Requirements Check: PASSED/FAILED" + improvement suggestions
 
 **Next Steps**: After requirements approval, continue with `/kiro-architect [feature-name]` to create technical design based on these requirements.

@@ -6,6 +6,24 @@ Action: Create specs/{kebab-case-feature-name}/ with semantic traceability chain
 
 ## Phase 1: Generation Sequence
 
+### 0. Pre-Generation Q&A (Ambiguity Resolution)
+Before generating each document, conduct targeted clarification to minimize revision cycles:
+
+**Requirements Clarification:**
+- Analyze feature request for ambiguous user roles, success criteria, constraints
+- Ask max 3-5 focused questions to resolve critical unknowns
+- Example: "Who are primary users?", "What's the success metric?", "Any tech constraints?"
+
+**Design Clarification:**
+- Identify technical unknowns from requirements (architecture, integrations, data flow)
+- Ask max 2-3 questions about tech stack, existing system integration
+- Focus on decisions that significantly impact implementation
+
+**Tasks Clarification:**
+- Clarify scope boundaries, MVP vs full feature, resource constraints
+- Ask about risk tolerance and timeline expectations
+- Ensure clear understanding of what's in/out of scope
+
 ### 1. requirements.md (Semantic Anchor)
 ```markdown
 # Requirements: [Feature Name]
@@ -108,15 +126,36 @@ Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {e
 - [ ] Risk mitigation for Medium+ risks
 ```
 
-### 4. Auto-Verification (Internal)
-Before completion, run AI validation:
+### 4. User Approval Gates
+After generating/updating each document, explicitly request user approval:
+
+**Requirements Approval:**
+- Present requirements.md for review
+- Ask: "Do these requirements capture your vision? Any critical gaps or changes needed?"
+- Make revisions if requested, then re-request approval
+- Do NOT proceed to design until explicit approval ("yes", "approved", "looks good")
+
+**Design Approval:**
+- Present design.md for review
+- Ask: "Does this design approach work? Any architectural concerns?"
+- Make revisions if requested, then re-request approval
+- Do NOT proceed to tasks until explicit approval
+
+**Tasks Approval:**
+- Present tasks.md for review  
+- Ask: "Is this implementation plan actionable? Any scope adjustments needed?"
+- Make revisions if requested, then re-request approval
+- Mark workflow complete only after explicit approval
+
+### 5. Auto-Verification (Internal)
+Before each approval request, run AI validation:
 1. Forward/Backward/Bi-directional traceability check
 2. Gap analysis (missing coverage, orphaned elements)
 3. Confidence scoring (requirements: X%, design: X%, tasks: X%)
 4. Risk assessment and recommendations
 5. Output: "Traceability Check: PASSED/FAILED" + improvement suggestions
 
-### 5. CLAUDE.md Update Assessment (Post-Generation)
+### 6. CLAUDE.md Update Assessment (Post-Generation)
 After generating all three files, analyze if major architectural changes require CLAUDE.md updates:
 
 **Triggers for CLAUDE.md Update:**
@@ -149,6 +188,13 @@ This will improve future agent decisions and maintain project context accuracy."
 ---
 
 ## Phase 2: Lifecycle Management
+
+**Execution Rules:**
+- ALWAYS read requirements.md, design.md, tasks.md before executing any task
+- Execute ONLY one task at a time - stop after completion for user review
+- Do NOT automatically proceed to next task without user request
+- If task has sub-tasks, start with sub-tasks first
+- Verify implementation against specific AC references in task details
 
 **Task Updates**: Change [ ] to [x], update progress count, AI monitors for scope drift/timeline deviation
 
