@@ -25,12 +25,48 @@ Kiro-style specification-driven development is a methodology that advances devel
 
 ## 🚀 How to Use
 
-### 1. Project Initialization
+### Option 1: 🌍 Global Installation (Recommended)
 
-Choose one of these methods to set up your project:
+Install Kiro commands globally to use in any project:
+
+```bash
+# Clone the repository
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+cd kiro_style_claude_code
+
+# Run global installation script
+./install-global.sh
+
+# Clean up
+cd .. && rm -rf kiro_style_claude_code
+```
+
+**✨ Now use Kiro in any project:**
+```bash
+cd any-project/
+claude
+/kiro-init  # Sets up Kiro workflow automatically
+```
+
+**🗑️ To uninstall globally:**
+```bash
+# Download and run uninstaller
+curl -sSL https://raw.githubusercontent.com/bizzkoot/kiro_style_claude_code/main/uninstall-global.sh | bash
+
+# Or clone and run locally
+git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+cd kiro_style_claude_code && ./uninstall-global.sh
+cd .. && rm -rf kiro_style_claude_code
+```
+
+---
+
+### Option 2: 📁 Per-Project Setup
+
+Choose one of these methods for individual projects:
 
 <details>
-<summary><b>Method 1:</b> Clone from GitHub (recommended)</summary>
+<summary><b>Method A:</b> Clone and copy files</summary>
 
 ```bash
 # Clone the repository
@@ -49,7 +85,7 @@ rm -rf kiro_style_claude_code
 </details>
 
 <details>
-<summary><b>Method 2:</b> Use as a template for a new project</summary>
+<summary><b>Method B:</b> Use as a template for a new project</summary>
 
 ```bash
 # Clone the repository
@@ -64,7 +100,7 @@ rm -rf ../kiro_style_claude_code
 ```
 </details>
 
-### 2. 🚀 Initialize Claude Code
+### 🚀 Initialize Claude Code (Per-Project Only)
 
 ```bash
 # Start Claude Code
