@@ -215,6 +215,40 @@ When requirements evolve, TAD framework automatically maintains traceability:
 - 📊 Recalculates confidence scores & risk assessments
 - 📝 Preserves architectural decision rationale
 
+---
+
+## 🐛 Debugging & Issue Resolution
+
+### 🔍 **Natural Language Debugging**
+Initiate debugging through conversational interface:
+
+```bash
+"I'm seeing an error in the login endpoint"
+"The application crashes when loading large files" 
+"Why is the authentication failing?"
+```
+
+**🎯 TAD Debugging Features:**
+- 🔍 **Context-Aware Analysis** - Examines related files and components automatically
+- 🎯 **Root Cause Identification** - Systematic investigation with pattern recognition
+- 🛡️ **Risk Assessment** - Evaluates potential impacts of proposed fixes
+- ✅ **Structured Resolution** - Task-based approach with verification planning
+- 📝 **Specification Updates** - Maintains traceability when debugging reveals requirement gaps
+
+### 🗂️ **Debug Specifications**
+Creates structured debug specs in `specs/debug-{issue-id}/`:
+```
+specs/debug-login-error/
+├── requirements.md    # 📋 Issue definition + expected resolution
+├── design.md         # 🔍 Root cause analysis + solution strategy  
+└── tasks.md          # ✅ Investigation + resolution steps
+```
+
+### 🔄 **Integration with Development Workflow**
+- **Researcher**: Escalates when issues reveal requirement gaps
+- **Architect**: Consults when fixes require design changes  
+- **Implementer**: Collaborates on significant implementation changes
+
 ## 📁 Project Structure
 
 Initial setup with TAD framework:
@@ -225,7 +259,8 @@ your-project-directory/
 │       ├── kiro.md              # Full TAD workflow command
 │       ├── kiro-researcher.md   # Requirements specialist with TAD
 │       ├── kiro-architect.md    # Design specialist with ADRs
-│       └── kiro-implementer.md  # Implementation specialist with traceability
+│       ├── kiro-implementer.md  # Implementation specialist with traceability
+│       └── debugger.md          # Debugging workflow and issue resolution
 └── CLAUDE.md                    # Project rules
 ```
 
@@ -237,7 +272,8 @@ your-project-directory/
 │       ├── kiro.md              # Full TAD workflow command
 │       ├── kiro-researcher.md   # Requirements specialist with TAD
 │       ├── kiro-architect.md    # Design specialist with ADRs
-│       └── kiro-implementer.md  # Implementation specialist with traceability
+│       ├── kiro-implementer.md  # Implementation specialist with traceability
+│       └── debugger.md          # Debugging workflow and issue resolution
 ├── CLAUDE.md
 └── specs/                 # Created automatically
     └── create-todo-app/   # Feature-specific directory
@@ -254,7 +290,8 @@ your-project-directory/
 │       ├── kiro.md              # Full TAD workflow command
 │       ├── kiro-researcher.md   # Requirements specialist with TAD
 │       ├── kiro-architect.md    # Design specialist with ADRs
-│       └── kiro-implementer.md  # Implementation specialist with traceability
+│       ├── kiro-implementer.md  # Implementation specialist with traceability
+│       └── debugger.md          # Debugging workflow and issue resolution
 ├── CLAUDE.md
 ├── specs/
 └── specs/done/            # Archive directory
