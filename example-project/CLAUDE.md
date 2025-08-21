@@ -1,15 +1,15 @@
 # Kiro Style Specification-Driven Development Template
 
-This project adopts Kiro-style specification-driven development.
+This project adopts Kiro-style specification-driven development with EARS (Easy Approach to Requirements Syntax) hybrid implementation for enhanced precision and testability.
 
 ## Specification Files
 
-- **specs/{feature-name}/requirements.md**: User stories and acceptance criteria
-- **specs/{feature-name}/design.md**: Technical architecture and components
-- **specs/{feature-name}/tasks.md**: Implementation tasks and progress tracking
-- **specs/debug-{issue-id}/requirements.md**: Issue definition and expected resolution
-- **specs/debug-{issue-id}/design.md**: Debug strategy and affected components
-- **specs/debug-{issue-id}/tasks.md**: Investigation and resolution steps
+- **specs/{feature-name}/requirements.md**: User stories with EARS acceptance criteria (WHEN/WHILE/IF/WHERE + SHALL)
+- **specs/{feature-name}/design.md**: Technical architecture with EARS behavioral contracts
+- **specs/{feature-name}/tasks.md**: Implementation tasks with EARS Definition of Done (DoD)
+- **specs/debug-{issue-id}/requirements.md**: Issue definition with EARS expected resolution criteria
+- **specs/debug-{issue-id}/design.md**: Debug strategy with EARS-compliant solution specifications
+- **specs/debug-{issue-id}/tasks.md**: Investigation steps with EARS validation checkpoints
 
 ## Development Flow
 
@@ -54,43 +54,49 @@ When a task is completed:
 2. Update the progress counter at the top of tasks.md
 3. Proceed to the next task only after confirming current task works
 
-## Agent Specialization
+## Agent Specialization with EARS Hybrid Implementation
 
-This project supports specialized agent roles for different phases of development:
+This project supports specialized agent roles with EARS (Easy Approach to Requirements Syntax) integration:
 
 ### Agent Commands
-- `/kiro [feature-name]` - Full workflow (all phases)
-- `/kiro-researcher [feature-name]` - Requirements specialist
-- `/kiro-architect [feature-name]` - Design specialist
-- `/kiro-implementer [feature-name]` - Implementation specialist
-- Natural language debugging queries - Debugging specialist
+- `/kiro [feature-name]` - Full TAD workflow with EARS integration
+- `/kiro-researcher [feature-name]` - Requirements specialist with EARS acceptance criteria
+- `/kiro-architect [feature-name]` - Design specialist with EARS behavioral contracts
+- `/kiro-implementer [feature-name]` - Implementation specialist with EARS DoD
+- Natural language debugging queries - Debugging specialist with EARS validation
 
-### Agent Workflow
-1. Start with `/kiro-researcher [feature-name]` to create requirements.md
-2. After approval, continue with `/kiro-architect [feature-name]` to create design.md
-3. After approval, finish with `/kiro-implementer [feature-name]` to create tasks.md and implement
-4. For issue resolution, use natural language to initiate debugging workflows
+### EARS-Enhanced Agent Workflow
+1. **Researcher**: Create requirements.md with EARS syntax (WHEN/WHILE/IF/WHERE + SHALL)
+2. **Architect**: Create design.md with EARS behavioral contracts for components
+3. **Implementer**: Create tasks.md with EARS Definition of Done for each task
+4. **Debugger**: Use EARS validation for systematic issue resolution
 
-### Benefits
-- More thorough analysis at each phase
-- Optimized context utilization
-- Better preservation of implementation details
-- Enhanced specialization for complex features
-- Structured approach to debugging and issue resolution
+### EARS Hybrid Benefits
+- **Eliminates Ambiguity**: "WHEN user clicks login, system SHALL authenticate within 200ms" vs "fast login"
+- **Direct Test Translation**: EARS → BDD (Given/When/Then) mapping for automated testing
+- **Behavioral Contracts**: Component interfaces specify exact behavioral expectations
+- **Measurable Success**: Every requirement has specific triggers and measurable outcomes
+- **Token Efficiency**: Dense, precise EARS statements reduce verbose explanations
+- **Comprehensive Coverage**: Every acceptance criterion maps to testable conditions
 
-## Debugging Capabilities
+## EARS-Enhanced Debugging Capabilities
 
 The debugging system provides:
-1. **Context-aware analysis** that examines related files and components
-2. **Root cause identification** using systematic investigation techniques
-3. **Solution design** with risk assessment and verification planning
-4. **Structured implementation** following task-based approach
-5. **Comprehensive validation** to ensure complete resolution
+1. **Context-aware analysis** with EARS behavioral expectation validation
+2. **Root cause identification** using EARS acceptance criteria mapping
+3. **Solution design** with EARS-compliant resolution specifications
+4. **Structured implementation** with EARS Definition of Done for debug tasks
+5. **Comprehensive validation** using EARS success criteria measurement
 
-Debugging is initiated through natural language in the chat interface, such as:
-- "I'm seeing an error in the login endpoint"
-- "The application crashes when loading large files"
-- "Why is the authentication failing?"
+Debugging with EARS precision:
+- "WHEN user submits login, system SHALL respond within 200ms but currently takes 5s"
+- "WHERE file size exceeds 10MB, system SHALL handle gracefully but currently crashes"
+- "IF authentication token is invalid, system SHALL return 401 but returns 500"
+
+EARS debugging creates measurable resolution criteria:
+- **Issue Definition**: EARS format for exact problem specification
+- **Expected Resolution**: EARS acceptance criteria for successful fix
+- **Validation Steps**: EARS-to-BDD test scenarios for verification
 
 ## Responding to Specification Changes
 
@@ -116,4 +122,29 @@ When debugging reveals issues that require specification changes:
 4. Create regression tests to prevent issue recurrence
 5. Consider architectural implications of recurring issues
 
-For detailed debugging information, refer to the debugger.md documentation.
+For detailed debugging information with EARS implementation, refer to the debugger.md documentation.
+
+## EARS Hybrid Implementation Details
+
+### EARS Syntax Format
+- **WHEN** [trigger condition], the system **SHALL** [specific action]
+- **WHILE** [ongoing state], the system **SHALL** [continuous behavior]
+- **IF** [conditional state], the system **SHALL** [conditional response]
+- **WHERE** [constraint boundary], the system **SHALL** [bounded action]
+
+### EARS-to-BDD Translation
+EARS requirements automatically translate to BDD scenarios:
+- **EARS**: WHEN user submits valid form, system SHALL save data within 1 second
+- **BDD**: GIVEN valid form data, WHEN user submits form, THEN system saves within 1 second
+
+### Quality Assurance with EARS
+- Every acceptance criterion includes confidence scoring
+- All behavioral contracts specify measurable outcomes
+- Component interfaces use EARS format for precise expectations
+- Test coverage maps directly from EARS statements to automated tests
+
+### Implementation Verification
+- Definition of Done (DoD) written in EARS format
+- Task completion verified against EARS acceptance criteria
+- Progress tracking includes EARS compliance validation
+- Archival process preserves EARS traceability relationships

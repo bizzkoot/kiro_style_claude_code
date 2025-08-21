@@ -40,20 +40,35 @@ Intent Vector: {AI semantic summary}
 As a [User] I want [Goal] So that [Benefit]
 Business Value: {1-10} | Complexity: {XS/S/M/L/XL} | Priority: {P0/P1/P2/P3}
 
-Acceptance Criteria:
-- AC-{REQ-ID}-01: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
-- AC-{REQ-ID}-02: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+Acceptance Criteria (EARS Syntax):
+- AC-{REQ-ID}-01: WHEN [trigger condition], the system SHALL [specific action] {confidence: X%}
+- AC-{REQ-ID}-02: WHILE [ongoing state], the system SHALL [continuous behavior] {confidence: X%}
+- AC-{REQ-ID}-03: IF [conditional state], the system SHALL [conditional response] {confidence: X%}
+- AC-{REQ-ID}-04: WHERE [constraint boundary], the system SHALL [bounded action] {confidence: X%}
+
+EARS Examples:
+- WHEN user submits valid registration form, the system SHALL create account within 2 seconds
+- WHILE user session is active, the system SHALL preserve user preferences
+- IF user attempts invalid login 3 times, the system SHALL lock account for 15 minutes
+- WHERE user lacks admin privileges, the system SHALL display "Access Denied" message
 
 Edge Cases: [Auto-identified scenarios]
 Market Validation: [Competitive research findings]
 Risk Factors: {Auto-identified from stakeholder analysis}
 
-## Non-functional Requirements
-- NFR-{UUID}-PERF-001: {Measurable performance target}
-- NFR-{UUID}-SEC-001: {Security constraint + compliance}
-- NFR-{UUID}-UX-001: {Usability metric + accessibility}
-- NFR-{UUID}-SCALE-001: {Scalability requirement}
-- NFR-{UUID}-MAINT-001: {Maintainability standard}
+## Non-functional Requirements (EARS Format)
+- NFR-{UUID}-PERF-001: WHEN [operation trigger], the system SHALL [perform action] within [time constraint]
+- NFR-{UUID}-SEC-001: WHERE [security context], the system SHALL [enforce protection] using [method]
+- NFR-{UUID}-UX-001: WHILE [user interaction], the system SHALL [provide feedback] within [response time]
+- NFR-{UUID}-SCALE-001: IF [load condition], the system SHALL [maintain performance] up to [capacity limit]
+- NFR-{UUID}-MAINT-001: WHERE [maintenance scenario], the system SHALL [support operation] within [time/effort bounds]
+
+NFR Examples:
+- WHEN user requests page load, the system SHALL render content within 1 second
+- WHERE authentication is required, the system SHALL enforce MFA for admin accounts
+- WHILE user types in forms, the system SHALL provide validation feedback within 200ms
+- IF concurrent users exceed 1000, the system SHALL maintain 99.9% uptime
+- WHERE code changes are deployed, the system SHALL support rollback within 5 minutes
 
 ## Research Context Transfer
 Key Decisions: [Rationale for requirement prioritization]

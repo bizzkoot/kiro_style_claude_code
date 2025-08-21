@@ -38,17 +38,32 @@ Intent Vector: {AI semantic summary}
 As a [User] I want [Goal] So that [Benefit]
 Business Value: {1-10} | Complexity: {XS/S/M/L/XL}
 
-Acceptance Criteria:
-- AC-{REQ-ID}-01: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
-- AC-{REQ-ID}-02: GIVEN [context] WHEN [action] THEN [outcome] {confidence: X%}
+Acceptance Criteria (EARS Syntax):
+- AC-{REQ-ID}-01: WHEN [trigger condition], the system SHALL [specific action] {confidence: X%}
+- AC-{REQ-ID}-02: WHILE [ongoing state], the system SHALL [continuous behavior] {confidence: X%}  
+- AC-{REQ-ID}-03: IF [conditional state], the system SHALL [conditional response] {confidence: X%}
+- AC-{REQ-ID}-04: WHERE [constraint boundary], the system SHALL [bounded action] {confidence: X%}
 
-Validation Hooks: {testable assertions}
+EARS Examples:
+- WHEN user submits valid login credentials, the system SHALL authenticate within 200ms
+- WHILE user session is active, the system SHALL maintain authentication state  
+- IF login attempts exceed 3 failures, the system SHALL temporarily lock the account for 15 minutes
+- WHERE user lacks required permissions, the system SHALL display "Access Denied" message
+
+Validation Hooks: {EARS-to-BDD testable assertions}
 Risk Factors: {auto-identified}
 
-## Non-functional Requirements
-- NFR-{UUID}-PERF-001: {measurable target}
-- NFR-{UUID}-SEC-001: {security constraint + test}
-- NFR-{UUID}-UX-001: {usability metric}
+## Non-functional Requirements (EARS Format)
+- NFR-{UUID}-PERF-001: WHEN [operation trigger], the system SHALL [perform action] within [time constraint]
+- NFR-{UUID}-SEC-001: WHERE [security context], the system SHALL [enforce protection] using [method]
+- NFR-{UUID}-UX-001: WHILE [user interaction], the system SHALL [provide feedback] within [response time]
+- NFR-{UUID}-SCALE-001: IF [load condition], the system SHALL [maintain performance] up to [capacity limit]
+
+NFR Examples:
+- WHEN user requests dashboard data, the system SHALL load results within 500ms
+- WHERE sensitive data is accessed, the system SHALL require multi-factor authentication  
+- WHILE form validation occurs, the system SHALL display real-time feedback within 100ms
+- IF concurrent users exceed 1000, the system SHALL maintain 99% uptime with <2s response times
 
 ## Traceability Manifest
 Upstream: [dependencies] | Downstream: [impact] | Coverage: [AI-calculated]
@@ -67,18 +82,25 @@ Requirements: REQ-{UUID}-001,002 | Confidence: X% | Alternatives: [rejected opti
 Changes: [specific modifications]
 
 ### New: [Component] → Responsibility: {requirement-linked purpose}
-Interface:
+Interface (EARS Behavioral Contracts):
 ```typescript
 interface Component {
+  // WHEN method1() is called, SHALL return Promise<T> within 200ms
   method1(): Promise<T> // AC-{REQ-ID}-01
+  
+  // WHERE input validates successfully, SHALL return transformed output O
   method2(input: I): O  // AC-{REQ-ID}-02
+  
+  // IF validation fails, SHALL throw ValidationError with details
+  validateInput(data: unknown): boolean // AC-{REQ-ID}-03
 }
 ```
 
-## API Matrix
-| Endpoint | Method | Requirements | Test Strategy | Errors |
-|----------|--------|-------------|---------------|--------|
-| /api/x | POST | AC-{REQ-ID}-01,02 | Unit+Integration | [auto] |
+## API Matrix (EARS Behavioral Specifications)
+| Endpoint | Method | EARS Contract | Performance | Security | Test Strategy |
+|----------|--------|---------------|-------------|----------|---------------|
+| /api/x | POST | WHEN valid payload received, SHALL process within 500ms | <500ms | JWT+RBAC | Unit+Integration+E2E |
+| /api/y | GET | WHILE user authenticated, SHALL return filtered data | <200ms | Role-based | Unit+Contract |
 
 ## Data Flow + Traceability
 1. Input Validation → NFR-{UUID}-SEC-001
@@ -102,28 +124,33 @@ Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {e
 ## Phase 1: Foundation
 - [ ] TASK-{UUID}-001: [Name]
   Trace: REQ-{UUID}-001 | Design: NewComponent | AC: AC-{REQ-ID}-01
-  DoD: [criteria] | Risk: Low | Deps: None | Effort: 2pts
+  DoD (EARS Format): WHEN task completed, SHALL satisfy AC-{REQ-ID}-01 with 100% test coverage
+  Risk: Low | Deps: None | Effort: 2pts
 
 - [ ] TASK-{UUID}-002: [Name]  
   Trace: REQ-{UUID}-001,002 | Design: method1() | AC: AC-{REQ-ID}-01,02
-  DoD: [criteria] | Risk: Medium | Deps: TASK-001 | Effort: 5pts
+  DoD (EARS Format): WHEN implementation finished, SHALL pass integration tests AND WHILE method executes, SHALL complete within performance requirements
+  Risk: Medium | Deps: TASK-001 | Effort: 5pts
 
 ## Phase 2: Integration
 - [ ] TASK-{UUID}-003: API Implementation
   Trace: REQ-{UUID}-002 | Design: POST /api/x | AC: AC-{REQ-ID}-02
-  DoD: [criteria] | Risk: Low | Deps: TASK-002 | Effort: 3pts
+  DoD (EARS Format): WHEN endpoint deployed, SHALL handle requests per EARS contract AND WHERE error conditions occur, SHALL return appropriate HTTP status codes
+  Risk: Low | Deps: TASK-002 | Effort: 3pts
 
 ## Phase 3: QA
 - [ ] TASK-{UUID}-004: Test Suite
   Trace: ALL AC-* | Design: Test impl | AC: 100% coverage + NFR validation
-  DoD: [criteria] | Risk: Medium | Deps: All prev | Effort: 4pts
+  DoD (EARS Format): WHEN tests execute, SHALL validate every EARS acceptance criterion AND IF any test fails, SHALL provide actionable error messages
+  Risk: Medium | Deps: All prev | Effort: 4pts
 
-## Verification Checklist
-- [ ] Every REQ-* → implementing task
-- [ ] Every AC-* → test coverage  
-- [ ] Every NFR-* → measurable validation
-- [ ] All design elements → specific tasks
-- [ ] Risk mitigation for Medium+ risks
+## Verification Checklist (EARS Compliance)
+- [ ] Every REQ-* → implementing task with EARS DoD
+- [ ] Every EARS AC → BDD test coverage (Given/When/Then)
+- [ ] Every NFR-* → measurable EARS validation criteria
+- [ ] All design EARS contracts → implementation tasks
+- [ ] Risk mitigation for Medium+ risks with EARS success criteria
+- [ ] EARS-to-BDD test translation completeness check
 ```
 
 ### 4. User Approval Gates

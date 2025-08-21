@@ -11,11 +11,13 @@ Action:
 ### Pre-Design Q&A (Technical Clarification)
 Before generating design.md, conduct targeted technical clarification:
 
-**Architecture Clarification:**
-- Identify technical unknowns from requirements (integration points, data flow)
+**Architecture Clarification (EARS-Enhanced):**
+- Parse EARS acceptance criteria from requirements.md for unambiguous behavioral contracts
+- Identify technical unknowns from EARS statements (integration points, data flow, performance constraints)
 - Clarify existing system constraints and technology preferences
 - Ask max 2-3 questions about tech stack, performance requirements, scalability needs
 - Example: "Any existing architecture constraints?", "Expected load/performance requirements?", "Integration requirements with current systems?"
+- Focus on translating EARS requirements into architectural decisions
 
 **Technical Context:**
 - Infrastructure and deployment preferences
@@ -51,18 +53,26 @@ Current State: [Baseline] | Changes: [Specific modifications]
 Impact Analysis: [Ripple effects] | Migration Strategy: [Approach]
 
 ### New: [Component] → Responsibility: {Requirement-linked purpose}
-Interface:
+Interface (EARS Behavioral Contracts):
 ```typescript
 interface Component {
+  // WHEN method1() is called, SHALL return Promise<T> within 200ms
   method1(): Promise<T> // AC-{REQ-ID}-01
+  
+  // WHERE input validates successfully, SHALL return transformed output O
   method2(input: I): O  // AC-{REQ-ID}-02
+  
+  // IF validation fails, SHALL throw ValidationError with specific message
+  validateInput(data: unknown): boolean // AC-{REQ-ID}-03
 }
 ```
 
-## API Matrix
-| Endpoint | Method | Requirements | Performance | Security | Errors |
-|----------|--------|-------------|-------------|----------|--------|
-| /api/x | POST | AC-{REQ-ID}-01,02 | <200ms | JWT+RBAC | [auto] |
+## API Matrix (EARS Behavioral Specifications)
+| Endpoint | Method | EARS Contract | Performance | Security | Test Strategy |
+|----------|--------|---------------|-------------|----------|---------------|
+| /api/x | POST | WHEN valid payload received, SHALL process within 500ms | <500ms | JWT+RBAC | Unit+Integration+E2E |
+| /api/y | GET | WHILE user authenticated, SHALL return filtered data | <200ms | Role-based | Unit+Contract |
+| /api/z | PUT | IF resource exists, SHALL update and return 200 | <300ms | Resource-owner | Unit+Integration |
 
 ## Data Schema + Traceability
 ```sql
@@ -73,12 +83,13 @@ CREATE TABLE entity (
 );
 ```
 
-## Quality Gates
-- ADRs: >80% confidence to requirements
-- Interfaces: trace to acceptance criteria  
-- NFRs: measurable validation strategy
-- Security: threat model for each endpoint
-- Performance: benchmarks for each NFR
+## Quality Gates (EARS Compliance)
+- ADRs: >80% confidence to EARS requirements
+- Interfaces: trace to EARS acceptance criteria with behavioral contracts
+- NFRs: measurable EARS validation strategy with specific triggers/conditions
+- Security: threat model for each EARS security constraint
+- Performance: benchmarks for each EARS performance requirement
+- EARS Consistency: All components SHALL follow EARS behavioral contract format
 
 ## Architecture Context Transfer
 Key Decisions: [Technical choices with requirement rationale]

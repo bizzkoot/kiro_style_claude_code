@@ -11,16 +11,18 @@ Action:
 ### Pre-Tasks Q&A (Implementation Clarification)
 Before generating tasks.md, conduct targeted implementation clarification:
 
-**Scope Clarification:**
-- Clarify MVP vs full feature scope and timeline expectations
-- Identify resource constraints and team capacity
-- Ask max 2-3 questions about implementation priorities, risk tolerance, deployment approach
-- Example: "MVP scope vs full feature?", "Timeline constraints?", "Deployment approach preference?"
+**Scope Clarification (EARS-Driven):**
+- Parse EARS acceptance criteria and NFRs from requirements.md and design.md
+- Clarify MVP vs full feature scope based on EARS priority levels
+- Identify resource constraints and team capacity for EARS compliance
+- Ask max 2-3 questions about implementation priorities, EARS validation approach, deployment approach
+- Example: "MVP scope vs full EARS coverage?", "Timeline for EARS compliance?", "BDD test framework preference?"
 
-**Implementation Context:**
-- Development team size and expertise levels
-- Testing strategy preferences (unit/integration/e2e)
+**Implementation Context (EARS-Aware):**
+- Development team size and expertise levels with BDD/EARS experience
+- Testing strategy preferences (unit/integration/e2e) with EARS-to-BDD translation capabilities
 - Risk tolerance for complex vs simple implementation approaches
+- EARS compliance validation tools and frameworks available
 
 ### CLAUDE.md Context Validation (Pre-Implementation)
 Before generating tasks.md, validate if current project context supports implementation:
@@ -77,34 +79,39 @@ Timeline: {Estimate from NFRs} | Quality Gates: {From architecture}
 - [ ] TASK-{UUID}-001: [Component Setup]
   Trace: REQ-{UUID}-001 | Design: NewComponent | AC: AC-{REQ-ID}-01
   ADR: ADR-001 | Approach: [Specific implementation method]
-  DoD: [Criteria from architecture] | Risk: Low | Effort: 2pts
-  Test Strategy: [Unit test approach] | Dependencies: None
+  DoD (EARS Format): WHEN component initialized, SHALL satisfy AC-{REQ-ID}-01 with 100% test coverage
+  Risk: Low | Effort: 2pts
+  Test Strategy: [EARS-to-BDD unit tests] | Dependencies: None
 
 - [ ] TASK-{UUID}-002: [Core Logic Implementation]  
   Trace: REQ-{UUID}-001,002 | Design: method1() | AC: AC-{REQ-ID}-01,02
   ADR: ADR-001,002 | Approach: [Business logic implementation]
-  DoD: [Criteria] | Risk: Medium | Effort: 5pts
-  Test Strategy: [BDD scenarios] | Dependencies: TASK-001
+  DoD (EARS Format): WHEN implementation finished, SHALL pass integration tests AND WHILE method executes, SHALL complete within EARS performance requirements
+  Risk: Medium | Effort: 5pts
+  Test Strategy: [EARS-to-BDD scenarios] | Dependencies: TASK-001
 
 ## Phase 2: Integration
 - [ ] TASK-{UUID}-003: [API Implementation]
   Trace: REQ-{UUID}-002 | Design: POST /api/x | AC: AC-{REQ-ID}-02
   ADR: ADR-002 | Approach: [Endpoint implementation]
-  DoD: [Performance + security criteria] | Risk: Low | Effort: 3pts
-  Test Strategy: [Integration tests] | Dependencies: TASK-002
+  DoD (EARS Format): WHEN endpoint deployed, SHALL handle requests per EARS contract AND WHERE error conditions occur, SHALL return appropriate HTTP status codes
+  Risk: Low | Effort: 3pts
+  Test Strategy: [EARS contract tests] | Dependencies: TASK-002
 
 ## Phase 3: Quality Assurance
 - [ ] TASK-{UUID}-004: [Comprehensive Testing]
   Trace: ALL AC-* + NFR-* | Design: Test architecture
-  ADR: All | Approach: [Testing strategy from design]
-  DoD: [Coverage + performance benchmarks] | Risk: Medium | Effort: 4pts
-  Test Strategy: [E2E scenarios] | Dependencies: All previous
+  ADR: All | Approach: [EARS-to-BDD testing strategy]
+  DoD (EARS Format): WHEN tests execute, SHALL validate every EARS acceptance criterion AND IF any test fails, SHALL provide actionable error messages
+  Risk: Medium | Effort: 4pts
+  Test Strategy: [Full EARS compliance validation] | Dependencies: All previous
 
 ## Phase 4: Deployment
 - [ ] TASK-{UUID}-005: [Production Readiness]
   Trace: NFR-{UUID}-* | Design: Deployment architecture
-  DoD: [Monitoring + scaling ready] | Risk: Low | Effort: 2pts
-  Dependencies: TASK-004
+  DoD (EARS Format): WHEN deployed to production, SHALL meet all EARS NFR criteria AND IF monitoring detects issues, SHALL alert within defined thresholds
+  Risk: Low | Effort: 2pts
+  Test Strategy: [Production EARS validation] | Dependencies: TASK-004
 
 ## Dependency Graph
 Task 1 → Task 2 → Task 3 → Task 4 → Task 5
@@ -114,12 +121,14 @@ Critical Path: [Architecture decisions blocking implementation]
 Risk Mitigation: [Strategies for Medium+ risks from design]
 Context Compression: [Implementation roadmap summary]
 
-## Verification Checklist
-- [ ] Every REQ-* → implementing task
-- [ ] Every AC-* → test coverage
-- [ ] Every NFR-* → measurable validation  
-- [ ] Every ADR-* → implementation task
-- [ ] All quality gates → verification tasks
+## Verification Checklist (EARS Compliance)
+- [ ] Every REQ-* → implementing task with EARS DoD
+- [ ] Every EARS AC → BDD test coverage (Given/When/Then)
+- [ ] Every EARS NFR → measurable validation with specific triggers
+- [ ] Every ADR-* → implementation task with EARS behavioral contracts
+- [ ] All EARS quality gates → verification tasks
+- [ ] EARS-to-BDD test translation completeness check
+- [ ] Behavioral contract consistency across all components
 ```
 
 ---
