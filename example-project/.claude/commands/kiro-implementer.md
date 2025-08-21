@@ -111,10 +111,10 @@ Context Compression: [Implementation roadmap summary]
 
 ## Intelligent Implementation Governance
 
-### Default Approval Mode
-Approval mode is **ACTIVE BY DEFAULT** for safe, controlled implementation:
+### Operation Classification
+For safe, controlled implementation, operations are classified by complexity:
 
-**Major Operations** (require approval):
+**Major Operations** (handled by Claude Code's built-in approval system):
 - File/folder creation/deletion
 - Package management
 - Feature implementation (>10 lines)
@@ -127,18 +127,6 @@ Approval mode is **ACTIVE BY DEFAULT** for safe, controlled implementation:
 - Comments/variable renaming
 - Import adjustments
 - Linting/testing
-
-**Approval Request Format:**
-```
-🔄 APPROVAL REQUIRED
-What: [Action description]
-Why: [Justification]
-Details: [Exact changes]
-Impact: [Consequences]
-Trace: [REQ/AC links]
-
-Should I proceed? (yes/no)
-```
 
 **Enhanced Workflow:**
 1. Parse task requirements and DoD criteria
@@ -158,7 +146,7 @@ Should I proceed? (yes/no)
 - For assistance: Reference specific task numbers for implementation guidance
 
 Task Updates: Change [ ] to [x], update progress count
-Smart Completion (100%): Auto-validate vs requirements+design, archive to specs/done/
+Smart Completion (100%): Auto-validate vs requirements+design, archive: Create specs/done/, move specs/{feature}/, rename DONE_{date}_{hash}_filename.md
 
 ## Resume Commands
 - /kiro-researcher resume "{feature-name}" - Continue requirements analysis
