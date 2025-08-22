@@ -31,13 +31,13 @@ Install Kiro commands globally to use in any project with Gemini CLI:
 ```bash
 # Clone the repository
 git clone https://github.com/bizzkoot/kiro_style_claude_code.git
-cd kiro_style_claude_code/example-project/gemini-tools
+cd kiro_style_claude_code/gemini-tools
 
 # Run global installation script
 ./gemini-install-global.sh
 
 # Clean up
-cd ../../.. && rm -rf kiro_style_claude_code
+cd .. && rm -rf kiro_style_claude_code
 ```
 
 **✨ Now use Kiro in any project with Gemini CLI:**
@@ -50,13 +50,13 @@ gemini
 **🗑️ To uninstall globally:**
 ```bash
 # Download and run uninstaller
-curl -sSL https://raw.githubusercontent.com/bizzkoot/kiro_style_claude_code/main/example-project/gemini-tools/gemini-uninstall-global.sh | bash
+curl -sSL https://raw.githubusercontent.com/bizzkoot/kiro_style_claude_code/main/gemini-tools/gemini-uninstall-global.sh | bash
 
 # Or clone and run locally
 git clone https://github.com/bizzkoot/kiro_style_claude_code.git
-cd kiro_style_claude_code/example-project/gemini-tools
+cd kiro_style_claude_code/gemini-tools
 ./gemini-uninstall-global.sh
-cd ../../.. && rm -rf kiro_style_claude_code
+cd .. && rm -rf kiro_style_claude_code
 ```
 
 ---
@@ -71,7 +71,7 @@ Choose one of these methods for individual projects:
 mkdir -p .gemini/commands/
 mkdir -p .gemini/templates/
 
-# Copy files to project directory
+# Copy files to project directory (assuming you're in the gemini-tools directory)
 cp kiro.toml .gemini/commands/
 cp kiro-init.toml .gemini/commands/
 cp kiro_template.md .gemini/templates/
@@ -84,9 +84,9 @@ git clone https://github.com/bizzkoot/kiro_style_claude_code.git
 
 # Copy required files to your project directory
 mkdir -p .gemini/commands .gemini/templates
-cp kiro_style_claude_code/example-project/gemini-tools/kiro.toml .gemini/commands/
-cp kiro_style_claude_code/example-project/gemini-tools/kiro-init.toml .gemini/commands/
-cp kiro_style_claude_code/example-project/gemini-tools/kiro_template.md .gemini/templates/
+cp kiro_style_claude_code/gemini-tools/kiro.toml .gemini/commands/
+cp kiro_style_claude_code/gemini-tools/kiro-init.toml .gemini/commands/
+cp kiro_style_claude_code/gemini-tools/kiro_template.md .gemini/templates/
 
 # Clean up
 rm -rf kiro_style_claude_code

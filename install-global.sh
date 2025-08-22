@@ -28,12 +28,12 @@ mkdir -p ~/.claude/templates
 
 # Copy Kiro commands globally
 echo -e "${BLUE}📋 Installing global Kiro commands...${NC}"
-cp example-project/.claude/commands/*.md ~/.claude/commands/
+cp CLAUDE/.claude/commands/*.md ~/.claude/commands/
 echo -e "${GREEN}✅ Copied Kiro commands: kiro.md, kiro-researcher.md, kiro-architect.md, kiro-implementer.md, debugger.md${NC}"
 
 # Copy CLAUDE.md template
 echo -e "${BLUE}📄 Installing CLAUDE.md template...${NC}"
-cp example-project/CLAUDE.md ~/.claude/templates/kiro-template.md
+cp CLAUDE/CLAUDE.md ~/.claude/templates/kiro-template.md
 echo -e "${GREEN}✅ Installed Kiro CLAUDE.md template${NC}"
 
 # Install kiro-init command

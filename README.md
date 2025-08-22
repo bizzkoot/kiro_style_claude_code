@@ -15,7 +15,7 @@
 
 **🤖 For Gemini CLI Users:**
 <br>
-<a href="example-project/gemini-tools/GEMINI_README.md">
+<a href="gemini-tools/GEMINI_README.md">
     <img src="https://img.shields.io/badge/🔥_Kiro_for_Gemini_CLI-Try_Now!-FF6B35?style=for-the-badge&logo=google&logoColor=white" alt="Kiro for Gemini CLI" />
 </a>
 <br>
@@ -246,11 +246,8 @@ Choose one of these methods for individual projects:
 git clone https://github.com/bizzkoot/kiro_style_claude_code.git
 
 # Copy required files to your project directory
-cp -r kiro_style_claude_code/example-project/.claude ./
-cp kiro_style_claude_code/example-project/CLAUDE.md ./
-
-# Optional: Copy example specifications for reference
-# cp -r kiro_style_claude_code/example-project/specs/* ./specs/
+cp -r kiro_style_claude_code/CLAUDE/.claude ./
+cp kiro_style_claude_code/CLAUDE/CLAUDE.md ./
 
 # Clean up
 rm -rf kiro_style_claude_code
@@ -264,8 +261,8 @@ rm -rf kiro_style_claude_code
 # Clone the repository
 git clone https://github.com/bizzkoot/kiro_style_claude_code.git
 
-# Copy the entire example project as your starting point
-cp -r kiro_style_claude_code/example-project/ my-new-project/
+# Copy the CLAUDE directory as your starting point
+cp -r kiro_style_claude_code/CLAUDE/ my-new-project/
 cd my-new-project/
 
 # Clean up
