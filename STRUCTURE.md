@@ -10,27 +10,37 @@ kiro_style_claude_code/
 ├── STRUCTURE.md                 # This file - project structure overview
 ├── install-global.sh            # Global installation script
 ├── uninstall-global.sh          # Global uninstaller script
+├── ICON.png                     # Project icon
+│
+├── CLAUDE/                      # CLAUDE directory with Kiro commands
+│   ├── CLAUDE.md                # CLAUDE documentation
+│   └── .claude/                 # Hidden CLAUDE directory
+│       └── commands/            # Kiro commands
+│           ├── kiro.md              # Full TAD workflow command
+│           ├── kiro-researcher.md   # Requirements specialist
+│           ├── kiro-architect.md    # Design specialist  
+│           ├── kiro-implementer.md  # Implementation specialist
+│           └── debugger.md          # Debugging workflow
 │
 ├── example-project/             # Template project for per-project setup
-│   ├── .claude/
-│   │   └── commands/
-│   │       ├── kiro.md              # Full TAD workflow command
-│   │       ├── kiro-researcher.md   # Requirements specialist
-│   │       ├── kiro-architect.md    # Design specialist  
-│   │       ├── kiro-implementer.md  # Implementation specialist
-│   │       └── debugger.md          # Debugging workflow
-│   ├── CLAUDE.md                # Project template with Kiro rules
-│   └── specs/                   # Example specifications directory
-│       └── example-todo-app/    # Sample feature specifications
-│           ├── requirements.md  # Example requirements with TAD
-│           ├── design.md       # Example design with ADRs
-│           └── tasks.md        # Example tasks with traceability
+│   └── vscode-terminal-detection-example/  # Example specifications directory
+│       ├── requirements.md      # Example requirements with TAD
+│       ├── design.md            # Example design with ADRs
+│       └── tasks.md             # Example tasks with traceability
+│
+├── gemini-tools/                # Gemini-specific tools and configurations
+│   ├── GEMINI_README.md         # Gemini tools documentation
+│   ├── gemini-install-global.sh # Gemini global installation script
+│   ├── gemini-uninstall-global.sh # Gemini global uninstaller script
+│   ├── kiro_template.md         # Kiro template for Gemini
+│   ├── kiro-init.toml           # Kiro initialization configuration
+│   └── kiro.toml                # Kiro configuration
 │
 └── global/                      # Files for global installation
     ├── commands/
-    │   └── kiro-init.md        # Global initialization command
+    │   └── kiro-init.md         # Global initialization command
     └── templates/
-        └── kiro-template.md    # CLAUDE.md template for new projects
+        └── kiro-template.md     # CLAUDE.md template for new projects
 ```
 
 ## 🚀 Installation Methods
