@@ -650,18 +650,200 @@ cleanup_temp_dir() {
         rm -rf "$temp_dir"
     fi
 }
-# Manifest Generation Implementation (TASK-E5A8F3B2-003)
+# Manifest Generation Implementation (TASK-E5A8F3B2-003) - OPTIMIZED
+should_update_manifest() {
+    local manifest_path="$1"
+    local installation_path="$2"
+    
+    # If manifest doesn't exist, update required
+    if [[ ! -f "$manifest_path" ]]; then
+        return 0  # true - update needed
+    fi
+    
+    # Get manifest timestamp
+    local manifest_timestamp=$(stat -f%m "$manifest_path" 2>/dev/null || stat -c%Y "$manifest_path" 2>/dev/null || echo "0")
+    
+    # Check if any .md file is newer than manifest
+    local newest_md_timestamp=0
+    while IFS= read -r -d '' file; do
+        if [[ "$file" != *"$MANIFEST_FILE"* ]]; then
+            local file_timestamp=$(stat -f%m "$file" 2>/dev/null || stat -c%Y "$file" 2>/dev/null || echo "0")
+            if [[ $file_timestamp -gt $newest_md_timestamp ]]; then
+                newest_md_timestamp=$file_timestamp
+            fi
+        fi
+    done < <(find "$installation_path" -name "*.md" -type f -print0 2>/dev/null)
+    
+    # Update needed if any .md file is newer than manifest
+    if [[ $newest_md_timestamp -gt $manifest_timestamp ]]; then
+        return 0  # true - update needed
+    fi
+    
+    return 1  # false - no update needed
+}
+
+get_agent_specialization() {
+    local file="$1"
+    local specialization="general-purpose"
+    
+    # Extract original category from YAML frontmatter (Option 1: Preserve @davepoon's categories)
+    if head -n 20 "$file" | grep -q '^---'; then
+        # Try category first, then specialization from YAML frontmatter
+        local frontmatter_spec
+        frontmatter_spec=$(awk "/^category:/ {sub(/^category: */, \"\"); print; exit}" "$file")
+        if [[ -z "$frontmatter_spec" ]]; then
+            frontmatter_spec=$(awk "/^specialization:/ {sub(/^specialization: */, \"\"); print; exit}" "$file")
+        fi
+        if [[ -n "$frontmatter_spec" ]]; then
+            specialization="$frontmatter_spec"
+        fi
+    fi
+    
+    # Clean and normalize specialization - preserve original categories
+    specialization=$(echo "$specialization" | sed 's/^["'\'']//;s/["'\'']$//' | tr -d '\n\r')
+    
+    # Remove invalid entries and normalize
+    case "$specialization" in
+        "category-name"*|"# Required"*)
+            specialization="general-purpose"
+            ;;
+        "")
+            specialization="general-purpose"
+            ;;
+    esac
+    
+    echo "$specialization"
+}
+
+generate_capabilities_briefing() {
+    # Create temporary directory for intelligent grouping
+    local temp_agents_dir="/tmp/kiro_smart_agents_$$"
+    mkdir -p "$temp_agents_dir"
+    
+    # Intelligent specialization grouping
+    while IFS= read -r -d '' file; do
+        if [[ "$file" == *"$MANIFEST_FILE"* ]]; then
+            continue
+        fi
+        
+        local filename=$(basename "$file")
+        local agent_name="${filename%.md}"
+        local specialization=$(get_agent_specialization "$file")
+        
+        # Add agent to appropriate specialization file
+        echo "@$agent_name" >> "$temp_agents_dir/$specialization.txt"
+        
+    done < <(find "$INSTALLATION_PATH" -name "*.md" -type f -print0 2>/dev/null)
+    
+    # Generate intelligent briefing with proper category names
+    local briefing=""
+    
+    # Get display name for category (supports @davepoon's original categories)
+    get_category_display_name() {
+        case "$1" in
+            # @davepoon's original categories with proper display names
+            "specialized-domains") echo "Specialized Domains" ;;
+            "code-analysis-testing") echo "Code Analysis & Testing" ;;
+            "project-task-management") echo "Project & Task Management" ;;
+            "framework-svelte") echo "Svelte Framework" ;;
+            "quality-security") echo "Quality & Security" ;;
+            "utilities-debugging") echo "Utilities & Debugging" ;;
+            "version-control-git") echo "Version Control & Git" ;;
+            "team-collaboration") echo "Team Collaboration" ;;
+            "language-specialists") echo "Programming Languages" ;;
+            "integration-sync") echo "Integration & Sync" ;;
+            "development-architecture") echo "Development & Architecture" ;;
+            "data-ai") echo "Data & AI" ;;
+            "ci-deployment") echo "CI & Deployment" ;;
+            "documentation-changelogs") echo "Documentation & Changelogs" ;;
+            "workflow-orchestration") echo "Workflow Orchestration" ;;
+            "simulation-modeling") echo "Simulation & Modeling" ;;
+            "infrastructure-operations") echo "Infrastructure & Operations" ;;
+            "sales-marketing") echo "Sales & Marketing" ;;
+            "project-setup") echo "Project Setup" ;;
+            "performance-optimization") echo "Performance & Optimization" ;;
+            "crypto-trading") echo "Crypto & Trading" ;;
+            "security-audit") echo "Security Audit" ;;
+            "context-loading-priming") echo "Context Loading & Priming" ;;
+            "business-finance") echo "Business & Finance" ;;
+            "api-development") echo "API Development" ;;
+            "miscellaneous") echo "Miscellaneous" ;;
+            "database-operations") echo "Database Operations" ;;
+            "monitoring-observability") echo "Monitoring & Observability" ;;
+            "design-experience") echo "Design & Experience" ;;
+            "blockchain-web3") echo "Blockchain & Web3" ;;
+            "typescript-migration") echo "TypeScript Migration" ;;
+            "game-development") echo "Game Development" ;;
+            "automation-workflow") echo "Automation & Workflow" ;;
+            "general-purpose") echo "General Purpose" ;;
+            # Fallback for any unrecognized categories
+            *) echo "$(echo "$1" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')" ;;
+        esac
+    }
+    
+    # Process categories in intelligent order (by frequency from @davepoon's collection)
+    local ordered_categories="specialized-domains code-analysis-testing project-task-management framework-svelte quality-security utilities-debugging version-control-git team-collaboration language-specialists integration-sync development-architecture data-ai ci-deployment documentation-changelogs workflow-orchestration simulation-modeling infrastructure-operations sales-marketing project-setup performance-optimization crypto-trading security-audit context-loading-priming business-finance api-development miscellaneous database-operations monitoring-observability design-experience blockchain-web3 typescript-migration game-development automation-workflow general-purpose"
+    
+    for category in $ordered_categories; do
+        local category_file="$temp_agents_dir/$category.txt"
+        if [[ -f "$category_file" && -s "$category_file" ]]; then
+            local display_name=$(get_category_display_name "$category")
+            local agents_list=$(cat "$category_file" | sort | tr '\n' ' ' | sed 's/ $//')
+            
+            if [[ -n "$briefing" ]]; then
+                briefing+="\n"
+            fi
+            briefing+="**$display_name**: $agents_list"
+        fi
+    done
+    
+    # Cleanup temporary files
+    rm -rf "$temp_agents_dir" 2>/dev/null
+    
+    echo "$briefing"
+}
+
 generate_subagent_manifest() {
-    echo -e "${BLUE}[Manifest]${NC} Generating subagent manifest..."
+    echo -e "${BLUE}[Manifest]${NC} Checking if manifest update is needed..."
     local manifest_path="$INSTALLATION_PATH/$MANIFEST_FILE"
+    
+    # Check if update is needed
+    if ! should_update_manifest "$manifest_path" "$INSTALLATION_PATH"; then
+        echo -e "${GREEN}✓ Manifest is current${NC} - skipping regeneration"
+        echo -e "${BLUE}[Manifest]${NC} Using existing manifest: $manifest_path"
+        
+        # Still validate the existing manifest
+        if [[ -f "$manifest_path" ]]; then
+            if command -v python3 >/dev/null 2>&1; then
+                local agent_count
+                agent_count=$(python3 -c "import json; data=json.load(open('$manifest_path')); print(len(data.get('agents', [])))" 2>/dev/null || echo "0")
+                echo -e "${BLUE}[Manifest]${NC} Total agents: $agent_count"
+            fi
+        fi
+        return 0
+    fi
+    
+    echo -e "${BLUE}[Manifest]${NC} Generating optimized subagent manifest..."
     local temp_manifest="/tmp/kiro_manifest_$$.json" # Fixed: Added $$ for unique temp file
     local generation_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    # Start building manifest
+    # Generate capabilities briefing first
+    echo -e "${BLUE}[Manifest]${NC} Pre-computing capabilities briefing..."
+    local capabilities_briefing
+    capabilities_briefing=$(generate_capabilities_briefing)
+    
+    # Start building optimized manifest with pre-computed briefing
     cat > "$temp_manifest" << EOF
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "generated_at": "$generation_time",
   "installation_path": "$INSTALLATION_PATH",
+  "capabilities_briefing": "$capabilities_briefing",
+  "performance": {
+    "discovery_optimized": true,
+    "briefing_precomputed": true,
+    "target_load_time_ms": 50,
+    "last_optimization": "$generation_time"
+  },
   "attribution": {
     "original_collection": "@davepoon/claude-code-subagents-collection",
     "repository_url": "$SUBAGENTS_REPO",
