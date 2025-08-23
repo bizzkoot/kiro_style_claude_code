@@ -20,6 +20,12 @@ Before generating requirements.md, conduct targeted stakeholder and business cla
 - Priority level and business impact assessment
 - Risk tolerance and success criteria definition
 
+### Pre-Generation Approval Gate
+After asking clarification questions, explicitly wait for user answers.
+- Present the questions to the user.
+- Ask: "Please answer the questions above so I can proceed with generating the requirements. Let me know when you are ready."
+- Do NOT proceed to generate requirements.md until the user has provided answers and confirmed to proceed.
+
 ### requirements.md (Semantic Anchor)
 ```markdown
 # Requirements: [Feature Name] - Researcher Agent

@@ -80,11 +80,11 @@ graph TD
     Q --> P
     P -->|✅ Yes| R[✨ Ready for Implementation]
     
-    style A fill:#e1f5fe
-    style G fill:#f3e5f5
-    style K fill:#e8f5e8
-    style O fill:#fff3e0
-    style R fill:#e8f5e8
+    style A fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style G fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style O fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style R fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 2. ⚡ Phase 2: Execution & Smart Completion
@@ -120,10 +120,10 @@ graph TD
     Q --> R[📦 Archive to specs/done/<br/>with semantic hash]
     R --> S[🔄 Generate Retrospective<br/>& Update Knowledge Base]
     
-    style A fill:#e8f5e8
-    style I fill:#fff3e0
-    style N fill:#e1f5fe
-    style S fill:#f3e5f5
+    style A fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style I fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style N fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style S fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 3. 🧠 EARS Framework Integration
@@ -151,10 +151,10 @@ graph TD
         O["💾 Token Efficiency"]
     end
     
-    style C fill:#e8f5e8
-    style E fill:#f3e5f5
-    style H fill:#fff3e0
-    style K fill:#e1f5fe
+    style C fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style E fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
+    style H fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 4. 🔄 Resume & Semantic Traceability
@@ -190,11 +190,32 @@ graph TD
         Q["🧪 Test Coverage Maps"]
     end
     
-    style A fill:#fce4ec
-    style F fill:#e1f5fe
-    style K fill:#e8f5e8
-    style L fill:#f3e5f5
+    style A fill:#fce4ec,stroke:#333,stroke-width:1px,color:#000
+    style F fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style L fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
 ```
+
+## 🤖 Enhanced Kiro: Autonomous Subagent Integration
+
+This project now includes an advanced subagent integration system that transforms the `/kiro-implementer` into a "master agent" capable of delegating tasks to a wide array of specialized subagents. This enhancement is powered by the brilliant `claude-code-subagents-collection` created by the community hero **@davepoon**.
+
+### Key Features:
+
+-   **One-Command Setup**: A single script, `Enhanced-Kiro-Subagents/enhance-kiro-subagents.sh`, downloads and installs over 280 specialized subagents.
+-   **Dynamic Discovery**: The `/kiro-implementer` can now dynamically discover available subagents, understand their capabilities, and form a strategic plan for task execution.
+-   **EARS-Compliant Delegation**: The system preserves the core Kiro TAD framework by ensuring all delegated tasks adhere to EARS behavioral contracts, maintaining full requirement traceability.
+-   **Zero Repository Pollution**: Subagents can be installed globally (`~/.claude/agents/`) or locally (`./.claude/agents/`) without adding them to your project's repository.
+
+This integration elevates the Kiro framework from specification-driven development to **autonomous specification-driven development**, combining strategic oversight with tactical efficiency.
+
+For more detailed information about this enhanced subagent system, please refer to the [Enhanced Subagents Documentation](Enhanced-Kiro-Subagents/SUBAGENTS_README.md).
+
+### 🙏 A Huge Thank You to the Community
+
+This powerful enhancement would not be possible without the incredible work of **@davepoon**. Please support their contribution by visiting and starring the original repository:
+
+[**davepoon/claude-code-subagents-collection on GitHub**](https://github.com/davepoon/claude-code-subagents-collection)
 
 ## 🚀 How to Use
 
@@ -269,6 +290,23 @@ cd my-new-project/
 rm -rf ../kiro_style_claude_code
 ```
 </details>
+
+### Option 3: 🤖 Activating Enhanced Subagents (Supercharges Kiro)
+
+To unlock the full potential of Kiro with over 280 specialized subagents:
+
+1.  **Clone the repository** (if you haven't already):
+    ```bash
+    git clone https://github.com/bizzkoot/kiro_style_claude_code.git
+    cd kiro_style_claude_code
+    ```
+2.  **Run the enhancement script**:
+    ```bash
+    ./Enhanced-Kiro-Subagents/enhance-kiro-subagents.sh
+    ```
+    You will be prompted to choose a global or project-specific installation.
+
+3.  **Enjoy the enhanced `/kiro-implementer`**, which can now delegate tasks to agents like `@code-reviewer`, `@test-generator`, `@security-auditor`, and many more!
 
 ### 🚀 Initialize Claude Code (Per-Project Only)
 

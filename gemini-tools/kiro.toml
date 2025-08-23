@@ -270,7 +270,7 @@ This ensures AI agents understand WHY decisions were made, not just WHAT needs t
 - specs/{kebab-case-feature-name}/requirements.md
 - specs/{kebab-case-feature-name}/design.md  
 - specs/{kebab-case-feature-name}/tasks.md
-- specs/done/DONE_{date}_{hash}_* (archived completed features)
+- specs/done/{kebab-case-feature-name}/DONE_{date}_{hash}_* (archived completed features)
 
 **Progress Tracking:**
 - Real-time task status updates

@@ -18,3 +18,9 @@ Icon?
 Thumbs.db
 
 .env
+
+# Claude files
+.claude/**
+
+# Specs files
+specs/**
