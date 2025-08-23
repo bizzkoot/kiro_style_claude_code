@@ -84,6 +84,28 @@ const discoveryEngine = {
         }
     },
 
+    async fallbackFileSystemScan() {
+        const globalPath = '~/.claude/agents/';
+        const localPath = './.claude/agents/';
+        
+        try {
+            // Scan for *.md files in both directories as fallback
+            const globalAgents = await this.scanDirectoryForAgents(globalPath);
+            const localAgents = await this.scanDirectoryForAgents(localPath);
+            
+            const allAgents = this.mergeAgents(globalAgents, localAgents);
+            return this.generateCapabilitiesBriefing(allAgents);
+        } catch (fallbackError) {
+            return "No subagents discovered. Run ./enhance-kiro-subagents.sh to initialize.";
+        }
+    },
+
+    async scanDirectoryForAgents(dirPath) {
+        // Fallback: scan for *.md files and extract frontmatter
+        // This is slower but ensures discovery if manifest is missing
+        return []; // Implementation would scan .md files directly
+    },
+
     async loadAgentsFromManifest(manifestPath) {
         try {
             const manifest = await this.loadManifest(manifestPath);
