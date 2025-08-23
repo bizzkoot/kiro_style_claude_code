@@ -1,7 +1,7 @@
 # Enhanced Kiro: Autonomous Subagent Integration System
 
 <div align="center">
-    <img src="./ICON.png" alt="Kiro Style TAD Framework Icon" width="150" height="150">
+    <img src="../ICON.png" alt="Kiro Style TAD Framework Icon" width="150" height="150">
     <br><br>
     <h3>🤖 Autonomous Specification-Driven Development</h3>
     <p><em>An advanced system that transforms the <code>/kiro-implementer</code> into a master agent capable of delegating tasks to a vast collection of specialized subagents, while maintaining strict EARS compliance and full requirement traceability.</em></p>
