@@ -209,6 +209,8 @@ This project now includes an advanced subagent integration system that transform
 
 This integration elevates the Kiro framework from specification-driven development to **autonomous specification-driven development**, combining strategic oversight with tactical efficiency.
 
+For more detailed information about this enhanced subagent system, please refer to the [Enhanced Subagents Documentation](Enhanced-Kiro-Subagents/SUBAGENTS_README.md).
+
 ### 🙏 A Huge Thank You to the Community
 
 This powerful enhancement would not be possible without the incredible work of **@davepoon**. Please support their contribution by visiting and starring the original repository:
