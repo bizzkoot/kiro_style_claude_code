@@ -80,11 +80,11 @@ graph TD
     Q --> P
     P -->|✅ Yes| R[✨ Ready for Implementation]
     
-    style A fill:#e1f5fe
-    style G fill:#f3e5f5
-    style K fill:#e8f5e8
-    style O fill:#fff3e0
-    style R fill:#e8f5e8
+    style A fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style G fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style O fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style R fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 2. ⚡ Phase 2: Execution & Smart Completion
@@ -120,10 +120,10 @@ graph TD
     Q --> R[📦 Archive to specs/done/<br/>with semantic hash]
     R --> S[🔄 Generate Retrospective<br/>& Update Knowledge Base]
     
-    style A fill:#e8f5e8
-    style I fill:#fff3e0
-    style N fill:#e1f5fe
-    style S fill:#f3e5f5
+    style A fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style I fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style N fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style S fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 3. 🧠 EARS Framework Integration
@@ -151,10 +151,10 @@ graph TD
         O["💾 Token Efficiency"]
     end
     
-    style C fill:#e8f5e8
-    style E fill:#f3e5f5
-    style H fill:#fff3e0
-    style K fill:#e1f5fe
+    style C fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style E fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
+    style H fill:#fff3e0,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ### 4. 🔄 Resume & Semantic Traceability
@@ -190,10 +190,10 @@ graph TD
         Q["🧪 Test Coverage Maps"]
     end
     
-    style A fill:#fce4ec
-    style F fill:#e1f5fe
-    style K fill:#e8f5e8
-    style L fill:#f3e5f5
+    style A fill:#fce4ec,stroke:#333,stroke-width:1px,color:#000
+    style F fill:#e1f5fe,stroke:#333,stroke-width:1px,color:#000
+    style K fill:#e8f5e8,stroke:#333,stroke-width:1px,color:#000
+    style L fill:#f3e5f5,stroke:#333,stroke-width:1px,color:#000
 ```
 
 ## 🤖 Enhanced Kiro: Autonomous Subagent Integration
