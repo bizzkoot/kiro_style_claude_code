@@ -233,9 +233,11 @@ validate_file_security() {
 }
 calculate_file_checksum() {
     local file_path="$1"
-    if command -v shasum >/dev/null 2>&1; then
+    if command -v shasum >/dev/null 2>&1;
+    then
         shasum -a 256 "$file_path" | cut -d' ' -f1
-    elif command -v sha256sum >/dev/null 2>&1; then
+    elif command -v sha256sum >/dev/null 2>&1;
+    then
         sha256sum "$file_path" | cut -d' ' -f1
     else
         echo "checksum_unavailable"
@@ -253,7 +255,8 @@ validate_repository_authenticity() {
     local expected_patterns=("*.md" "README*" "LICENSE*")
     local pattern_found=false
     for pattern in "${expected_patterns[@]}"; do
-        if find "$temp_dir/collection" -name "$pattern" -type f | head -1 | grep -q .; then
+        if find "$temp_dir/collection" -name "$pattern" -type f | head -1 | grep -q .;
+        then
             pattern_found=true
             break
         fi
@@ -300,18 +303,19 @@ validate_ears_ac_002_01() {
     echo -e "${BLUE}[EARS Validation]${NC} Checking AC-E5A8F3B2-002-01: Capabilities briefing generation"
     local manifest_path="$INSTALLATION_PATH/$MANIFEST_FILE"
     if [[ -f "$manifest_path" ]]; then
-        # Check if manifest contains agent metadata
-        if command -v python3 >/dev/null 2>&1; then
+        # Check if manifest contains the new index/definitions structure
+        if command -v python3 >/dev/null 2>&1;
+        then
             local agent_count
-            agent_count=$(python3 -c "import json; data=json.load(open('$manifest_path')); print(len(data['agents']))" 2>/dev/null || echo "0")
+            agent_count=$(python3 -c "import json; data=json.load(open('$manifest_path')); print(len(data.get('index', [])))" 2>/dev/null || echo "0")
             if [[ $agent_count -gt 0 ]]; then
-                echo -e "${GREEN}✓ PASSED${NC} - Manifest contains $agent_count agents with purpose metadata"
+                echo -e "${GREEN}✓ PASSED${NC} - Manifest contains an index of $agent_count agents with purpose metadata"
                 return 0
             fi
         else
             # Fallback check for JSON structure
-            if grep -q '"agents"' "$manifest_path" && grep -q '"purpose"' "$manifest_path"; then
-                echo -e "${GREEN}✓ PASSED${NC} - Manifest contains agent purpose metadata"
+            if grep -q '"index"' "$manifest_path" && grep -q '"definitions"' "$manifest_path" && grep -q '"purpose"' "$manifest_path"; then
+                echo -e "${GREEN}✓ PASSED${NC} - Manifest contains agent purpose metadata in the new index/definitions format"
                 return 0
             fi
         fi
@@ -543,7 +547,7 @@ download_all_subagents() {
     # Clone the repository with enhanced UX
     echo -e "${BLUE}[Download]${NC} Cloning subagent collection..."
     # Start clone operation with progress feedback
-    git clone "$SUBAGENTS_REPO.git" "$temp_dir/collection" >/dev/null 2>&1 & # Fixed: Removed trailing quote
+    git clone "$SUBAGENTS_REPO.git" "$temp_dir/collection" >/dev/null 2>&1 &
     local clone_pid=$!
     show_spinner $clone_pid "Downloading repository from @davepoon's collection..."
     wait $clone_pid
@@ -588,12 +592,14 @@ download_all_subagents() {
         show_progress_bar $current_file ${#subagent_files[@]} "Processing $filename"
         # TASK-E5A8F3B2-013: Security validation before copying
         if [[ "$SECURITY_ENABLED" == "true" ]]; then
-            if ! validate_file_security "$file" >/dev/null 2>&1; then
+            if ! validate_file_security "$file" >/dev/null 2>&1;
+            then
                 security_blocked+=("$filename")
                 continue
             fi
         fi
-        if cp "$file" "$target_path" 2>/dev/null; then
+        if cp "$file" "$target_path" 2>/dev/null;
+        then
             ((copied_count++))
         else
             failed_downloads+=("$filename")
@@ -700,11 +706,11 @@ get_agent_specialization() {
     fi
     
     # Clean and normalize specialization - preserve original categories
-    specialization=$(echo "$specialization" | sed 's/^["'\'']//;s/["'\'']$//' | tr -d '\n\r')
+    specialization=$(echo "$specialization" | sed 's/^["\x27]//;s/["\x27]$//' | tr -d '\n\r')
     
     # Remove invalid entries and normalize
     case "$specialization" in
-        "category-name"*|"# Required"*)
+        "category-name"*|'# Required'*)
             specialization="general-purpose"
             ;;
         "")
@@ -742,42 +748,42 @@ generate_capabilities_briefing() {
     get_category_display_name() {
         case "$1" in
             # @davepoon's original categories with proper display names
-            "specialized-domains") echo "Specialized Domains" ;;
-            "code-analysis-testing") echo "Code Analysis & Testing" ;;
-            "project-task-management") echo "Project & Task Management" ;;
-            "framework-svelte") echo "Svelte Framework" ;;
-            "quality-security") echo "Quality & Security" ;;
-            "utilities-debugging") echo "Utilities & Debugging" ;;
-            "version-control-git") echo "Version Control & Git" ;;
-            "team-collaboration") echo "Team Collaboration" ;;
-            "language-specialists") echo "Programming Languages" ;;
-            "integration-sync") echo "Integration & Sync" ;;
-            "development-architecture") echo "Development & Architecture" ;;
-            "data-ai") echo "Data & AI" ;;
-            "ci-deployment") echo "CI & Deployment" ;;
-            "documentation-changelogs") echo "Documentation & Changelogs" ;;
-            "workflow-orchestration") echo "Workflow Orchestration" ;;
-            "simulation-modeling") echo "Simulation & Modeling" ;;
-            "infrastructure-operations") echo "Infrastructure & Operations" ;;
-            "sales-marketing") echo "Sales & Marketing" ;;
-            "project-setup") echo "Project Setup" ;;
-            "performance-optimization") echo "Performance & Optimization" ;;
-            "crypto-trading") echo "Crypto & Trading" ;;
-            "security-audit") echo "Security Audit" ;;
-            "context-loading-priming") echo "Context Loading & Priming" ;;
-            "business-finance") echo "Business & Finance" ;;
-            "api-development") echo "API Development" ;;
-            "miscellaneous") echo "Miscellaneous" ;;
-            "database-operations") echo "Database Operations" ;;
-            "monitoring-observability") echo "Monitoring & Observability" ;;
-            "design-experience") echo "Design & Experience" ;;
-            "blockchain-web3") echo "Blockchain & Web3" ;;
-            "typescript-migration") echo "TypeScript Migration" ;;
-            "game-development") echo "Game Development" ;;
-            "automation-workflow") echo "Automation & Workflow" ;;
-            "general-purpose") echo "General Purpose" ;;
+            "specialized-domains") echo "Specialized Domains" ;; 
+            "code-analysis-testing") echo "Code Analysis & Testing" ;; 
+            "project-task-management") echo "Project & Task Management" ;; 
+            "framework-svelte") echo "Svelte Framework" ;; 
+            "quality-security") echo "Quality & Security" ;; 
+            "utilities-debugging") echo "Utilities & Debugging" ;; 
+            "version-control-git") echo "Version Control & Git" ;; 
+            "team-collaboration") echo "Team Collaboration" ;; 
+            "language-specialists") echo "Programming Languages" ;; 
+            "integration-sync") echo "Integration & Sync" ;; 
+            "development-architecture") echo "Development & Architecture" ;; 
+            "data-ai") echo "Data & AI" ;; 
+            "ci-deployment") echo "CI & Deployment" ;; 
+            "documentation-changelogs") echo "Documentation & Changelogs" ;; 
+            "workflow-orchestration") echo "Workflow Orchestration" ;; 
+            "simulation-modeling") echo "Simulation & Modeling" ;; 
+            "infrastructure-operations") echo "Infrastructure & Operations" ;; 
+            "sales-marketing") echo "Sales & Marketing" ;; 
+            "project-setup") echo "Project Setup" ;; 
+            "performance-optimization") echo "Performance & Optimization" ;; 
+            "crypto-trading") echo "Crypto & Trading" ;; 
+            "security-audit") echo "Security Audit" ;; 
+            "context-loading-priming") echo "Context Loading & Priming" ;; 
+            "business-finance") echo "Business & Finance" ;; 
+            "api-development") echo "API Development" ;; 
+            "miscellaneous") echo "Miscellaneous" ;; 
+            "database-operations") echo "Database Operations" ;; 
+            "monitoring-observability") echo "Monitoring & Observability" ;; 
+            "design-experience") echo "Design & Experience" ;; 
+            "blockchain-web3") echo "Blockchain & Web3" ;; 
+            "typescript-migration") echo "TypeScript Migration" ;; 
+            "game-development") echo "Game Development" ;; 
+            "automation-workflow") echo "Automation & Workflow" ;; 
+            "general-purpose") echo "General Purpose" ;; 
             # Fallback for any unrecognized categories
-            *) echo "$(echo "$1" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')" ;;
+            *) echo "$(echo "$1" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')" ;; 
         esac
     }
     
@@ -806,154 +812,167 @@ generate_capabilities_briefing() {
 generate_subagent_manifest() {
     echo -e "${BLUE}[Manifest]${NC} Checking if manifest update is needed..."
     local manifest_path="$INSTALLATION_PATH/$MANIFEST_FILE"
-    
-    # Check if update is needed
+
     if ! should_update_manifest "$manifest_path" "$INSTALLATION_PATH"; then
         echo -e "${GREEN}✓ Manifest is current${NC} - skipping regeneration"
         echo -e "${BLUE}[Manifest]${NC} Using existing manifest: $manifest_path"
-        
-        # Still validate the existing manifest
         if [[ -f "$manifest_path" ]]; then
-            if command -v python3 >/dev/null 2>&1; then
+            if command -v python3 >/dev/null 2>&1;
+            then
                 local agent_count
-                agent_count=$(python3 -c "import json; data=json.load(open('$manifest_path')); print(len(data.get('agents', [])))" 2>/dev/null || echo "0")
-                echo -e "${BLUE}[Manifest]${NC} Total agents: $agent_count"
+                agent_count=$(python3 -c "import json; data=json.load(open('$manifest_path')); print(len(data.get('index', [])))" 2>/dev/null || echo "0")
+                echo -e "${BLUE}[Manifest]${NC} Total agents in index: $agent_count"
             fi
         fi
         return 0
     fi
-    
-    echo -e "${BLUE}[Manifest]${NC} Generating optimized subagent manifest..."
-    local temp_manifest="/tmp/kiro_manifest_$$.json" # Fixed: Added $$ for unique temp file
+
+    echo -e "${BLUE}[Manifest]${NC} Generating Hybrid Manifest (single-line index)..."
+    local temp_manifest="/tmp/kiro_manifest_$$.json"
     local generation_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    # Generate capabilities briefing first
+    
     echo -e "${BLUE}[Manifest]${NC} Pre-computing capabilities briefing..."
     local capabilities_briefing
-    capabilities_briefing=$(generate_capabilities_briefing)
-    
-    # Start building optimized manifest with pre-computed briefing
+    capabilities_briefing=$(generate_capabilities_briefing | sed 's/"/\\"/g' | tr -d '\n')
+
     cat > "$temp_manifest" << EOF
 {
-  "version": "1.1.0",
+  "version": "2.0.0-hybrid",
   "generated_at": "$generation_time",
-  "installation_path": "$INSTALLATION_PATH",
+  "attribution": "Subagents from @davepoon/claude-code-subagents-collection",
   "capabilities_briefing": "$capabilities_briefing",
-  "performance": {
-    "discovery_optimized": true,
-    "briefing_precomputed": true,
-    "target_load_time_ms": 50,
-    "last_optimization": "$generation_time"
-  },
-  "attribution": {
-    "original_collection": "@davepoon/claude-code-subagents-collection",
-    "repository_url": "$SUBAGENTS_REPO",
-    "author": "@davepoon - Community Hero",
-    "thanks": "🙏 SPECIAL THANKS TO @davepoon FOR THE BRILLIANT CLAUDE-CODE-SUBAGENTS-COLLECTION! 🙏",
-    "impact": "This enhanced integration system would not be possible without their incredible contribution to the Claude Code community!",
-    "community_support": "Please visit and star the original repository to support @davepoon's work!",
-    "license_acknowledgment": "Original collection licensing and terms apply to all downloaded subagents"
-  },
-  "agents": [
+  "index": [
 EOF
-    # Find all subagent markdown files
+
     local subagent_files=()
     while IFS= read -r -d '' file; do
         subagent_files+=("$file")
-    done < <(find "$INSTALLATION_PATH" -name "*.md" -type f -print0)
-    echo -e "${BLUE}[Manifest]${NC} Processing ${#subagent_files[@]} subagent files..."
+    done < <(find "$INSTALLATION_PATH" -name "*.md" -type f -print0 2>/dev/null)
+    
+    echo -e "${BLUE}[Manifest]${NC} Processing ${#subagent_files[@]} subagent files for index..."
     local agent_count=0
     for file in "${subagent_files[@]}"; do
-        if [[ "$file" == *"$MANIFEST_FILE"* ]]; then
-            continue  # Skip manifest file itself
-        fi
+        if [[ "$file" == *"$MANIFEST_FILE"* ]]; then continue; fi
+        
         local filename=$(basename "$file")
         local agent_name="${filename%.md}"
-        local file_hash=""
-        # Calculate file hash for integrity checking (TASK-E5A8F3B2-013)
-        file_hash=$(calculate_file_checksum "$file")
-        # Additional security metadata
-        local file_size=""
-        if [[ -f "$file" ]]; then
-            file_size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo "0")
-        fi
-        # Extract purpose from frontmatter or first few lines
+        
         local purpose="AI agent specialization"
         local specialization="General Purpose"
-        # Try to extract from YAML frontmatter
         if head -n 20 "$file" | grep -q '^---'; then
-            # Extract purpose from frontmatter (try description first, then purpose)
             local frontmatter_purpose
-            frontmatter_purpose=$(awk "/^description:/ {sub(/^description: */, \"\"); print; exit}" "$file")
+            frontmatter_purpose=$(awk '/^description:/ {sub(/^description: */, ""); print; exit}' "$file")
             if [[ -z "$frontmatter_purpose" ]]; then
-                frontmatter_purpose=$(awk "/^purpose:/ {sub(/^purpose: */, \"\"); print; exit}" "$file")
+                frontmatter_purpose=$(awk '/^purpose:/ {sub(/^purpose: */, ""); print; exit}' "$file")
             fi
-            if [[ -n "$frontmatter_purpose" ]]; then
-                purpose="$frontmatter_purpose"
-            fi
-            # Extract specialization from frontmatter (try category first, then specialization)
+            if [[ -n "$frontmatter_purpose" ]]; then purpose="$frontmatter_purpose"; fi
+            
             local frontmatter_spec
-            frontmatter_spec=$(awk "/^category:/ {sub(/^category: */, \"\"); print; exit}" "$file")
+            frontmatter_spec=$(awk '/^category:/ {sub(/^category: */, ""); print; exit}' "$file")
             if [[ -z "$frontmatter_spec" ]]; then
-                frontmatter_spec=$(awk "/^specialization:/ {sub(/^specialization: */, \"\"); print; exit}" "$file")
+                frontmatter_spec=$(awk '/^specialization:/ {sub(/^specialization: */, ""); print; exit}' "$file")
             fi
-            if [[ -n "$frontmatter_spec" ]]; then
-                specialization="$frontmatter_spec"
-            fi
+            if [[ -n "$frontmatter_spec" ]]; then specialization="$frontmatter_spec"; fi
         else
-            # Try to extract from first header or description
             local first_line
             first_line=$(head -n 10 "$file" | grep -E '^# |^## |^### ' | head -n 1 | sed 's/^#* *//')
-            if [[ -n "$first_line" ]]; then
-                purpose="$first_line"
+            if [[ -n "$first_line" ]]; then purpose="$first_line"; fi
+        fi
+        
+        purpose=$(echo "$purpose" | sed -e 's/^["\x27]//' -e 's/["\x27]$//' | tr -d '\n\r' | sed 's/"/\\"/g')
+        specialization=$(echo "$specialization" | sed -e 's/^["\x27]//' -e 's/["\x27]$//' | tr -d '\n\r' | sed 's/"/\\"/g')
+        
+        ((agent_count++))
+        local agent_id
+        agent_id=$(printf "subagent_%03d" $agent_count)
+
+        if [[ $agent_count -gt 1 ]]; then echo "," >> "$temp_manifest"; fi
+
+        printf '    { "id": "%s", "name": "%s", "specialization": "%s", "purpose": "%s" }' "$agent_id" "$agent_name" "$specialization" "$purpose" >> "$temp_manifest"
+        echo -n "."
+    done
+    echo
+
+    cat >> "$temp_manifest" << EOF
+
+  ],
+  "definitions": {
+EOF
+
+    echo -e "${BLUE}[Manifest]${NC} Processing ${#subagent_files[@]} subagent files for definitions..."
+    agent_count=0
+    for file in "${subagent_files[@]}"; do
+        if [[ "$file" == *"$MANIFEST_FILE"* ]]; then continue; fi
+
+        local filename=$(basename "$file")
+        local agent_name="${filename%.md}"
+
+        local purpose="AI agent specialization"
+        local specialization="General Purpose"
+        if head -n 20 "$file" | grep -q '^---'; then
+            local frontmatter_purpose
+            frontmatter_purpose=$(awk '/^description:/ {sub(/^description: */, ""); print; exit}' "$file")
+            if [[ -z "$frontmatter_purpose" ]]; then
+                frontmatter_purpose=$(awk '/^purpose:/ {sub(/^purpose: */, ""); print; exit}' "$file")
             fi
+            if [[ -n "$frontmatter_purpose" ]]; then purpose="$frontmatter_purpose"; fi
+
+            local frontmatter_spec
+            frontmatter_spec=$(awk '/^category:/ {sub(/^category: */, ""); print; exit}' "$file")
+            if [[ -z "$frontmatter_spec" ]]; then
+                frontmatter_spec=$(awk '/^specialization:/ {sub(/^specialization: */, ""); print; exit}' "$file")
+            fi
+            if [[ -n "$frontmatter_spec" ]]; then specialization="$frontmatter_spec"; fi
+        else
+            local first_line
+            first_line=$(head -n 10 "$file" | grep -E '^# |^## |^### ' | head -n 1 | sed 's/^#* *//')
+            if [[ -n "$first_line" ]]; then purpose="$first_line"; fi
         fi
-        # Clean up purpose and specialization (remove quotes and normalize)
-        purpose=$(echo "$purpose" | sed 's/^["'']//;s/["'']$//' | tr -d '\n\r')
-        specialization=$(echo "$specialization" | sed 's/^["'']//;s/["'']$//' | tr -d '\n\r')
-        # Add comma if not first agent
-        if [[ $agent_count -gt 0 ]]; then
-            echo "," >> "$temp_manifest"
-        fi
-        # Add agent entry with security metadata
+
+        purpose=$(echo "$purpose" | sed -e 's/^["\x27]//' -e 's/["\x27]$//' | tr -d '\n\r' | sed 's/"/\\"/g')
+        specialization=$(echo "$specialization" | sed -e 's/^["\x27]//' -e 's/["\x27]$//' | tr -d '\n\r' | sed 's/"/\\"/g')
+
+        ((agent_count++))
+        local agent_id
+        agent_id=$(printf "subagent_%03d" $agent_count)
+
+        if [[ $agent_count -gt 1 ]]; then echo "," >> "$temp_manifest"; fi
+
         cat >> "$temp_manifest" << EOF
-    {
+    "$agent_id": {
       "name": "$agent_name",
       "file_path": "./$filename",
       "purpose": "$purpose",
-      "specialization": "$specialization",
-      "security": {
-        "file_hash": "sha256:$file_hash",
-        "file_size_bytes": $file_size,
-        "validation_status": "passed",
-        "last_validated": "$generation_time"
-      }
+      "specialization": "$specialization"
     }
 EOF
-        ((agent_count++))
         echo -n "."
     done
-    # Close agents array and JSON
+    echo
+
     cat >> "$temp_manifest" << EOF
-  ],
+
+  },
   "metadata": {
-    "total_agents": $agent_count,
-    "last_updated": "$generation_time",
-    "schema_version": "1.0.0"
+    "total_agents": $agent_count
   }
 }
 EOF
-    echo  # New line after dots
-    # Validate JSON syntax
-    if command -v python3 >/dev/null 2>&1; then
-        if python3 -m json.tool "$temp_manifest" >/dev/null 2>&1; then
+
+    echo
+    if command -v python3 >/dev/null 2>&1;
+    then
+        if python3 -m json.tool "$temp_manifest" >/dev/null 2>&1;
+        then
             echo -e "${GREEN}✓ JSON validation passed${NC}"
         else
             echo -e "${RED}✗ JSON validation failed${NC}"
+            cat "$temp_manifest"
             rm -f "$temp_manifest"
             return 1
         fi
     fi
-    # Move to final location
+
     if mv "$temp_manifest" "$manifest_path"; then
         echo -e "${GREEN}✓ Manifest generated${NC}: $manifest_path"
         echo -e "${BLUE}[Manifest]${NC} Total agents: $agent_count"
