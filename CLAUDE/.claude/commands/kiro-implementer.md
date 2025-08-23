@@ -24,6 +24,19 @@ Before generating tasks.md, conduct targeted implementation clarification:
 - Risk tolerance for complex vs simple implementation approaches
 - EARS compliance validation tools and frameworks available
 
+### Pre-Implementation User Approval Gate
+After the Pre-Tasks Q&A, I will summarize my understanding and ask for approval before proceeding.
+
+**Summary Example:**
+"Based on our Q&A, my understanding is:
+- **Scope:** We will focus on the MVP scope, covering EARS priorities [P1, P2].
+- **Approach:** We will use a [BDD Test Framework] for validation.
+- **Deployment:** The initial deployment will be to [Staging Environment].
+
+Is this understanding correct? Shall I proceed with context validation and implementation planning?"
+
+**Action:** Do NOT proceed to the next step until the user gives explicit approval (e.g., "yes", "correct", "proceed").
+
 ### CLAUDE.md Context Validation (Pre-Implementation)
 Before generating tasks.md, validate if current project context supports implementation:
 

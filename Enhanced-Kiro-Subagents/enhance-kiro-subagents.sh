@@ -820,44 +820,94 @@ show_backup_summary() {
     fi
 }
 
+show_other_implementers_summary() {
+    local global_path="$HOME/.claude/commands/kiro-implementer.md"
+    local project_path="$SCRIPT_DIR/../CLAUDE/.claude/commands/kiro-implementer.md"
+    local other_implementers_found=false
+    local message=""
+
+    # Check for other implementers based on installation type
+    if [[ "$INSTALLATION_PATH" == "$HOME/.claude/agents" ]]; then
+        # Global install was chosen, check for project-level one
+        if [[ -f "$project_path" ]]; then
+            message+="A project-specific kiro-implementer.md was also found at:\n"
+            message+="  ${BLUE}$project_path${NC}\n\n"
+            message+="This project-level command will be used instead of the global one you just installed when you are in this project."
+            other_implementers_found=true
+        fi
+    elif [[ "$INSTALLATION_PATH" == "$SCRIPT_DIR/.claude/agents" ]]; then
+        # Project install was chosen, check for global one
+        if [[ -f "$global_path" ]]; then
+            message+="A global kiro-implementer.md was also found at:\n"
+            message+="  ${BLUE}$global_path${NC}\n\n"
+            message+="The project-specific command you just installed will always take precedence over the global one in this project."
+            other_implementers_found=true
+        fi
+    fi
+
+    if [[ "$other_implementers_found" == "true" ]]; then
+        print_header "ADDITIONAL IMPLEMENTERS DETECTED" "ℹ️" "$YELLOW"
+        print_item "${YELLOW}For your information:${NC}"
+        print_item ""
+        # Using printf to handle newlines in message
+        printf "  %b\n" "$message"
+        print_item ""
+        print_item "Claude prioritizes project-level commands over global commands."
+        print_footer
+    fi
+}
+
+
 # Kiro Implementer Generation (TASK-E5A8F3B2-004)
 generate_kiro_implementer() {
     echo -e "${BLUE}[Template]${NC} Generating kiro-implementer.md from enhanced template..."
     local source_template="$SCRIPT_DIR/enhanced-kiro-implementer.md"
     local global_path="$HOME/.claude/commands/kiro-implementer.md"
     local project_path="$SCRIPT_DIR/../CLAUDE/.claude/commands/kiro-implementer.md"
-    
+
     # Check if source template exists
     if [[ ! -f "$source_template" ]]; then
         echo -e "${RED}✗ Source template not found${NC}: $source_template"
         return 1
     fi
     echo -e "${BLUE}[Template]${NC} Using source template: $source_template"
-    
-    # Generate for global installation if global directory exists
-    if [[ -d "$HOME/.claude/commands" ]]; then
-        # Create backup to desktop if file exists
-        create_backup_to_desktop "$global_path" "global"
-        
-        cp "$source_template" "$global_path"
-        echo -e "${GREEN}✓ Generated global kiro-implementer.md${NC}: $global_path"
+
+    local target_path=""
+    local install_type=""
+
+    # Determine target path based on user's choice
+    if [[ "$INSTALLATION_PATH" == "$HOME/.claude/agents" ]]; then
+        install_type="global"
+        target_path="$global_path"
+    elif [[ "$INSTALLATION_PATH" == "$SCRIPT_DIR/.claude/agents" ]]; then
+        install_type="project"
+        target_path="$project_path"
     fi
-    
-    # Generate for project-specific installation if project directory exists
-    if [[ -d "$(dirname "$project_path")" ]]; then
-        # Create backup to desktop if file exists
-        create_backup_to_desktop "$project_path" "project"
-        
-        cp "$source_template" "$project_path"
-        echo -e "${GREEN}✓ Generated project kiro-implementer.md${NC}: $project_path"
-    fi
-    
-    # If neither global nor project directory exists, create in current directory for reference
-    if [[ ! -d "$HOME/.claude/commands" ]] && [[ ! -d "$(dirname "$project_path")" ]]; then
-        local fallback_path="$SCRIPT_DIR/../kiro-implementer.md"
-        cp "$source_template" "$fallback_path"
-        echo -e "${YELLOW}⚠ Created fallback kiro-implementer.md${NC}: $fallback_path"
-        echo -e "${YELLOW}💡 Install globally or copy to your project's .claude/commands/ directory${NC}"
+
+    if [[ -n "$target_path" ]]; then
+        local target_dir
+        target_dir="$(dirname "$target_path")"
+        if [[ -d "$target_dir" ]]; then
+            # Create backup to desktop if file exists
+            create_backup_to_desktop "$target_path" "$install_type"
+            
+            cp "$source_template" "$target_path"
+            echo -e "${GREEN}✓ Generated $install_type kiro-implementer.md${NC}: $target_path"
+        else
+            echo -e "${YELLOW}⚠ The $install_type command directory does not exist at $target_dir.${NC}"
+            echo -e "${YELLOW}💡 Cannot install the enhanced kiro-implementer.md.${NC}"
+        fi
+    else
+        # This case is hit if INSTALLATION_PATH is not one of the expected values.
+        # This is the original fallback logic.
+        if [[ ! -d "$HOME/.claude/commands" ]] && [[ ! -d "$(dirname "$project_path")" ]]; then
+            local fallback_path="$SCRIPT_DIR/../kiro-implementer.md"
+            cp "$source_template" "$fallback_path"
+            echo -e "${YELLOW}⚠ Created fallback kiro-implementer.md${NC}: $fallback_path"
+            echo -e "${YELLOW}💡 Claude command directories not found. Install globally or copy to your project's .claude/commands/ directory.${NC}"
+        else
+            echo -e "${YELLOW}⚠ Could not determine installation location for kiro-implementer.md. Skipping generation.${NC}"
+        fi
     fi
     
     return 0
@@ -928,6 +978,9 @@ main() {
     
     # Show backup summary at the end
     show_backup_summary
+
+    # Show summary of other implementer files found
+    show_other_implementers_summary
 }
 # Script entry point
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

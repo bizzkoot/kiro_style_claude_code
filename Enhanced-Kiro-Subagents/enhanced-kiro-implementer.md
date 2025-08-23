@@ -4,7 +4,7 @@
 Enhanced implementer combines Kiro TAD's specification-driven rigor with dynamic subagent discovery and EARS-compliant delegation through 3-phase execution.
 
 **Enhanced Capabilities:**
-- **Dynamic Discovery**: Auto-discovers available subagents from `.claude/agents/` manifest
+- **Dynamic Discovery**: Auto-discovers subagents from global (`~/.claude/agents/`) and project (`./.claude/agents/`) manifests. Project-specific agents override global ones.
 - **EARS Delegation**: Preserves behavioral contracts during task routing
 - **3-Phase Execution**: Discovery → Planning → Implementation with autonomous decision-making
 - **Performance Optimized**: Sub-200ms agent discovery through manifest caching
@@ -12,26 +12,27 @@ Enhanced implementer combines Kiro TAD's specification-driven rigor with dynamic
 ## Command Usage
 ```
 /kiro-implementer [feature-name] [options]
-/kiro-implementer resume [feature-name] [phase]
+/kiro-implementer resume [feature-name]
 ```
 
 **Options:**
 - `start` - Begin new implementation from Phase 1
-- `resume` - Continue existing implementation
+- `resume` - Continue an existing implementation. Loads the previously discovered subagent capabilities from `.claude/implementer-state/[feature-name].json` to ensure context is preserved.
 - `without-approval` - Skip user approval for experienced teams
 
 ## 3-Phase Execution Strategy
 
-### Phase 1: Dynamic Discovery
-**EARS Context**: WHEN Phase 1 Discovery starts, SHALL scan .claude/agents/ directory and create internal "Capabilities Briefing"
+### Phase 1: Dynamic Discovery & State Persistence
+**EARS Context**: WHEN Phase 1 Discovery starts, SHALL scan global and project-local agent directories (~/.claude/agents/, ./.claude/agents/), create a unified "Capabilities Briefing", and persist it to a state file.
 
 **Auto-Discovery Process:**
-1. **Environment Survey**: Scans `.claude/agents/` for available subagents
-2. **Capability Mapping**: Extracts purpose/specialization from manifest
-3. **Performance Loading**: Uses cached manifest for sub-200ms discovery
-4. **Strategic Assessment**: Analyzes requirements against available capabilities
+1. **Environment Survey**: Scans global (`~/.claude/agents/`) and project-local (`./.claude/agents/`) directories for available subagents.
+2. **Capability Mapping**: Extracts purpose/specialization from the manifest.
+3. **Performance Loading**: Uses the cached manifest for sub-200ms discovery.
+4. **State Persistence**: Saves the discovered "Capabilities Briefing" to `.claude/implementer-state/[feature-name].json`. This file acts as a state record for the `resume` command.
+5. **Strategic Assessment**: Analyzes requirements against the available capabilities.
 
-**Discovery Output**: Internal capabilities briefing with subagent purposes and specializations.
+**Discovery Output**: A persisted capabilities briefing located at `.claude/implementer-state/[feature-name].json`.
 
 ### Phase 2: Strategic Planning
 **EARS Context**: WHEN Phase 2 Planning executes, SHALL decompose EARS DoD requirements and map appropriate subagents with delegation rationale
@@ -60,19 +61,43 @@ Enhanced implementer combines Kiro TAD's specification-driven rigor with dynamic
 **Architecture**: JSON manifest with lazy-loaded capabilities briefing
 
 ### Currently Available Subagents
-*Auto-discovered from `.claude/agents/subagents-manifest.json`:*
+*Auto-discovered from global and project-local manifests (`~/.claude/agents/subagents-manifest.json`, `./.claude/agents/subagents-manifest.json`):*
 
 ```javascript
 // Phase 1: Discovery Engine (Optimized)
 const discoveryEngine = {
     async scanAgents() {
-        const manifestPath = './.claude/agents/subagents-manifest.json';
+        const globalManifestPath = '~/.claude/agents/subagents-manifest.json';
+        const localManifestPath = './.claude/agents/subagents-manifest.json';
+        
+        try {
+            const globalAgents = await this.loadAgentsFromManifest(globalManifestPath);
+            const localAgents = await this.loadAgentsFromManifest(localManifestPath);
+            
+            // Merge agents, with local agents overriding global ones
+            const allAgents = this.mergeAgents(globalAgents, localAgents);
+            
+            return this.generateCapabilitiesBriefing(allAgents);
+        } catch (error) {
+            // Fallback to file system scan if manifests are unavailable
+            return this.fallbackFileSystemScan(); 
+        }
+    },
+
+    async loadAgentsFromManifest(manifestPath) {
         try {
             const manifest = await this.loadManifest(manifestPath);
-            return this.generateCapabilitiesBriefing(manifest.agents);
+            return manifest.agents || [];
         } catch (error) {
-            return this.fallbackFileSystemScan();
+            return []; // Return empty array if a manifest is not found
         }
+    },
+
+    mergeAgents(globalAgents, localAgents) {
+        const agentMap = new Map();
+        globalAgents.forEach(agent => agentMap.set(agent.name, agent));
+        localAgents.forEach(agent => agentMap.set(agent.name, agent)); // Overwrites global with local
+        return Array.from(agentMap.values());
     },
     
     generateCapabilitiesBriefing(agents) {
@@ -82,6 +107,7 @@ const discoveryEngine = {
         ).join('\n');
     }
 };
+
 ```
 
 **Discovery Metrics** (Current Installation):
@@ -133,6 +159,19 @@ Before generating tasks.md, conduct targeted implementation clarification:
 - Testing strategy preferences (unit/integration/e2e) with EARS-to-BDD translation capabilities
 - Risk tolerance for complex vs simple implementation approaches
 - EARS compliance validation tools and frameworks available
+
+## Pre-Implementation User Approval Gate
+After the Pre-Tasks Q&A, I will summarize my understanding and ask for approval before proceeding.
+
+**Summary Example:**
+"Based on our Q&A, my understanding is:
+- **Scope:** We will focus on the MVP scope, covering EARS priorities [P1, P2].
+- **Approach:** We will use a [BDD Test Framework] for validation.
+- **Deployment:** The initial deployment will be to [Staging Environment].
+
+Is this understanding correct? Shall I proceed with context validation and implementation planning?"
+
+**Action:** Do NOT proceed to the next step until the user gives explicit approval (e.g., "yes", "correct", "proceed").
 
 ## CLAUDE.md Context Validation (Pre-Implementation)
 Before generating tasks.md, validate if current project context supports implementation:
@@ -197,8 +236,8 @@ Timeline: {Estimate from NFRs} | Quality Gates: {From architecture}
 # 2. Start implementation with 3-phase execution
 /kiro-implementer [feature-name] start
 
-# 3. Resume from specific phase if needed
-/kiro-implementer resume [feature-name] "Phase 2"
+# 3. Resume an interrupted implementation
+/kiro-implementer resume [feature-name]
 ```
 
 ### Quality Assurance Integration
@@ -237,12 +276,12 @@ After generating tasks.md, explicitly request user approval:
 - Verify implementation against specific AC references in task details
 
 **Task Updates**: Change [ ] to [x], update progress count
-**Smart Completion** (100%): Auto-validate vs requirements+design, archive to specs/done/
+**Smart Completion** (100%): Auto-validate vs requirements+design, archive to specs/done/, and clean up the temporary state file (`.claude/implementer-state/[feature-name].json`).
 
 ## Resume Commands
 - /kiro-researcher resume "{feature-name}" - Continue requirements analysis
 - /kiro-architect resume "{feature-name}" - Continue design work  
-- /kiro-implementer resume "{feature-name}" - Continue implementation planning
+- /kiro-implementer resume "{feature-name}" - Continue implementation. This command loads the persisted subagent capabilities from `.claude/implementer-state/[feature-name].json` to ensure a consistent state.
 
 **Attribution**: Enhanced integration powered by @davepoon's claude-code-subagents-collection
 
