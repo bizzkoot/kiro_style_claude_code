@@ -1,21 +1,31 @@
 # 🤖 Kiro Agent - Traceable Agentic Development (TAD)
 
-> **Kiro** brings structure, traceability, and consistency to your development workflow by automating the creation of high-quality specification documents with EARS syntax through a simple Gemini CLI command.
+> **Kiro** brings structure, traceability, and expert delegation to your development workflow. It automates the creation of high-quality specification documents and leverages a vast library of specialist personas to execute tasks.
 
 ## What is TAD?
 
-**Traceable Agentic Development (TAD)** is a methodology where every piece of work is semantically linked to clear requirements and deliberate design decisions, creating a complete traceability chain from concept to implementation and completion using EARS (Easy Approach to Requirements Syntax).
+**Traceable Agentic Development (TAD)** is a methodology where every piece of work is semantically linked to clear requirements and deliberate design decisions. It uses EARS (Easy Approach to Requirements Syntax) for precision and leverages a library of specialist **Personas** with **Stateful Persona Delegation** to ensure the right agent is assigned to every task, creating a complete traceability chain from concept to implementation.
 
 ## 🌟 Key Benefits
 
 | Benefit | Description |
 |---|---|
 | 📝 **Automatic Documentation** | Generate comprehensive specs in seconds with EARS syntax and intelligent context awareness |
+| 🤖 **Expert Delegation** | Automatically assign tasks to a library of 295+ specialist personas |
 | 🔄 **Complete Traceability** | Every task links back to design and requirements with semantic connections |
 | 🧠 **Context Preservation** | Reload complete feature context at any time with optimized token usage |
 | 🔍 **Built-in Verification** | Validate traceability before coding begins with smart checks |
 | 📊 **Progress Tracking** | Monitor task status and feature completion with EARS compliance |
 | 📈 **Smart Completion** | Validate, measure, and archive completed features with quality metrics |
+| 🎭 **Stateful Persona Delegation** | Automatically assign and track tasks to specialist personas, ensuring expertise and continuity |
+
+## 🙏 Special Thanks to @davepoon
+
+The powerful Persona Delegation feature is made possible by the incredible work of community hero **@davepoon**. Their brilliant `claude-code-subagents-collection` provides the vast library of over 295 specialized agents that Kiro uses to delegate tasks.
+
+**Please support their invaluable contribution:**
+- 🌟 **Star the repository**: [davepoon/claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)
+- 🙏 Show your appreciation for their work in making enhanced AI development possible.
 
 ## 🚀 Getting Started
 
@@ -33,7 +43,7 @@ Install Kiro commands globally to use in any project with Gemini CLI:
 git clone https://github.com/bizzkoot/kiro_style_claude_code.git
 cd kiro_style_claude_code/gemini-tools
 
-# Run global installation script
+# Run global installation script (installs Kiro commands and Persona Library)
 ./gemini-install-global.sh
 
 # Clean up
@@ -94,7 +104,7 @@ rm -rf kiro_style_claude_code
 
 ## 💡 How to Use Kiro with Gemini CLI
 
-Kiro operates as a simple command for the Gemini CLI using a TOML-based system prompt. No complex setup or servers required!
+Kiro operates as an intelligent command for the Gemini CLI using a TOML-based system prompt with integrated persona delegation. The system automatically selects from 295+ specialist personas to handle different aspects of your development workflow. No complex setup or servers required!
 
 ### 🚀 Initialize Gemini CLI (Per-Project Only)
 
@@ -103,22 +113,29 @@ For per-project installations, start with project setup:
 # Start the Gemini CLI
 gemini
 
-# Initialize new project with Kiro workflow
+# Initialize new project with Kiro workflow and persona library
 /kiro-init
 ```
 
-> **💡 Why this matters:** This copies the Kiro template to your project and sets up the directory structure for specification-driven development.
+> **💡 Why this matters:** This copies the Kiro template to your project and sets up the directory structure for specification-driven development with persona delegation support.
 
-### Using the /kiro Command
+### Using the /kiro Command with Persona Delegation
 
-After initialization, use the main `/kiro` command:
+After initialization, use the main `/kiro` command. The system will automatically generate specifications AND assign specialist personas to each task:
+
 ```bash
 # Start the Gemini CLI (if not already running)
 gemini
 
-# Use the kiro command with your feature description
+# Use the kiro command - it will generate specs AND persona assignments
 /kiro "User Authentication System with two-factor authentication"
 ```
+
+**What happens automatically:**
+1. **Requirements Analysis** - Generated with EARS syntax
+2. **Design Architecture** - Created with behavioral contracts
+3. **Persona Assignment** - Each task automatically assigned to specialist (e.g., security-expert, database-architect, frontend-developer)
+4. **Task Execution** - When you work on tasks, the system loads the assigned specialist persona
 
 ### Command Examples
 
@@ -128,17 +145,27 @@ Set up Kiro workflow in your project:
 /kiro-init
 ```
 
-#### 2. Creating a New Feature
-Generate comprehensive specification documents with EARS syntax:
+#### 2. Creating a New Feature with Automatic Persona Assignment
+Generate comprehensive specification documents with EARS syntax and persona delegation:
 ```
 /kiro "User Authentication with Two-Factor Auth supporting SMS and authenticator apps"
 ```
+**Generated files:**
+- `requirements.md` - EARS-formatted requirements
+- `design.md` - Technical architecture
+- `persona-delegation.json` - Maps each task to specialist personas
+- `tasks.md` - Implementation checklist
 
-#### 3. Resuming Work on a Feature
-Continue work on an existing feature:
+#### 3. Resuming Work with Persona Context
+Continue work on an existing feature with full persona context:
 ```
 /kiro resume "User Authentication" 
 ```
+**What happens:**
+- Loads complete feature context
+- Identifies next pending task
+- Automatically adopts the assigned specialist persona
+- Continues implementation with expert knowledge
 
 #### 4. Complex Feature with Context
 Provide detailed context for better specifications:
@@ -148,8 +175,8 @@ Provide detailed context for better specifications:
 
 ## 📚 Advanced Usage Patterns
 
-### Chain-of-Thought Reasoning for Complex Features
-When describing complex features, provide structured context:
+### Intelligent Persona Selection for Complex Features
+When describing complex features, provide structured context. The system will analyze requirements and assign appropriate specialists:
 ```
 /kiro "Payment Processing System with the following considerations:
 1. Core functionality: Stripe integration, multiple payment methods, subscription billing
@@ -158,6 +185,13 @@ When describing complex features, provide structured context:
 4. Technical constraints: PCI compliance, fraud detection, international currency support"
 ```
 
+**Automatic Persona Assignment Example:**
+- Stripe integration → `payment-integration` specialist
+- PCI compliance → `security-auditor` specialist  
+- Database design → `database-architect` specialist
+- Frontend UX → `ui-ux-designer` specialist
+- API design → `backend-architect` specialist
+
 ### EARS-Enhanced Specifications
 The kiro command automatically generates specifications with EARS syntax:
 - **WHEN** [trigger condition], the system **SHALL** [specific action]
@@ -165,20 +199,26 @@ The kiro command automatically generates specifications with EARS syntax:
 - **IF** [conditional state], the system **SHALL** [conditional response]
 - **WHERE** [constraint boundary], the system **SHALL** [bounded action]
 
-### Resume Feature Context
-To continue work on an existing feature:
+### Stateful Persona Delegation
+To continue work on an existing feature with persona context:
 ```
 /kiro resume "Feature Name"
 ```
 
-## 📋 Command Reference
+**Stateful Benefits:**
+- **Consistency**: Same specialist handles related tasks
+- **Context Preservation**: Specialist knowledge maintained across sessions
+- **Quality Assurance**: Each persona brings domain expertise
+- **Traceability**: Clear record of who worked on what
 
-| Command | Purpose | Example |
-|---|---|---|
-| `/kiro-init` | Initialize new project with Kiro template | `/kiro-init` |
-| `/kiro "Feature Name"` | Generate new feature specifications | `/kiro "User Dashboard"` |
-| `/kiro resume "Feature Name"` | Resume work on existing feature | `/kiro resume "Payment System"` |
-| Natural language follow-ups | Task updates, completion, etc. | "Mark task TASK-001 as completed" |
+## 📋 Command Reference with Persona Integration
+
+| Command | Purpose | Persona Features | Example |
+|---|---|---|---|
+| `/kiro-init` | Initialize new project with Kiro template and persona library | Sets up 295+ specialist personas | `/kiro-init` |
+| `/kiro "Feature Name"` | Generate specifications + persona assignments | Auto-assigns tasks to specialists | `/kiro "User Dashboard"` |
+| `/kiro resume "Feature Name"` | Resume work with persona context | Loads assigned specialist for next task | `/kiro resume "Payment System"` |
+| Natural language follow-ups | Task updates, completion, etc. | Maintains persona context | "Mark task TASK-001 as completed" |
 
 ## 🗂️ Generated Documentation Structure
 
@@ -187,43 +227,105 @@ specs/
 └── user-authentication-with-two-factor-auth/
     ├── requirements.md  # The WHY and WHAT with EARS syntax
     ├── design.md        # The HOW with EARS behavioral contracts
+    ├── persona-delegation.json # The WHO - maps tasks to specialist personas
     └── tasks.md         # The execution plan with EARS DoD
 
 specs/done/
 └── DONE_20250818_a1b2c3d4_.../  # Archived completed features
     ├── requirements.md
     ├── design.md
+    ├── persona-delegation.json
     ├── tasks.md
     ├── validation.md
     ├── metrics.md
     └── retrospective.md
 ```
 
-## 🔧 Development Workflow
+## 🔧 Development Workflow with Persona Delegation
 
-### Phase 1: Specification Generation
-1. Use `/kiro "Feature Name"` to generate all three specification documents
-2. Review and approve requirements.md
-3. Review and approve design.md  
-4. Review and approve tasks.md
+```mermaid
+graph TB
+    A["/kiro 'Feature Name'"] --> B{Generate Specifications}
+    B --> C[requirements.md<br/>📋 EARS Requirements]
+    B --> D[design.md<br/>🏗️ Architecture & ADRs]
+    B --> E[persona-delegation.json<br/>👥 Task-to-Specialist Mapping]
+    B --> F[tasks.md<br/>✅ Implementation Checklist]
+    
+    C --> G[👤 User Review & Approval]
+    D --> G
+    E --> G
+    F --> G
+    
+    G --> H{All Approved?}
+    H -->|No| I[🔄 Revise & Re-approve]
+    I --> G
+    H -->|Yes| J[🚀 Begin Implementation]
+    
+    J --> K[📋 Select Next Task]
+    K --> L[🤖 Consult persona-delegation.json]
+    L --> M[👨‍💻 Adopt Specialist Persona]
+    M --> N[⚡ Execute with Domain Expertise]
+    
+    N --> O{Task Complete?}
+    O -->|No| P[🔄 Continue Implementation]
+    P --> N
+    O -->|Yes| Q[✅ Mark Task Complete]
+    
+    Q --> R{More Tasks?}
+    R -->|Yes| K
+    R -->|No| S[🔍 Expert Validation]
+    
+    S --> T[📦 Archive to specs/done/]
+    T --> U[🎉 Feature Complete!]
+    
+    style A fill:#1976d2,stroke:#0d47a1,stroke-width:2px,color:#ffffff
+    style B fill:#7b1fa2,stroke:#4a148c,stroke-width:2px,color:#ffffff
+    style C fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style D fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style E fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#ffffff
+    style F fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style M fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#ffffff
+    style S fill:#0277bd,stroke:#01579b,stroke-width:2px,color:#ffffff
+    style U fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#ffffff
+```
 
-### Phase 2: Implementation
-1. Follow the tasks in sequence from tasks.md
+### Phase 1: Specification & Persona Assignment
+1. Use `/kiro "Feature Name"` to generate four key documents:
+   - `requirements.md` - EARS-formatted requirements  
+   - `design.md` - Technical architecture
+   - `persona-delegation.json` - Task-to-specialist mapping
+   - `tasks.md` - Implementation checklist
+2. Review and approve each specification document
+3. Review persona assignments in `persona-delegation.json`
+
+### Phase 2: Delegated Implementation  
+1. For each task, the system automatically:
+   - Consults `persona-delegation.json`
+   - Adopts the assigned specialist persona
+   - Executes with domain expertise
 2. Update task status using natural language ("Mark TASK-001 as completed")
 3. Verify implementation against EARS acceptance criteria
 
-### Phase 3: Completion
+### Phase 3: Expert Validation & Completion
 1. Ensure all tasks are marked complete
-2. Run quality validation against EARS requirements
-3. Archive completed feature documentation
+2. Run quality validation with appropriate specialists
+3. Archive completed feature documentation with persona attribution
 
-## 🎯 EARS Integration Benefits
+## 🎯 EARS + Persona Integration Benefits
 
+### EARS Precision:
 - **Eliminates Ambiguity**: "WHEN user clicks login, system SHALL authenticate within 200ms" vs "fast login"
 - **Direct Test Translation**: EARS → BDD (Given/When/Then) mapping for automated testing  
 - **Behavioral Contracts**: Component interfaces specify exact behavioral expectations
 - **Measurable Success**: Every requirement has specific triggers and measurable outcomes
 - **Comprehensive Coverage**: Every acceptance criterion maps to testable conditions
+
+### Persona Delegation Benefits:
+- **Expert Execution**: Each task handled by specialist with domain knowledge
+- **Quality Assurance**: Domain experts reduce bugs and improve architecture
+- **Consistent Patterns**: Specialists follow established best practices
+- **Knowledge Transfer**: Learn from expert implementation approaches
+- **Scalable Team**: Access 295+ specialists without hiring costs
 
 ## 🌟 Global Installation Benefits
 
