@@ -4,12 +4,13 @@
     <img src="../ICON.png" alt="Kiro Style TAD Framework Icon" width="150" height="150">
     <br><br>
     <h3>🤖 Enhanced Specification-Driven Development</h3>
-    <p><em>A powerful system that enhances the <code>/kiro-implementer</code> with access to 295+ specialized subagents from the community, enabling intelligent task delegation while maintaining strict EARS compliance.</em></p>
+    <p><em>A powerful system that enhances the <code>/kiro-implementer</code> with access to 295+ specialized subagents from the community, enabling intelligent task delegation while maintaining strict EARS compliance and preventing over-engineering.</em></p>
     
 ![Subagent Integration](https://img.shields.io/badge/Subagent-Integration-blueviolet)
 ![Dynamic Discovery](https://img.shields.io/badge/Dynamic-Discovery-informational)
 ![EARS Delegation](https://img.shields.io/badge/EARS-Delegation-brightgreen)
 ![Community Powered](https://img.shields.io/badge/Community-Powered-orange)
+![MVP First](https://img.shields.io/badge/MVP-First-critical)
 
 </div>
 
@@ -47,7 +48,7 @@ cd Enhanced-Kiro-Subagents
 /kiro-implementer feature-name
 ```
 
-That's it! You now have access to 295+ specialized subagents with intelligent discovery and EARS-compliant delegation.
+That's it! You now have access to 295+ specialized subagents with intelligent discovery, EARS-compliant delegation, and built-in optimization.
 
 ---
 
@@ -63,13 +64,13 @@ Before installation, ensure you have:
 
 ---
 
-## 🎯 How It Works: 3-Phase Execution & Core Features
+## 🎯 How It Works: 3.5-Phase Execution & Core Features
 
-This installation transforms your `/kiro-implementer` with a powerful 3-phase workflow and new capabilities, all designed for performance and traceability.
+This installation transforms your `/kiro-implementer` with a powerful 3.5-phase workflow and new capabilities, all designed for performance, traceability, and efficiency.
 
-### The 3-Phase Process
+### The 3.5-Phase Process
 
-The enhanced implementer follows a structured process for robust and traceable development.
+The enhanced implementer follows a structured process for robust, traceable, and optimized development.
 
 <div align="center">
 
@@ -80,29 +81,36 @@ graph TD
     C --> E[Generate capabilities briefing & save state]
     
     E --> F{Phase 2: Strategic Planning}
-    F --> G[Parse EARS requirements]
-    G --> I[Match tasks to specialist agents]
-    I --> J[Generate tasks.md with assignments]
+    F --> G[Parse EARS requirements & assess optimization]
+    G --> I[Match tasks to specialist agents with token budgets]
+    I --> J[Generate tasks.md with assignments & metadata]
     
-    J --> K{Phase 3: EARS-Compliant Implementation}
-    K --> L[Delegate to @specialist-agent with EARS context]
+    J --> J2{Phase 2.5: Optimization Review}
+    J2 --> J3[Validate MVP approach & complexity]
+    J3 --> J4[User approval gate]
+
+    J4 --> K{Phase 3: EARS-Compliant Implementation}
+    K --> L[Delegate to @specialist-agent with EARS & optimization context]
     L --> N[Validate against behavioral contracts]
     N --> O[Integrate compliant code]
     
     style B fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000000
     style F fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000000
+    style J2 fill:#fce4ec,stroke:#ad1457,stroke-width:2px,color:#000000
     style K fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
 ```
 
 </div>
 
 *   **Phase 1: Discovery**: Scans the `subagents-manifest.json` to identify all available subagents and their specializations (<200ms). This result is saved to a state file for quick resume.
-*   **Phase 2: Planning**: Analyzes EARS requirements, breaks them into tasks, and assigns the best agent for each job in `tasks.md`.
-*   **Phase 3: Implementation**: Executes tasks sequentially, delegating to the assigned subagents with full EARS context to ensure compliance.
+*   **Phase 2: Planning**: Analyzes EARS requirements, performs an optimization assessment, estimates token budgets, and assigns the best agent for each job in `tasks.md`.
+*   **Phase 2.5: Optimization Review (New)**: Validates that the proposed plan is not over-engineered and represents a Minimum Viable Product (MVP) approach. Requires user approval before proceeding.
+*   **Phase 3: Implementation**: Executes tasks sequentially, delegating to the assigned subagents with full EARS and optimization context to ensure compliance and efficiency.
 
 ### Core Features
 
 *   **295+ Specialized Subagents**: Access to the entire @davepoon subagent collection for any task.
+*   **Built-in Optimization**: Includes rules and processes to prevent over-engineering, prioritize MVP solutions, and manage complexity with token budgets.
 *   **EARS-Compliant Delegation**: Injects requirement traceability into every subagent action.
 *   **Stateful Resume**: Seamlessly stop and continue your work. The system loads state from `.claude/state/implementer-state/[feature-name].json` to preserve context and agent assignments, skipping the discovery phase on resume.
 *   **Enhanced Developer Experience**: Progress indicators, automatic configuration backups, and comprehensive error handling.
@@ -142,6 +150,8 @@ The system analyzes your `requirements.md` and `design.md` to generate a `tasks.
   - **Requirement**: REQ-AUTH-001 - User credential validation
   - **EARS AC**: WHEN user submits login, SHALL validate within 200ms
   - **Assigned**: @database-expert
+  - **Complexity**: Simple (use existing user table + password hash)
+  - **Token Budget**: ~200 tokens
   - **Dependencies**: None
 
 ## Phase 2: Implementation Tasks  
@@ -149,6 +159,8 @@ The system analyzes your `requirements.md` and `design.md` to generate a `tasks.
   - **Requirement**: REQ-AUTH-002 - Login/logout endpoints
   - **EARS AC**: WHEN endpoint called, SHALL return JWT token
   - **Assigned**: @api-designer
+  - **Complexity**: Simple
+  - **Token Budget**: ~300 tokens
   - **Dependencies**: TASK-001
 
 ...
@@ -164,7 +176,7 @@ Running `./enhance-kiro-subagents.sh` performs the following:
 
 *   **Subagent Collection**: Downloads 295+ specialized `.md` subagent files to `~/.claude/agents/` or `./.claude/agents/`.
 *   **Optimized Manifest**: Creates `subagents-manifest.json` for fast discovery.
-*   **Enhanced Kiro Implementer**: Replaces the standard implementer with the enhanced 3-phase version.
+*   **Enhanced Kiro Implementer**: Replaces the standard implementer with the enhanced 3.5-phase version.
 *   **Support Files**: Installs required protocols and templates for delegation and discovery.
 *   **Safety Backups**: Automatically backs up your existing `kiro-implementer.md` to your Desktop.
 
@@ -181,7 +193,7 @@ Running `./enhance-kiro-subagents.sh` performs the following:
 
 1.  **Check Agents**: `ls ~/.claude/agents/ | wc -l` (should show 295+ files).
 2.  **Verify Manifest**: `cat ~/.claude/agents/subagents-manifest.json | head -5`.
-3.  **Test Implementer**: `/kiro-implementer --help` (should show 3-phase execution strategy).
+3.  **Test Implementer**: `/kiro-implementer --help` (should show 3.5-phase execution strategy).
 
 ### Common Issues
 
@@ -195,7 +207,7 @@ Running `./enhance-kiro-subagents.sh` performs the following:
 ## 🚀 Next Steps & Community
 
 1.  **Explore Available Agents**: Review the manifest or browse `~/.claude/agents/` to see all 295+ specialists.
-2.  **Try the Enhanced Implementer**: Start with a simple feature to see the 3-phase process in action.
+2.  **Try the Enhanced Implementer**: Start with a simple feature to see the 3.5-phase process in action.
 3.  **Join the Community**: This system is powered by @davepoon's subagent collection. Please support their work!
     -   ⭐ **Star the original repo**: [claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)
     -   🐛 Report issues and suggest improvements.
