@@ -246,70 +246,84 @@ specs/done/
 ```mermaid
 graph TB
     A["/kiro 'Feature Name'"] --> B{Generate Specifications}
-    B --> C[requirements.md<br/>📋 EARS Requirements]
+    B --> C[requirements.md<br/>📋 EARS Requirements + MVP Scoping]
     B --> D[design.md<br/>🏗️ Architecture & ADRs]
     B --> E[persona-delegation.json<br/>👥 Task-to-Specialist Mapping]
-    B --> F[tasks.md<br/>✅ Implementation Checklist]
     
     C --> G[👤 User Review & Approval]
     D --> G
     E --> G
-    F --> G
     
-    G --> H{All Approved?}
+    G --> H{Requirements & Design Approved?}
     H -->|No| I[🔄 Revise & Re-approve]
     I --> G
-    H -->|Yes| J[🚀 Begin Implementation]
+    H -->|Yes| J[🎯 Phase 4.5: MVP Optimization Review]
     
-    J --> K[📋 Select Next Task]
-    K --> L[🤖 Consult persona-delegation.json]
-    L --> M[👨‍💻 Adopt Specialist Persona]
-    M --> N[⚡ Execute with Domain Expertise]
+    J --> K{Complexity Assessment}
+    K --> L[📊 Generate Optimization Report<br/>• Simple Tasks: <200 tokens<br/>• Medium Tasks: 200-500 tokens<br/>• Complex Tasks: >500 tokens - FLAGGED]
+    L --> M[tasks.md<br/>✅ Implementation Checklist + MVP Context]
     
-    N --> O{Task Complete?}
-    O -->|No| P[🔄 Continue Implementation]
+    M --> N[👤 User Review: Tasks + Optimization]
+    N --> O{Tasks Approved?}
+    O -->|Complex Tasks Flagged| P[🔧 Simplify Over-engineered Tasks]
     P --> N
-    O -->|Yes| Q[✅ Mark Task Complete]
+    O -->|Yes| Q[🚀 Begin Implementation]
     
-    Q --> R{More Tasks?}
-    R -->|Yes| K
-    R -->|No| S[🔍 Expert Validation]
+    Q --> R[📋 Select Next Task]
+    R --> S[🤖 Consult persona-delegation.json]
+    S --> T[👨‍💻 Adopt Specialist Persona]
+    T --> U[💡 Inject MVP Context<br/>• Token Budget<br/>• Pattern Preference<br/>• Complexity Constraints]
+    U --> V[⚡ Execute with MVP Guidelines]
     
-    S --> T[📦 Archive to specs/done/]
-    T --> U[🎉 Feature Complete!]
+    V --> W{Task Complete?}
+    W -->|No| X[🔄 Continue Implementation]
+    X --> V
+    W -->|Yes| Y[✅ Mark Task Complete]
+    
+    Y --> Z{More Tasks?}
+    Z -->|Yes| R
+    Z -->|No| AA[🔍 Expert Validation]
+    
+    AA --> BB[📦 Archive to specs/done/]
+    BB --> CC[🎉 Feature Complete!]
     
     style A fill:#1976d2,stroke:#0d47a1,stroke-width:2px,color:#ffffff
     style B fill:#7b1fa2,stroke:#4a148c,stroke-width:2px,color:#ffffff
     style C fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
     style D fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
     style E fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#ffffff
-    style F fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
-    style M fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#ffffff
-    style S fill:#0277bd,stroke:#01579b,stroke-width:2px,color:#ffffff
-    style U fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#ffffff
+    style J fill:#ff6f00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style L fill:#ff6f00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style M fill:#f57c00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style T fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#ffffff
+    style U fill:#ff6f00,stroke:#e65100,stroke-width:2px,color:#ffffff
+    style AA fill:#0277bd,stroke:#01579b,stroke-width:2px,color:#ffffff
+    style CC fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#ffffff
 ```
 
 ### Phase 1: Specification & Persona Assignment
-1. Use `/kiro "Feature Name"` to generate four key documents:
-   - `requirements.md` - EARS-formatted requirements  
-   - `design.md` - Technical architecture
+1. Use `/kiro "Feature Name"` to generate specification documents with MVP scoping:
+   - `requirements.md` - EARS-formatted requirements with MVP boundaries
+   - `design.md` - Technical architecture with optimization focus
    - `persona-delegation.json` - Task-to-specialist mapping
-   - `tasks.md` - Implementation checklist
-2. Review and approve each specification document
-3. Review persona assignments in `persona-delegation.json`
+2. Review and approve requirements and design documents
+3. **Phase 4.5: MVP Optimization Review** - Complexity assessment and over-engineering prevention
+4. Generate `tasks.md` with MVP context, token budgets, and complexity classifications
+5. Review tasks and optimization assessment for final approval
 
-### Phase 2: Delegated Implementation  
+### Phase 2: MVP-Guided Delegated Implementation  
 1. For each task, the system automatically:
-   - Consults `persona-delegation.json`
+   - Consults `persona-delegation.json` for specialist assignment
    - Adopts the assigned specialist persona
-   - Executes with domain expertise
+   - **Injects MVP optimization context** (token budget, pattern preference, complexity constraints)
+   - Executes with domain expertise under MVP guidelines
 2. Update task status using natural language ("Mark TASK-001 as completed")
-3. Verify implementation against EARS acceptance criteria
+3. Verify implementation against EARS acceptance criteria with complexity validation
 
 ### Phase 3: Expert Validation & Completion
-1. Ensure all tasks are marked complete
+1. Ensure all tasks are marked complete with MVP compliance
 2. Run quality validation with appropriate specialists
-3. Archive completed feature documentation with persona attribution
+3. Archive completed feature documentation with persona attribution and optimization metrics
 
 ## 🎯 EARS + Persona Integration Benefits
 
@@ -326,6 +340,13 @@ graph TB
 - **Consistent Patterns**: Specialists follow established best practices
 - **Knowledge Transfer**: Learn from expert implementation approaches
 - **Scalable Team**: Access 295+ specialists without hiring costs
+
+### MVP Optimization Benefits:
+- **Over-Engineering Prevention**: Built-in complexity gates flag tasks >500 tokens for review
+- **Pattern Reuse**: Enforces preference for existing components over custom solutions
+- **Pragmatic Validation**: Meet EARS criteria with simplest working solution
+- **Token Efficiency**: Budget-aware development prevents scope creep
+- **Quality Control**: Optimization assessment at every approval gate
 
 ## 🌟 Global Installation Benefits
 
