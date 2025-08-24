@@ -11,23 +11,30 @@ Action: Create specs/{kebab-case-feature-name}/ with a full, traceable specifica
 
 ## Phase 1: Generation Sequence
 
-### 0. Pre-Generation Q&A (Ambiguity Resolution)
-Before generating each document, conduct targeted clarification to minimize revision cycles:
+### 0. Pre-Generation Q&A (Ambiguity Resolution + MVP Scoping)
+Before generating each document, conduct targeted clarification to minimize revision cycles and establish MVP boundaries:
 
 **Requirements Clarification:**
 - Analyze feature request for ambiguous user roles, success criteria, constraints
 - Ask max 3-5 focused questions to resolve critical unknowns
 - Example: "Who are primary users?", "What's the success metric?", "Any tech constraints?"
 
+**MVP Scoping Questions:**
+- "What's the absolute minimum functionality needed for user value?"
+- "Which features can be deferred to future iterations?"
+- "Are there existing patterns/components we should reuse?"
+
 **Design Clarification:**
 - Identify technical unknowns from requirements (architecture, integrations, data flow)
 - Ask max 2-3 questions about tech stack, existing system integration
 - Focus on decisions that significantly impact implementation
+- **Optimization Focus**: Prefer existing patterns over custom solutions
 
 **Tasks Clarification:**
 - Clarify scope boundaries, MVP vs full feature, resource constraints
 - Ask about risk tolerance and timeline expectations
 - Ensure clear understanding of what's in/out of scope
+- **Complexity Assessment**: Identify tasks that might exceed simple implementation
 
 ### 1. requirements.md (Semantic Anchor)
 ```markdown
@@ -144,24 +151,31 @@ After `design.md` is approved, and before generating `tasks.md`, you MUST create
 }
 ```
 
-### 4. tasks.md (Execution Blueprint)
+### 4. tasks.md (Execution Blueprint with MVP Optimization)
 ```markdown
 # Tasks: [Feature Name]
 ## Metadata
 Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {estimate}
+**MVP Strategy**: Simplest viable implementation | **Token Budget**: {total-estimate}
 
 ## Progress: 0/X Complete, 0 In Progress, 0 Not Started, 0 Blocked
 
 ## Phase 1: Foundation
 - [ ] TASK-{UUID}-001: [Name]
-  Trace: REQ-{UUID}-001 | Design: NewComponent | AC: AC-{REQ-ID}-01
-  DoD (EARS Format): WHEN task completed, SHALL satisfy AC-{REQ-ID}-01 with 100% test coverage
-  Risk: Low | Deps: None | Effort: 2pts
+  **Requirement**: REQ-{UUID}-001 | **EARS AC**: AC-{REQ-ID}-01
+  **Assigned**: @{subagent-name}
+  **Complexity**: Simple/Medium/Complex | **Token Budget**: ~200 tokens
+  **MVP Approach**: {describe simplest viable solution}
+  **DoD (EARS Format)**: WHEN task completed, SHALL satisfy AC-{REQ-ID}-01 with 100% test coverage
+  **Risk**: Low | **Dependencies**: None
 
 - [ ] TASK-{UUID}-002: [Name]  
-  Trace: REQ-{UUID}-001,002 | Design: method1() | AC: AC-{REQ-ID}-01,02
-  DoD (EARS Format): WHEN implementation finished, SHALL pass integration tests AND WHILE method executes, SHALL complete within performance requirements
-  Risk: Medium | Deps: TASK-001 | Effort: 5pts
+  **Requirement**: REQ-{UUID}-001,002 | **EARS AC**: AC-{REQ-ID}-01,02
+  **Assigned**: @{subagent-name}
+  **Complexity**: Medium | **Token Budget**: ~300 tokens
+  **MVP Approach**: {describe simplest viable solution}
+  **DoD (EARS Format)**: WHEN implementation finished, SHALL pass integration tests AND WHILE method executes, SHALL complete within performance requirements
+  **Risk**: Medium | **Dependencies**: TASK-001
 
 ## Phase 2: Integration
 - [ ] TASK-{UUID}-003: API Implementation
@@ -184,6 +198,33 @@ Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {e
 - [ ] EARS-to-BDD test translation completeness check
 ```
 
+### 4.5. Optimization Review Gate (MVP Validation)
+After generating `design.md` and before generating `tasks.md`, conduct optimization validation:
+
+**Complexity Assessment:**
+- Review each planned task for implementation complexity
+- **Complexity Gate**: Flag any task requiring >500 tokens for user review
+- **Pattern Check**: Verify using existing codebase patterns vs custom solutions
+- **MVP Validation**: Confirm each task represents minimum viable approach
+
+**Optimization Questions:**
+- "Can this be solved with existing components/patterns?"
+- "What's the simplest way to meet the EARS criteria?"
+- "Are we over-engineering any aspect?"
+
+**Output Format:**
+```
+## Optimization Assessment
+- **Total Tasks**: [count] 
+- **Simple Tasks**: [count] (<200 tokens)
+- **Medium Tasks**: [count] (200-500 tokens)
+- **Complex Tasks**: [count] (>500 tokens) - FLAGGED FOR REVIEW
+
+### Flagged Tasks (Require User Approval):
+- TASK-XXX: [reason for complexity]
+- Recommendation: [simpler alternative]
+```
+
 ### 5. User Approval Gates
 After generating/updating each document, explicitly request user approval:
 
@@ -199,9 +240,11 @@ After generating/updating each document, explicitly request user approval:
 - Make revisions if requested, then re-request approval
 - Do NOT proceed to tasks until explicit approval
 
-**Tasks Approval:**
+**Tasks Approval (with Optimization Review):**
+- Present optimization assessment first (from Phase 4.5)
 - Present tasks.md for review  
 - Ask: "Is this implementation plan actionable? Any scope adjustments needed?"
+- **For flagged complex tasks**: "The following tasks were flagged as potentially over-engineered. Approve as-is or request simpler alternatives?"
 - Make revisions if requested, then re-request approval
 - Mark workflow complete only after explicit approval
 
@@ -267,17 +310,42 @@ This will improve future agent decisions and maintain project context accuracy."
 
 ---
 
-## Phase 3: Delegated Task Execution
+## Phase 3: MVP-Compliant Delegated Task Execution
 
-When I ask you to implement a task from `tasks.md`, you MUST follow this stateful delegation protocol:
+When I ask you to implement a task from `tasks.md`, you MUST follow this stateful delegation protocol with MVP optimization:
+
+### MVP Context Injection Protocol
+
+**For each delegated task, provide this optimization context:**
+
+```
+@{subagent-name}: {task-description}
+
+**EARS Context:**
+- REQ-{UUID}-001: WHEN {trigger}, system SHALL {action}
+- AC-{REQ-ID}-01: {specific acceptance criteria}
+
+**MVP Optimization Context:**
+- **Approach**: {simplest viable solution description}
+- **Prefer**: Existing patterns/components over custom solutions
+- **Avoid**: {list over-engineered approaches to avoid}
+- **Token Budget**: ~{estimated} tokens
+- **Success Definition**: Meet EARS criteria with minimal complexity
+
+**Expected Output**: {specific deliverable meeting EARS criteria}
+```
+
+### Delegation Steps:
 
 1.  **Identify the Task**: Locate the `TASK-...` entry in `tasks.md`.
-2.  **Consult the Delegation File**: Read the `persona-delegation.json` file in the same directory.
-3.  **Find the Assigned Persona**: Look up the `task_id` in the `delegations` array to find the officially assigned persona.
-4.  **Load and Adopt the Persona**: Read the corresponding `.md` file for the assigned persona (e.g., `./database-architect.md`).
-5.  **Execute as the Specialist**:
+2.  **Extract MVP Context**: Get complexity assessment, token budget, and MVP approach from task details.
+3.  **Consult the Delegation File**: Read the `persona-delegation.json` file in the same directory.
+4.  **Find the Assigned Persona**: Look up the `task_id` in the `delegations` array to find the officially assigned persona.
+5.  **Load and Adopt the Persona**: Read the corresponding `.md` file for the assigned persona (e.g., `./database-architect.md`).
+6.  **Execute with MVP Context**:
     *   Begin your response by stating which persona you have adopted based on the delegation file (e.g., "As per the delegation plan, I am adopting the **Database Architect** persona.").
-    *   Execute the entire task from the perspective of that specialist.
+    *   **Inject MVP optimization context** before executing the task.
+    *   Execute the entire task from the perspective of that specialist with optimization constraints.
 
 **Fallback:** If `persona-delegation.json` is missing or the task is not listed, revert to the original protocol: consult the main manifest at `~/.gemini/personas/subagents-manifest.json` to select the best persona, and suggest updating the delegation file.
 
@@ -306,11 +374,19 @@ This ensures that when resuming work, the agent not only understands the project
 - Definition of Done MUST be written in EARS format
 - Test coverage MUST map directly from EARS statements
 
+**MVP Optimization Rules:**
+- **Priority**: Always propose minimum viable implementation first
+- **Token Efficiency**: Prefer existing patterns over custom solutions
+- **Complexity Gate**: Flag tasks requiring >500 tokens for user review
+- **Pragmatic Validation**: Meet EARS criteria with simplest working solution
+- **Pattern Reuse**: Leverage existing codebase components/patterns where possible
+
 **Quality Assurance:**
 - Traceability verification at each phase transition
 - Gap analysis before approval requests
 - Confidence scoring for all generated content
 - Risk assessment with mitigation strategies
+- **Optimization Assessment**: Complexity review at each approval gate
 
 **File Organization:**
 - specs/{kebab-case-feature-name}/requirements.md
