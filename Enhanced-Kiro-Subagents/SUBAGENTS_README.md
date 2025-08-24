@@ -1,147 +1,201 @@
-# Enhanced Kiro: Autonomous Subagent Integration System
+# Enhanced Kiro: Subagent Integration System
 
 <div align="center">
     <img src="../ICON.png" alt="Kiro Style TAD Framework Icon" width="150" height="150">
     <br><br>
-    <h3>🤖 Autonomous Specification-Driven Development</h3>
-    <p><em>An advanced system that transforms the <code>/kiro-implementer</code> into a master agent capable of delegating tasks to a vast collection of specialized subagents, while maintaining strict EARS compliance and full requirement traceability.</em></p>
+    <h3>🤖 Enhanced Specification-Driven Development</h3>
+    <p><em>A powerful system that enhances the <code>/kiro-implementer</code> with access to 295+ specialized subagents from the community, enabling intelligent task delegation while maintaining strict EARS compliance.</em></p>
     
 ![Subagent Integration](https://img.shields.io/badge/Subagent-Integration-blueviolet)
 ![Dynamic Discovery](https://img.shields.io/badge/Dynamic-Discovery-informational)
 ![EARS Delegation](https://img.shields.io/badge/EARS-Delegation-brightgreen)
-![Autonomous Execution](https://img.shields.io/badge/Autonomous-Execution-orange)
+![Community Powered](https://img.shields.io/badge/Community-Powered-orange)
 
 </div>
 
-## 🙏 A Monumental Thank You to the Community
+## 🙏 Special Thanks to @davepoon
 
-This powerful enhancement would not be possible without the incredible work of community hero **@davepoon**. Their brilliant `claude-code-subagents-collection` forms the backbone of this system.
+This powerful enhancement is made possible by the incredible work of community hero **@davepoon**. Their brilliant `claude-code-subagents-collection` provides the vast library of specialized agents that power this system.
 
-Please support their invaluable contribution by visiting and starring the original repository:
-
-[**davepoon/claude-code-subagents-collection on GitHub**](https://github.com/davepoon/claude-code-subagents-collection)
-
----
-
-## 🎯 Overview
-
-The Enhanced Kiro Subagent system elevates the Kiro TAD framework from specification-driven development to **autonomous specification-driven development**. It empowers the `/kiro-implementer` to act as an intelligent orchestrator, analyzing complex tasks, delegating them to the most suitable specialist agents, and validating their output against rigorous EARS behavioral contracts.
-
-This system is composed of several key components that work together to provide a seamless and powerful autonomous workflow.
-
-## 🚀 Core Components
-
-The system's autonomy is powered by four key modules working in concert:
-
-### 1. **Installation & Discovery (`enhance-kiro-subagents.sh`)**
-This script is the gateway to unlocking over 280 specialized subagents. It handles the entire setup process, making the vast library of agents available to the system.
--   **One-Command Setup**: Installs the entire subagent collection.
--   **Flexible Installation**: Supports **global** (`~/.claude/agents/`) or **project-specific** (`./.claude/agents/`) locations.
--   **Dynamic Manifest Generation**: Creates a `subagents-manifest.json` file, a "capabilities briefing" that enables sub-200ms discovery of all agents and their specializations.
--   **Enhanced Security**: Validates repository authenticity and file integrity during download.
-
-### 2. **EARS Context Injection (`ears-context-injection.js`)**
-This module ensures that subagents receive precise, minimal, and **EARS-compliant** instructions before a task is delegated.
--   **Minimal Context Extraction**: Parses `requirements.md` and `design.md` to extract only the necessary details.
--   **Behavioral Contracts**: Injects specific EARS acceptance criteria (e.g., `WHEN user submits form, SHALL validate within 200ms`) into the subagent's prompt, forming a clear behavioral contract.
--   **Context Caching**: Caches extracted context to optimize performance for subsequent delegations.
-
-### 3. **Delegation, Retry & Fallback (`delegation-retry-fallback.js`)**
-This is the brain of the operation, managing the entire lifecycle of a delegated task with a sophisticated retry and fallback mechanism.
--   **Intelligent Delegation**: Matches tasks to the most appropriate subagent based on the manifest.
--   **Progressive Context Enhancement**: If a subagent fails, the system retries by automatically providing more detailed guidance, examples, or simplified requirements.
--   **Graceful Degradation**: If all retries fail, it triggers a fallback strategy, such as switching to a direct implementation mode or escalating to a human developer.
--   **Performance Metrics**: Tracks success rates, retry counts, and fallbacks to provide system insights.
-
-### 4. **Behavioral Contract Validation (`behavioral-contract-validator.js`)**
-This engine acts as the quality gate, rigorously validating a subagent's output to ensure it aligns with the original specifications.
--   **EARS Compliance Validation**: Checks the subagent's output against the original EARS behavioral contracts.
--   **Comprehensive Scoring**: Provides an overall validation score, a list of passed contracts, and identifies critical violations.
--   **Actionable Recommendations**: Generates suggestions for fixing violations and improving compliance.
--   **Violation Pattern Tracking**: Identifies common failure patterns to help improve the system and subagent prompts over time.
-
-## 📊 How It Works: The Autonomous Delegation Workflow
-
-The diagram below illustrates the intelligent, multi-stage process the enhanced `/kiro-implementer` uses to execute tasks, from initial discovery to final validation.
-
-```mermaid
-graph TD
-    A["/kiro-implementer 'feature'"] --> B{Phase 1: Discovery};
-    B --> C["Scan for subagent manifests (global & project-local)"];
-    C --> D[Generate Unified Capabilities Briefing];
-    
-    D --> E{Phase 2: Strategic Planning};
-    E --> F[Decompose EARS requirements into discrete tasks];
-    F --> G[Map tasks to best-fit subagents from briefing];
-    G --> H[Prepare minimal EARS context for each delegation];
-    
-    H --> I{Phase 3: Autonomous Execution};
-    I --> J[Delegate task to @subagent-name];
-    J --> K[Subagent returns output];
-    K --> L(Validate Output via Behavioral Contract Validator);
-    
-    L --> M{EARS Compliant?};
-    M -- "Yes" --> N[Integrate code];
-    M -- "No" --> O[Trigger Retry/Fallback System];
-    
-    O --> P[Enhance context & retry];
-    P --> J;
-    O -- "All Retries Failed" --> Q[Fallback to direct implementation or escalate];
-    
-    subgraph "Quality Gates"
-        L
-        M
-    end
-
-    style B fill:#b3e5fc,stroke:#333,stroke-width:2px,color:#000
-    style E fill:#c8e6c9,stroke:#333,stroke-width:2px,color:#000
-    style I fill:#ffe0b2,stroke:#333,stroke-width:2px,color:#000
-    style N fill:#a5d6a7,stroke:#333,stroke-width:2px,color:#000
-    style Q fill:#ef9a9a,stroke:#333,stroke-width:2px,color:#000
-```
-
-## 🔄 State-Aware Resume Capability
-
-The enhanced implementer introduces a crucial `resume` command, allowing it to seamlessly continue an interrupted workflow. This is made possible by persisting the state of the **Discovery** phase.
-
-The diagram below contrasts the `start` workflow with the intelligent `resume` workflow, which bypasses the initial discovery phase by loading the previously saved state.
-
-```mermaid
-graph TD
-    subgraph "Start Workflow: New Implementation"
-        A["/kiro-implementer 'feature' **start**"] --> B{Phase 1: Discovery}
-        B --> C[1. Scan for subagent manifests]
-        C --> D[2. Generate Capabilities Briefing]
-        D --> E["3. Persist Briefing to\ndot.claude/state/feature.json"]
-        E --> F{Phase 2: Strategic Planning}
-    end
-
-    subgraph "Resume Workflow: Continue Implementation"
-        G["/kiro-implementer 'feature' **resume**"] --> H{Resume Check}
-        H --> I{State file exists?}
-        I -- "Yes" --> J[Load Capabilities Briefing from state file]
-        J --> F
-        I -- "No" --> K[Error: No state to resume]
-    end
-
-    F --> L{Phase 3: Autonomous Execution}
-    L --> Z[...]
-
-    style B fill:#b3e5fc,stroke:#333,stroke-width:2px,color:#000
-    style F fill:#c8e6c9,stroke:#333,stroke-width:2px,color:#000
-    style L fill:#ffe0b2,stroke:#333,stroke-width:2px,color:#000
-    style J fill:#dcedc8,stroke:#333,stroke-width:2px,color:#000
-    style K fill:#ffcdd2,stroke:#333,stroke-width:2px,color:#000
-```
-
-## ✨ Key Features
-
--   **Autonomous Execution**: Independently manages the implementation lifecycle for a given task.
--   **Dynamic & Flexible**: Leverages a vast, community-driven collection of subagents.
--   **Resilient & Self-Correcting**: Handles failures gracefully with automated retries and fallbacks.
--   **Traceability & Compliance**: Upholds Kiro TAD principles by linking every action to an EARS requirement.
--   **Enhanced Developer Experience**: Provides clear progress indicators, detailed errors, and automated quality checks.
+**Please support their invaluable contribution:**
+- 🌟 **Star the repository**: [davepoon/claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)
+- 🙏 Show appreciation for making enhanced AI development possible
 
 ---
 
-This enhanced subagent system represents a significant leap forward, transforming Kiro into a powerful tool for autonomous, specification-driven software development.
+## 🚀 Quick Start
+
+Get up and running with enhanced subagent capabilities in under 5 minutes:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-repo/Enhanced-Kiro-Subagents.git
+cd Enhanced-Kiro-Subagents
+```
+
+### 2. Run the Installation Script
+```bash
+./enhance-kiro-subagents.sh
+```
+
+### 3. Choose Installation Type
+- **Option 1**: Global installation (`~/.claude/agents/`) - Available to all projects
+- **Option 2**: Project installation (`./.claude/agents/`) - Current project only
+
+### 4. Start Using Enhanced Features
+```bash
+/kiro-implementer feature-name
+```
+
+That's it! You now have access to 295+ specialized subagents with intelligent discovery and EARS-compliant delegation.
+
+---
+
+## 📋 Prerequisites
+
+Before installation, ensure you have:
+
+- **Claude Code**: The system requires Claude Code to be installed and configured
+- **Bash**: Unix shell (macOS/Linux built-in, Windows WSL)
+- **Git**: For repository cloning and subagent downloads
+- **Network Access**: To download the subagent collection from GitHub
+- **100MB+ Free Space**: For the subagent files and supporting assets
+
+---
+
+## 🎯 How It Works: 3-Phase Execution & Core Features
+
+This installation transforms your `/kiro-implementer` with a powerful 3-phase workflow and new capabilities, all designed for performance and traceability.
+
+### The 3-Phase Process
+
+The enhanced implementer follows a structured process for robust and traceable development.
+
+<div align="center">
+
+```mermaid
+graph TD
+    A["/kiro-implementer feature-name"] --> B{Phase 1: Dynamic Discovery}
+    B --> C[Load 295+ agent capabilities from manifest]
+    C --> E[Generate capabilities briefing & save state]
+    
+    E --> F{Phase 2: Strategic Planning}
+    F --> G[Parse EARS requirements]
+    G --> I[Match tasks to specialist agents]
+    I --> J[Generate tasks.md with assignments]
+    
+    J --> K{Phase 3: EARS-Compliant Implementation}
+    K --> L[Delegate to @specialist-agent with EARS context]
+    L --> N[Validate against behavioral contracts]
+    N --> O[Integrate compliant code]
+    
+    style B fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000000
+    style F fill:#e8f5e8,stroke:#388e3c,stroke-width:2px,color:#000000
+    style K fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#000000
+```
+
+</div>
+
+*   **Phase 1: Discovery**: Scans the `subagents-manifest.json` to identify all available subagents and their specializations (<200ms). This result is saved to a state file for quick resume.
+*   **Phase 2: Planning**: Analyzes EARS requirements, breaks them into tasks, and assigns the best agent for each job in `tasks.md`.
+*   **Phase 3: Implementation**: Executes tasks sequentially, delegating to the assigned subagents with full EARS context to ensure compliance.
+
+### Core Features
+
+*   **295+ Specialized Subagents**: Access to the entire @davepoon subagent collection for any task.
+*   **EARS-Compliant Delegation**: Injects requirement traceability into every subagent action.
+*   **Stateful Resume**: Seamlessly stop and continue your work. The system loads state from `.claude/state/implementer-state/[feature-name].json` to preserve context and agent assignments, skipping the discovery phase on resume.
+*   **Enhanced Developer Experience**: Progress indicators, automatic configuration backups, and comprehensive error handling.
+
+---
+
+## 🎮 Usage & Command Workflow
+
+The enhanced implementer introduces commands for managing the implementation lifecycle.
+
+### Command Workflow
+
+```bash
+# 1. Start a new feature (discovers agents, creates tasks.md)
+/kiro-implementer user-authentication start
+
+# Work on a few tasks, then stop for the day...
+
+# 2. Resume your work (loads state, continues from where you left off)
+/kiro-implementer resume user-authentication
+
+# 3. Continue to the next task after one is complete
+/kiro-implementer user-authentication continue
+```
+
+### Generated `tasks.md` Example
+
+The system analyzes your `requirements.md` and `design.md` to generate a `tasks.md` file like this:
+
+```markdown
+# Tasks: User Authentication - Enhanced Implementer
+
+## Progress: 2/4 Complete, 1 In Progress, 1 Not Started
+
+## Phase 1: Foundation Tasks
+- [x] **TASK-001: Authentication Schema Design**
+  - **Requirement**: REQ-AUTH-001 - User credential validation
+  - **EARS AC**: WHEN user submits login, SHALL validate within 200ms
+  - **Assigned**: @database-expert
+  - **Dependencies**: None
+
+## Phase 2: Implementation Tasks  
+- [x] **TASK-002: API Endpoint Implementation**
+  - **Requirement**: REQ-AUTH-002 - Login/logout endpoints
+  - **EARS AC**: WHEN endpoint called, SHALL return JWT token
+  - **Assigned**: @api-designer
+  - **Dependencies**: TASK-001
+
+...
+```
+
+---
+
+## 🔧 Installation Details
+
+### What Gets Installed
+
+Running `./enhance-kiro-subagents.sh` performs the following:
+
+*   **Subagent Collection**: Downloads 295+ specialized `.md` subagent files to `~/.claude/agents/` or `./.claude/agents/`.
+*   **Optimized Manifest**: Creates `subagents-manifest.json` for fast discovery.
+*   **Enhanced Kiro Implementer**: Replaces the standard implementer with the enhanced 3-phase version.
+*   **Support Files**: Installs required protocols and templates for delegation and discovery.
+*   **Safety Backups**: Automatically backs up your existing `kiro-implementer.md` to your Desktop.
+
+### Global vs Project Installation
+
+*   **Global (`~/.claude/agents/`)**: Recommended for individual developers. Agents are available to all projects.
+*   **Project (`./.claude/agents/`)**: Recommended for teams. Agents are isolated to the current project and can be version-controlled.
+
+---
+
+## 🔍 Verification & Troubleshooting
+
+### Confirm Installation Success
+
+1.  **Check Agents**: `ls ~/.claude/agents/ | wc -l` (should show 295+ files).
+2.  **Verify Manifest**: `cat ~/.claude/agents/subagents-manifest.json | head -5`.
+3.  **Test Implementer**: `/kiro-implementer --help` (should show 3-phase execution strategy).
+
+### Common Issues
+
+*   **"Permission denied"**: Make the script executable with `chmod +x enhance-kiro-subagents.sh`.
+*   **"Git not found"**: Install git (`brew install git` or `apt-get install git`).
+*   **"Network connection failed"**: Check your internet connection and firewall settings.
+*   **Recovery**: Your original `kiro-implementer.md` is backed up to your Desktop if you need to restore it.
+
+---
+
+## 🚀 Next Steps & Community
+
+1.  **Explore Available Agents**: Review the manifest or browse `~/.claude/agents/` to see all 295+ specialists.
+2.  **Try the Enhanced Implementer**: Start with a simple feature to see the 3-phase process in action.
+3.  **Join the Community**: This system is powered by @davepoon's subagent collection. Please support their work!
+    -   ⭐ **Star the original repo**: [claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)
+    -   🐛 Report issues and suggest improvements.
