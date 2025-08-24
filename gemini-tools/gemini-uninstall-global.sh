@@ -65,6 +65,17 @@ else
     ((MISSING_COUNT++))
 fi
 
+# Remove Persona Library
+echo -e "${BLUE}🗑️  Removing Persona Library...${NC}"
+if [ -d ~/.gemini/personas ]; then
+    rm -rf ~/.gemini/personas
+    echo -e "${GREEN}✅ Removed Persona Library directory: ~/.gemini/personas${NC}"
+    ((REMOVED_COUNT++)) # Count the directory as one removed item
+else
+    echo -e "${YELLOW}⚠️  Not found: ~/.gemini/personas${NC}"
+    ((MISSING_COUNT++))
+fi
+
 # Clean up empty directories if they exist and are empty
 echo -e "${BLUE}🧹 Cleaning up empty directories...${NC}"
 
@@ -102,25 +113,28 @@ if [ -f ~/.gemini/templates/kiro_template.md ]; then
     ((REMAINING_FILES++))
 fi
 
+if [ -d ~/.gemini/personas ]; then
+    echo -e "${RED}❌ Failed to remove: ~/.gemini/personas${NC}"
+    ((REMAINING_FILES++))
+fi
+
 echo ""
 if [ $REMAINING_FILES -eq 0 ]; then
-    echo -e "${GREEN}🎉 Gemini Kiro Style has been successfully uninstalled!${NC}"
+    echo -e "${GREEN}🎉 Gemini Kiro Style and Persona Library have been successfully uninstalled!${NC}"
 else
-    echo -e "${RED}❌ Uninstallation completed with errors. ${REMAINING_FILES} files could not be removed.${NC}"
+    echo -e "${RED}❌ Uninstallation completed with errors. ${REMAINING_FILES} files/directories could not be removed.${NC}"
     exit 1
 fi
 
 echo ""
 echo -e "${BLUE}📊 Uninstallation Summary:${NC}"
-echo -e "  Files removed: ${GREEN}${REMOVED_COUNT}${NC}"
-echo -e "  Files not found: ${YELLOW}${MISSING_COUNT}${NC}"
-echo -e "  Files remaining: ${RED}${REMAINING_FILES}${NC}"
+echo -e "  Items removed: ${GREEN}${REMOVED_COUNT}${NC}"
+echo -e "  Items not found: ${YELLOW}${MISSING_COUNT}${NC}"
+echo -e "  Items remaining: ${RED}${REMAINING_FILES}${NC}"
 echo ""
 
 if [ $REMOVED_COUNT -gt 0 ]; then
-    echo -e "${YELLOW}📝 The following Gemini CLI commands are no longer available:${NC}"
-    echo "  /kiro [feature-name]     - Full TAD workflow with EARS syntax"
-    echo "  /kiro-init              - Initialize new project with Kiro template"
+    echo -e "${YELLOW}📝 The Kiro TAD workflow and Persona Library are no longer available.${NC}"
     echo ""
 fi
 

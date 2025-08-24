@@ -1,45 +1,49 @@
-# Kiro Style Specification-Driven Development Template
+# Kiro: Traceable Agentic Development (TAD)
 
-This project adopts Kiro-style specification-driven development with EARS (Easy Approach to Requirements Syntax) hybrid implementation for enhanced precision and testability.
+*A methodology for specification-driven development using EARS and Stateful Persona Delegation.*
 
-## Specification Files
+This project adopts Kiro, a methodology for Traceable Agentic Development (TAD). It ensures every feature is precisely specified, traceable, and implemented by a qualified specialist agent using EARS (Easy Approach to Requirements Syntax) for precision and testability.
 
-- **specs/{feature-name}/requirements.md**: User stories with EARS acceptance criteria (WHEN/WHILE/IF/WHERE + SHALL)
-- **specs/{feature-name}/design.md**: Technical architecture with EARS behavioral contracts
-- **specs/{feature-name}/tasks.md**: Implementation tasks with EARS Definition of Done (DoD)
+## The Specification Directory: `specs/`
 
-## Development Flow
+All Kiro specifications reside in the `specs/` directory, organized by feature. The `/kiro` command generates the following files:
 
-1. **Requirements Definition** → Document in requirements.md with EARS syntax
-2. **Design** → Document in design.md with EARS behavioral contracts
-3. **Task Division** → Document in tasks.md with EARS DoD
-4. **Implementation** → Implement each task sequentially
-5. **Verification** → Test build and resolve any errors
-6. **Archival** → Move completed features to specs/done/
+- **`specs/{feature-name}/requirements.md` (The "What & Why")**: Defines user stories and acceptance criteria using EARS syntax. This is the semantic anchor for the feature.
+- **`specs/{feature-name}/design.md` (The "How")**: Contains architectural decision records (ADRs) and component designs with EARS behavioral contracts. This is the architectural mirror.
+- **`specs/{feature-name}/persona-delegation.json` (The "Who")**: A plan that maps each task ID to a specific specialist persona. This ensures accountability and expertise.
+- **`specs/{feature-name}/tasks.md` (The "Execution Plan")**: A checklist of implementation tasks, each with a traceable link to requirements and an EARS-formatted Definition of Done (DoD).
 
-## Commands
+## The Kiro Workflow
 
-- `/kiro "Feature Name"`: Initialize specifications for a new feature with EARS syntax
-- `/kiro resume "Feature Name"`: Resume work on existing feature with full context
-- Natural language follow-ups: Task updates, completion, etc.
+The development lifecycle follows a structured, interactive process managed by the `/kiro` command.
 
-## Interacting with Kiro Using Simple Commands
+1.  **Initiate & Specify**: Begin by running `/kiro "Feature Name"`. The agent generates the full specification suite: `requirements.md`, `design.md`, `persona-delegation.json`, and `tasks.md`.
+2.  **Approve**: You must review and approve each generated file (`requirements`, `design`, `tasks`). The agent will not proceed without your explicit approval for each stage, ensuring the plan aligns with your vision.
+3.  **Delegate & Implement**: For each task in `tasks.md`, the agent consults `persona-delegation.json`, adopts the assigned specialist persona, and executes the implementation.
+4.  **Verify & Complete**: Upon completing all tasks, the agent validates that the implementation meets all EARS criteria, runs tests, and archives the feature into the `specs/done/` directory.
 
-The primary way to interact with the Kiro workflow is through the `/kiro` command in Gemini CLI. The command uses embedded EARS methodology for precise requirements.
+## Driving the Workflow: Commands
+
+The primary way to interact with the Kiro workflow is through the `/kiro` command and natural language follow-ups in the Gemini CLI.
+
+### Core Commands
+
+-   `/kiro "Feature Name"`: Initializes the complete specification suite for a new feature.
+-   `/kiro resume "Feature Name"`: Resumes work on an existing feature, loading its full context.
 
 ### Command Usage Patterns
 
-#### 1. Basic Feature Generation
+**1. Basic Feature Generation**
 ```
 /kiro "User Authentication System"
 ```
 
-#### 2. Feature with Context
+**2. Feature with Rich Context**
 ```
 /kiro "User Profile Management System with GDPR compliance, real-time validation, and mobile support"
 ```
 
-#### 3. Complex Feature with Structured Context
+**3. Complex Feature with Structured Context**
 ```
 /kiro "Payment Processing System with the following considerations:
 1. Core functionality: Stripe integration, multiple payment methods, subscription billing
@@ -48,125 +52,46 @@ The primary way to interact with the Kiro workflow is through the `/kiro` comman
 4. Technical constraints: PCI compliance, fraud detection, international currency support"
 ```
 
-#### 4. Resume Feature Work
-```
-/kiro resume "User Authentication System"
-```
-
-#### 5. Task Management (Natural Language Follow-ups)
-After generating specifications, use natural language:
+**4. Task Management (Natural Language Follow-ups)**
+After specifications are generated, use simple instructions to manage tasks:
 ```
 "Mark task TASK-abc123-001 as completed"
 "Update task TASK-abc123-002 to in-progress" 
 "Complete the User Authentication feature"
 ```
 
-### EARS Syntax Integration
+## EARS: The Language of Precision
 
-The kiro command automatically generates specifications using EARS (Easy Approach to Requirements Syntax):
-
-- **WHEN** [trigger condition], the system **SHALL** [specific action]
-- **WHILE** [ongoing state], the system **SHALL** [continuous behavior]
-- **IF** [conditional state], the system **SHALL** [conditional response] 
-- **WHERE** [constraint boundary], the system **SHALL** [bounded action]
-
-**EARS Examples:**
-- WHEN user submits valid login credentials, the system SHALL authenticate within 200ms
-- WHILE user session is active, the system SHALL maintain authentication state
-- IF login attempts exceed 3 failures, the system SHALL temporarily lock the account for 15 minutes
-- WHERE user lacks required permissions, the system SHALL display "Access Denied" message
-
-## Kiro Workflow with EARS
-
-The kiro command manages the complete development lifecycle using EARS methodology:
-
-1. **Specification Generation**: `/kiro "Feature Name"` creates requirements.md, design.md, and tasks.md with EARS syntax
-2. **User Approval Gates**: Review and approve each document before proceeding
-3. **Implementation**: Follow tasks sequentially with EARS Definition of Done
-4. **Progress Tracking**: Update task status using natural language
-5. **Completion**: Validate against EARS acceptance criteria and archive
-
-### EARS Integration Benefits
-
-- **Eliminates Ambiguity**: "WHEN user clicks login, system SHALL authenticate within 200ms" vs "fast login"
-- **Direct Test Translation**: EARS → BDD (Given/When/Then) mapping for automated testing
-- **Behavioral Contracts**: Component interfaces specify exact behavioral expectations
-- **Measurable Success**: Every requirement has specific triggers and measurable outcomes
-- **Comprehensive Coverage**: Every acceptance criterion maps to testable conditions
-
-### Generated Documentation Structure
-
-```
-specs/
-└── user-authentication-system/
-    ├── requirements.md  # EARS acceptance criteria (WHEN/WHILE/IF/WHERE + SHALL)
-    ├── design.md        # EARS behavioral contracts for components
-    └── tasks.md         # EARS Definition of Done for each task
-
-specs/done/
-└── DONE_20250818_a1b2c3d4_.../  # Archived completed features
-    ├── requirements.md
-    ├── design.md
-    ├── tasks.md
-    ├── validation.md
-    ├── metrics.md
-    └── retrospective.md
-```
-
-## Development Rules
-
-1. All features start with requirements definition using EARS syntax
-2. Proceed to design after approving requirements  
-3. Proceed to implementation after approving design
-4. Tasks should be independently testable with EARS DoD
-5. Mark tasks as completed using natural language
-6. All tasks must pass EARS validation before archiving
-
-## Task Completion
-
-When a task is completed:
-1. Update tasks.md by changing `[ ]` to `[x]`
-2. Update the progress counter at the top of tasks.md
-3. Proceed to the next task only after confirming current task works
-
-## EARS Hybrid Implementation Details
+EARS (Easy Approach to Requirements Syntax) is used to write unambiguous, verifiable requirements. It is mandatory for all acceptance criteria, behavioral contracts, and definitions of done.
 
 ### EARS Syntax Format
-- **WHEN** [trigger condition], the system **SHALL** [specific action]
-- **WHILE** [ongoing state], the system **SHALL** [continuous behavior]
-- **IF** [conditional state], the system **SHALL** [conditional response]
-- **WHERE** [constraint boundary], the system **SHALL** [bounded action]
 
-### EARS-to-BDD Translation
-EARS requirements automatically translate to BDD scenarios:
-- **EARS**: WHEN user submits valid form, system SHALL save data within 1 second
-- **BDD**: GIVEN valid form data, WHEN user submits form, THEN system saves within 1 second
-
-### Quality Assurance with EARS
-- Every acceptance criterion includes confidence scoring
-- All behavioral contracts specify measurable outcomes
-- Component interfaces use EARS format for precise expectations
-- Test coverage maps directly from EARS statements to automated tests
-
-### Implementation Verification
-- Definition of Done (DoD) written in EARS format
-- Task completion verified against EARS acceptance criteria
-- Progress tracking includes EARS compliance validation
-- Archival process preserves EARS traceability relationships
-
-## Responding to Specification Changes
-
-When specifications change, use natural language to request updates while maintaining EARS consistency:
+-   **WHEN** `[a trigger occurs]`, the system **SHALL** `[perform a specific action]`.
+-   **WHILE** `[a state is ongoing]`, the system **SHALL** `[maintain a continuous behavior]`.
+-   **IF** `[a condition is true]`, the system **SHALL** `[execute a conditional response]`.
+-   **WHERE** `[a feature is constrained]`, the system **SHALL** `[adhere to a bounded action]`.
 
 **Examples:**
-```
-"I need to add social login to the User Authentication feature"
-"Change the database from PostgreSQL to MongoDB in the Data Storage feature"  
-"Remove the dark mode feature as it's no longer needed"
-```
+-   WHEN user submits valid login credentials, the system SHALL authenticate within 200ms.
+-   WHILE the user session is active, the system SHALL maintain the authentication state.
+-   IF login attempts exceed 3 failures, the system SHALL temporarily lock the account for 15 minutes.
+-   WHERE the user lacks required permissions, the system SHALL display an "Access Denied" message.
 
-When changes occur, the kiro workflow will:
-1. Update requirements.md with EARS syntax
-2. Modify design.md to reflect new EARS behavioral contracts  
-3. Adjust tasks.md with updated EARS DoD
-4. Verify EARS compliance across all files
+### Benefits of EARS
+
+-   **Eliminates Ambiguity**: Provides clear, measurable success criteria instead of vague goals like "fast login."
+-   **Direct Test Translation**: EARS statements map directly to BDD (Given/When/Then) test scenarios, streamlining QA.
+-   **Precise Behavioral Contracts**: Component interfaces can specify exact behavioral expectations (e.g., `// WHEN method1() is called, SHALL return Promise<T> within 200ms`).
+-   **Comprehensive Coverage**: Ensures all conditions, triggers, and constraints are explicitly defined and testable.
+
+## Core Principles
+
+1.  **Specification First**: All features must begin with a `/kiro` command to generate the specification files. No implementation should occur before specs are approved.
+2.  **Approval is Mandatory**: The agent will stop and wait for your explicit approval after generating requirements, design, and tasks. This is a core control mechanism.
+3.  **Sequential Tasking**: Tasks must be implemented in the order they appear in `tasks.md` unless otherwise instructed. Update task status by changing `[ ]` to `[x]` and updating the progress counter.
+4.  **EARS is Law**: All acceptance criteria, behavioral contracts, and Definitions of Done (DoD) must be written in valid EARS format.
+5.  **Handle Specification Changes Gracefully**: If requirements change mid-stream, state the needed change in natural language. The agent will update the specification files, re-verify EARS compliance, and await your re-approval before continuing.
+    ```
+    "I need to add social login to the User Authentication feature."
+    "Change the database from PostgreSQL to MongoDB for the Data Storage feature."
+    ```
