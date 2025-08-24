@@ -15,6 +15,12 @@ Simple 3-phase implementer that combines Kiro TAD rigor with enhanced subagent d
 
 ## 3-Phase Execution Strategy
 
+### Optimization Rules
+- **MVP Priority**: Always propose minimum viable implementation first
+- **Token Efficiency**: Prefer existing patterns over custom solutions
+- **Complexity Gate**: Flag tasks requiring >500 tokens for user review
+- **Pragmatic Validation**: Meet EARS criteria with simplest working solution
+
 ### Phase 1: Dynamic Discovery & State Persistence
 **Goal**: Find available subagents quickly and efficiently, with resume capability
 
@@ -32,13 +38,27 @@ Simple 3-phase implementer that combines Kiro TAD rigor with enhanced subagent d
 
 **Process**:
 1. Read `requirements.md` and `design.md` from current specs
-2. **Load task template**: Use structure from `~/.claude/templates/tasks-template.md` 
-3. **Follow example format**: Use the concrete example format shown below (lines 169-200)
-4. Break EARS requirements into concrete tasks
-5. Match tasks to appropriate subagents based on specialization
-6. Generate `tasks.md` combining template structure with example formatting
+2. **Load task template**: Use structure from `~/.claude/templates/tasks-template.md`
+3. **Optimization Assessment**: Identify simplest path to meet each EARS requirement
+4. **Complexity Review**: Flag over-engineered approaches before task creation
+5. **Token Budget**: Estimate implementation complexity per task
+6. Break EARS requirements into concrete tasks (prefer simple, atomic tasks)
+7. Match tasks to appropriate subagents based on specialization
+8. Generate `tasks.md` with optimization metadata, following the example format provided in this document.
 
 **Output**: Complete `tasks.md` with task breakdown, agent assignments, and progress tracking
+
+### Phase 2.5: Optimization Review (New)
+**Goal**: Validate approach is not over-engineered before implementation
+
+**Process**:
+1. Review each task for implementation complexity
+2. **Complexity Gate**: If any task estimates >500 tokens, flag for user review
+3. **Pattern Check**: Verify using existing codebase patterns vs custom solutions
+4. **MVP Validation**: Confirm each task represents minimum viable approach
+5. **User Approval**: Present optimization assessment for approval
+
+**Output**: User-approved implementation plan with complexity validation
 
 ### Phase 3: EARS-Compliant Implementation
 **Goal**: Execute tasks using appropriate subagents with EARS compliance
@@ -58,14 +78,17 @@ Simple 3-phase implementer that combines Kiro TAD rigor with enhanced subagent d
 When delegating tasks to subagents, the protocol ensures proper context injection:
 
 ```
-@code-reviewer: Review implementation against EARS acceptance criteria:
+@database-expert: Design authentication schema with MVP approach
 
-REQ-FEAT-001: WHEN user submits form, system SHALL validate within 200ms
+REQ-FEAT-001: WHEN user submits login, system SHALL validate within 200ms
 AC-FEAT-001-01: IF validation fails, system SHALL display specific error message
 
-[Provide minimal context about the implementation to review]
+**Optimization Context**:
+- Prefer existing database patterns over custom solutions
+- Target: Simple username/password with bcrypt hashing
+- Avoid: Complex multi-factor auth, OAuth, or custom encryption
 
-Expected: Code review feedback with EARS compliance assessment
+Expected: Minimal schema design meeting EARS criteria
 ```
 
 ### Validation Pipeline
@@ -177,6 +200,8 @@ Available Subagents (42 found):
   - **Requirement**: REQ-AUTH-001 - User credential validation
   - **EARS AC**: WHEN user submits login, SHALL validate within 200ms
   - **Assigned**: @database-expert
+  - **Complexity**: Simple (use existing user table + password hash)
+  - **Token Budget**: ~200 tokens
   - **Dependencies**: None
 
 ## Phase 2: Implementation Tasks  
@@ -184,12 +209,16 @@ Available Subagents (42 found):
   - **Requirement**: REQ-AUTH-002 - Login/logout endpoints
   - **EARS AC**: WHEN endpoint called, SHALL return JWT token
   - **Assigned**: @api-designer
+  - **Complexity**: Simple
+  - **Token Budget**: ~300 tokens
   - **Dependencies**: TASK-001
 
 - [ ] **TASK-003: Frontend Components**
   - **Requirement**: REQ-AUTH-003 - Login/logout UI
   - **EARS AC**: WHEN form submitted, SHALL display validation errors
   - **Assigned**: @react-expert
+  - **Complexity**: Medium
+  - **Token Budget**: ~400 tokens
   - **Dependencies**: TASK-002
 
 ## Phase 3: Quality Assurance
@@ -197,6 +226,8 @@ Available Subagents (42 found):
   - **Requirement**: REQ-AUTH-004 - Security validation
   - **EARS AC**: WHEN tests run, SHALL validate all security criteria
   - **Assigned**: @security-expert
+  - **Complexity**: Simple
+  - **Token Budget**: ~150 tokens
   - **Dependencies**: All previous tasks
 ```
 

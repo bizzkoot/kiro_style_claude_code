@@ -13,6 +13,8 @@ Total: [TOTAL_TASKS] | Complete: 0 | In Progress: 0 | Not Started: [TOTAL_TASKS]
   - **Requirement**: [REQ_ID] - [Requirement Summary]  
   - **EARS AC**: [EARS_ACCEPTANCE_CRITERIA]
   - **Assigned**: [SUBAGENT_ASSIGNMENT]
+  - **Complexity**: [COMPLEXITY_ASSESSMENT]
+  - **Token Budget**: [TOKEN_ESTIMATE]
   - **Definition of Done**: [EARS_DOD_STATEMENT]
   - **Dependencies**: None
 
@@ -21,6 +23,8 @@ Total: [TOTAL_TASKS] | Complete: 0 | In Progress: 0 | Not Started: [TOTAL_TASKS]
   - **Requirement**: [REQ_ID] - [Requirement Summary]
   - **EARS AC**: [EARS_ACCEPTANCE_CRITERIA] 
   - **Assigned**: [SUBAGENT_ASSIGNMENT]
+  - **Complexity**: [COMPLEXITY_ASSESSMENT]
+  - **Token Budget**: [TOKEN_ESTIMATE]
   - **Definition of Done**: [EARS_DOD_STATEMENT]
   - **Dependencies**: TASK-001
 
@@ -29,6 +33,8 @@ Total: [TOTAL_TASKS] | Complete: 0 | In Progress: 0 | Not Started: [TOTAL_TASKS]
   - **Requirement**: [REQ_ID] - [Requirement Summary]
   - **EARS AC**: [EARS_ACCEPTANCE_CRITERIA]
   - **Assigned**: [SUBAGENT_ASSIGNMENT] 
+  - **Complexity**: [COMPLEXITY_ASSESSMENT]
+  - **Token Budget**: [TOKEN_ESTIMATE]
   - **Definition of Done**: [EARS_DOD_STATEMENT]
   - **Dependencies**: TASK-002
 
