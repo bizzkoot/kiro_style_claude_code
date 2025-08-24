@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0-hybrid",
+  "description": "Hybrid index/definitions manifest schema for efficient subagent discovery and lookup",
+  "generated_at": "ISO-8601-DATE",
+  "attribution": "Subagents from @davepoon/claude-code-subagents-collection",
+  "capabilities_briefing": "**Specialized Domains**: @agent1, @agent2, @agent3\n**Code Analysis & Testing**: @test-agent1, @test-agent2\n**Project & Task Management**: @project-agent1, @project-agent2\n**Quality & Security**: @security-agent1, @security-agent2\n**Programming Languages**: @lang-agent1, @lang-agent2",
+  "index": [
+    { "id": "subagent_001", "name": "example-agent", "specialization": "example-category", "purpose": "Detailed description of what this agent does, when to use it, and its specific capabilities. Use PROACTIVELY for specific scenarios or tasks." },
+    { "id": "subagent_002", "name": "another-example-agent", "specialization": "another-category", "purpose": "Another detailed description showing the comprehensive purpose field that enables smart task-to-agent matching." }
+  ],
+  "definitions": {
+    "subagent_001": {
+      "name": "example-agent",
+      "file_path": "./example-agent.md",
+      "purpose": "Detailed description of what this agent does, when to use it, and its specific capabilities. Use PROACTIVELY for specific scenarios or tasks.",
+      "specialization": "example-category"
+    },
+    "subagent_002": {
+      "name": "another-example-agent", 
+      "file_path": "./another-example-agent.md",
+      "purpose": "Another detailed description showing the comprehensive purpose field that enables smart task-to-agent matching.",
+      "specialization": "another-category"
+    }
+  },
+  "metadata": {
+    "total_agents": 2
+  }
+}

@@ -23,4 +23,7 @@ Thumbs.db
 .claude/**
 
 # Specs files
-specs/**
+specs/done/**
+
+# Archived files
+Enhanced-Kiro-Subagents/archived/**

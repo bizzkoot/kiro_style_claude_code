@@ -507,12 +507,32 @@ select_installation_location() {
     done
 }
 create_installation_directory() {
-    echo -e "${BLUE}[Setup]${NC} Creating installation directory..."
+    echo -e "${BLUE}[Setup]${NC} Creating enhanced directory structure..."
+    
+    # Create main installation directory
     if [[ ! -d "$INSTALLATION_PATH" ]]; then
         mkdir -p "$INSTALLATION_PATH"
         echo -e "${GREEN}✓ Created${NC} directory: $INSTALLATION_PATH"
     else
         echo -e "${YELLOW}⚠ Exists${NC} directory: $INSTALLATION_PATH"
+    fi
+    
+    # Create additional directories based on installation type
+    if [[ "$INSTALLATION_PATH" == "$HOME/.claude/agents" ]]; then
+        # Global installation - create protocols directory
+        mkdir -p "$HOME/.claude/protocols"
+        echo -e "${GREEN}✓ Created${NC} directory: $HOME/.claude/protocols"
+        
+        # Ensure templates directory exists
+        mkdir -p "$HOME/.claude/templates" 
+        echo -e "${GREEN}✓ Ensured${NC} directory: $HOME/.claude/templates"
+    else
+        # Project installation - create project .claude structure
+        local project_claude_dir="$(dirname "$INSTALLATION_PATH")"
+        mkdir -p "$project_claude_dir/protocols"
+        mkdir -p "$project_claude_dir/templates"  
+        mkdir -p "$project_claude_dir/state"
+        echo -e "${GREEN}✓ Created${NC} project structure in: $project_claude_dir"
     fi
 }
 # Download Engine Implementation (TASK-E5A8F3B2-002) with Security Integration
@@ -1061,8 +1081,8 @@ show_other_implementers_summary() {
 
 # Kiro Implementer Generation (TASK-E5A8F3B2-004)
 generate_kiro_implementer() {
-    echo -e "${BLUE}[Template]${NC} Generating kiro-implementer.md from enhanced template..."
-    local source_template="$SCRIPT_DIR/enhanced-kiro-implementer.md"
+    echo -e "${BLUE}[Template]${NC} Generating kiro-implementer.md from simple enhanced template..."
+    local source_template="$SCRIPT_DIR/simple-kiro-implementer.md"
     local global_path="$HOME/.claude/commands/kiro-implementer.md"
     local project_path="$SCRIPT_DIR/../CLAUDE/.claude/commands/kiro-implementer.md"
 
@@ -1113,12 +1133,102 @@ generate_kiro_implementer() {
     
     return 0
 }
+
+# Copy protocol files
+copy_protocol_files() {
+    echo -e "${BLUE}[Protocols]${NC} Installing protocol definitions..."
+    
+    local protocols_source_dir="$SCRIPT_DIR/protocols"
+    local target_protocols_dir=""
+    
+    # Determine target directory based on installation type
+    if [[ "$INSTALLATION_PATH" == "$HOME/.claude/agents" ]]; then
+        target_protocols_dir="$HOME/.claude/protocols"
+    else
+        target_protocols_dir="$(dirname "$INSTALLATION_PATH")/protocols"
+    fi
+    
+    # Copy protocol files
+    if [[ -d "$protocols_source_dir" ]]; then
+        for protocol_file in "$protocols_source_dir"/*.md; do
+            if [[ -f "$protocol_file" ]]; then
+                local filename=$(basename "$protocol_file")
+                cp "$protocol_file" "$target_protocols_dir/$filename"
+                echo -e "${GREEN}✓ Installed${NC} protocol: $filename"
+            fi
+        done
+    else
+        echo -e "${YELLOW}⚠ Protocol source directory not found${NC}: $protocols_source_dir"
+    fi
+}
+
+# Copy template files
+copy_template_files() {
+    echo -e "${BLUE}[Templates]${NC} Installing template files..."
+    
+    local templates_source_dir="$SCRIPT_DIR/templates"
+    local target_templates_dir=""
+    
+    # Determine target directory based on installation type
+    if [[ "$INSTALLATION_PATH" == "$HOME/.claude/agents" ]]; then
+        target_templates_dir="$HOME/.claude/templates"
+    else
+        target_templates_dir="$(dirname "$INSTALLATION_PATH")/templates"
+    fi
+    
+    # Copy template files
+    if [[ -d "$templates_source_dir" ]]; then
+        for template_file in "$templates_source_dir"/*; do
+            if [[ -f "$template_file" ]]; then
+                local filename=$(basename "$template_file")
+                cp "$template_file" "$target_templates_dir/$filename"
+                echo -e "${GREEN}✓ Installed${NC} template: $filename"
+            fi
+        done
+    else
+        echo -e "${YELLOW}⚠ Template source directory not found${NC}: $templates_source_dir"
+    fi
+}
+
+# Detect existing Kiro installation
+detect_existing_installation() {
+    echo -e "${BLUE}[Detection]${NC} Checking for existing Kiro installation..."
+    
+    if [[ -d "$HOME/.claude/commands" ]]; then
+        echo -e "${GREEN}✓ Existing Kiro installation detected${NC}"
+        echo -e "${BLUE}[Enhancement]${NC} This will enhance your existing installation"
+        
+        # Check for existing implementer
+        if [[ -f "$HOME/.claude/commands/kiro-implementer.md" ]]; then
+            echo -e "${YELLOW}⚠ Found existing kiro-implementer.md${NC}"
+            echo -e "${BLUE}[Backup]${NC} Will backup to Desktop before replacement"
+        fi
+        
+        # Check for existing templates
+        if [[ -d "$HOME/.claude/templates" ]]; then
+            echo -e "${GREEN}✓ Found existing templates directory${NC}"
+            echo -e "${BLUE}[Preservation]${NC} Will preserve existing templates"
+        fi
+        
+        return 0
+    else
+        echo -e "${BLUE}ℹ${NC} No existing Kiro installation found - fresh installation"
+        echo -e "${BLUE}[Setup]${NC} Will create new .claude structure"
+        return 1
+    fi
+}
+
 # Main execution flow
 main() {
     print_welcome_header
     echo -e "${CYAN}Starting Enhanced Kiro Subagent Integration...${NC}"
     echo
-    # Phase 0: System Requirements Validation (TASK-E5A8F3B2-014)
+    
+    # Phase 0: Detect existing installation 
+    detect_existing_installation
+    echo
+    
+    # Phase 1: System Requirements Validation (TASK-E5A8F3B2-014)
     if ! validate_system_requirements; then
         echo -e "${RED}✗ Installation aborted due to system requirement failures${NC}"
         echo -e "${BLUE}💡 Please resolve the issues above and try again${NC}"
@@ -1138,13 +1248,19 @@ main() {
     generate_subagent_manifest || exit 1
     validate_ears_ac_002_01 || exit 1
     validate_manifest_performance
-    # Phase 4: Kiro Implementer (TASK-004)
+    # Phase 4: Protocol Installation
+    copy_protocol_files
+    
+    # Phase 5: Template Installation
+    copy_template_files
+    
+    # Phase 6: Kiro Implementer (TASK-004)
     generate_kiro_implementer || exit 1
     validate_ears_ac_004_01 || exit 1
     validate_ears_ac_004_02 || exit 1
     validate_ears_ac_004_03 || exit 1
     validate_ears_ac_004_04
-    # Phase 5: Security Validation (TASK-E5A8F3B2-013)
+    # Phase 7: Security Validation (TASK-E5A8F3B2-013)
     if [[ "$SECURITY_ENABLED" == "true" ]]; then
         echo -e "${BLUE}[Security]${NC} Performing post-installation security validation..."
         echo -e "${GREEN}✓ HTTPS-only downloads enforced${NC}"
