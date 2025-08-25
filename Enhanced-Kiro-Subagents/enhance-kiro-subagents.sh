@@ -670,6 +670,127 @@ download_all_subagents() {
         return 1
     fi
 }
+
+# Agent File Fixing Implementation (integrated from fix-agent-files.sh)
+fix_agent_files() {
+    echo -e "${BLUE}[Agent Fix]${NC} Fixing agent files without proper frontmatter..."
+    
+    local fixed_count=0
+    local skipped_count=0
+    local skip_files="README.md CHANGELOG.md CONTRIBUTING.md UPDATES.md $MANIFEST_FILE"
+    
+    # Function to check if string contains substring
+    contains() {
+        string="$1"
+        substring="$2"
+        if [[ $string == *"$substring"* ]]; then
+            return 0
+        else
+            return 1
+        fi
+    }
+    
+    # Function to check if frontmatter has name field
+    has_name_in_frontmatter() {
+        local file_path="$1"
+        local in_frontmatter=false
+        local frontmatter_end=false
+        
+        while IFS= read -r line; do
+            # Check if we're entering frontmatter
+            if [[ $line == "---" ]] && [[ $in_frontmatter == false ]]; then
+                in_frontmatter=true
+                continue
+            fi
+            
+            # Check if we're exiting frontmatter
+            if [[ $line == "---" ]] && [[ $in_frontmatter == true ]]; then
+                frontmatter_end=true
+                break
+            fi
+            
+            # Check for name field within frontmatter
+            if [[ $in_frontmatter == true ]] && [[ $line == name:* ]]; then
+                return 0  # Found name field in frontmatter
+            fi
+        done < "$file_path"
+        
+        # If we've processed the frontmatter and didn't find a name field
+        if [[ $in_frontmatter == true ]] && [[ $frontmatter_end == true ]]; then
+            return 1  # No name field in frontmatter
+        fi
+        
+        # If there's no proper frontmatter
+        return 2  # No proper frontmatter
+    }
+    
+    # Process each .md file in the installation directory
+    for file_path in "$INSTALLATION_PATH"/*.md; do
+        # Skip if file doesn't exist (glob didn't match anything)
+        [[ ! -f "$file_path" ]] && continue
+        
+        # Extract just the filename
+        local md_file=$(basename "$file_path")
+        
+        # Skip if in our skip list
+        if contains "$skip_files" "$md_file"; then
+            echo -e "${YELLOW}⚠ Skipping${NC} $md_file (in skip list)"
+            ((skipped_count++))
+            continue
+        fi
+        
+        # Read the file content
+        local content=$(head -n 1 "$file_path")
+        
+        # Check if the file has frontmatter (starts with ---)
+        if [[ $content == ---* ]]; then
+            # Check if it already has a name field in the frontmatter
+            if has_name_in_frontmatter "$file_path"; then
+                echo -e "${GREEN}✓ OK${NC} $md_file (already has name field)"
+            else
+                # Extract the name from the filename (without extension)
+                local name="${md_file%.*}"
+                
+                # Add the name field to the frontmatter using sed
+                if sed -i '' "2i\\
+name: $name\\
+" "$file_path" 2>/dev/null; then
+                    echo -e "${GREEN}✓ Fixed${NC} $md_file (added name field '$name')"
+                    ((fixed_count++))
+                else
+                    echo -e "${RED}✗ Failed${NC} to fix $md_file"
+                fi
+            fi
+        else
+            # File doesn't have frontmatter, add it
+            local name="${md_file%.*}"
+            # Create a temporary file with the new content
+            if {
+                echo "---"
+                echo "name: $name"
+                echo "---"
+                echo ""
+                cat "$file_path"
+            } > "$file_path.tmp" && mv "$file_path.tmp" "$file_path"; then
+                echo -e "${GREEN}✓ Fixed${NC} $md_file (added frontmatter with name '$name')"
+                ((fixed_count++))
+            else
+                echo -e "${RED}✗ Failed${NC} to fix $md_file"
+                rm -f "$file_path.tmp" 2>/dev/null
+            fi
+        fi
+    done
+    
+    echo -e "${BLUE}[Agent Fix]${NC} Summary: Fixed $fixed_count files, skipped $skipped_count files"
+    
+    if [[ $fixed_count -gt 0 ]]; then
+        echo -e "${GREEN}✓ Agent file fixing completed${NC}"
+        return 0
+    else
+        echo -e "${BLUE}ℹ No agent files needed fixing${NC}"
+        return 0
+    fi
+}
 cleanup_temp_dir() {
     local temp_dir="$1"
     if [[ -d "$temp_dir" ]]; then
@@ -1244,6 +1365,8 @@ main() {
     validate_ears_ac_001_02 || exit 1
     validate_ears_ac_001_03
     validate_ears_ac_001_05
+    # Phase 2.5: Fix Agent Files (ensure proper frontmatter)
+    fix_agent_files
     # Phase 3: Manifest Generation (TASK-003)
     generate_subagent_manifest || exit 1
     validate_ears_ac_002_01 || exit 1
