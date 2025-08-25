@@ -148,3 +148,25 @@ EARS requirements automatically translate to BDD scenarios:
 - Task completion verified against EARS acceptance criteria
 - Progress tracking includes EARS compliance validation
 - Archival process preserves EARS traceability relationships
+## Bear V2 Agentic Agent Integration
+
+Bear V2 enhances the Kiro framework with adaptive planning, persistent memory, and reflexive learning:
+
+### Bear Commands
+- `/bear [task-description]` - Full adaptive workflow with complexity triage
+- `/bear-fast [simple-task]` - Fast Track for well-defined tasks  
+- `/bear-deep [complex-task]` - Deep Dive for complex projects
+- `/bear-memory [query]` - Search persistent memory system
+
+### Integration Benefits
+- **Adaptive Workflows**: Automatic complexity assessment and workflow selection
+- **Persistent Memory**: Learn from every project and maintain knowledge across sessions
+- **Performance Optimization**: Agent selection based on historical effectiveness
+- **Reflexive Learning**: Deep analysis and prevention of repeated errors
+- **Enhanced Kiro**: Bear's memory system enhances specification-driven development
+
+### Combined Usage
+- Start with `/bear [feature]` for planning, then use `/kiro-implementer` for execution
+- Use `/bear-memory` to find relevant specifications and past solutions
+- Bear's Deep Dive workflow incorporates Kiro's EARS-driven specifications
+- All Bear learnings feed back into improved Kiro specification quality

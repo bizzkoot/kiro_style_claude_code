@@ -21,6 +21,16 @@
 <br>
 <em>Experience Kiro's specification-driven development with Google's Gemini CLI</em>
 
+<br><br>
+
+**🐻 Bear V2 Agentic Agent:**
+<br>
+<a href="Bear/README.md">
+    <img src="https://img.shields.io/badge/🐻_Bear_V2_Agent-Get_Started!-4A90E2?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" alt="Bear V2 Agentic Agent" />
+</a>
+<br>
+<em>Advanced Adaptive Task-Oriented Planning with persistent memory and reflexive learning</em>
+
 </div>
 
 ## 🎯 Concept
