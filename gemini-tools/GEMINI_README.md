@@ -21,7 +21,7 @@
 
 ## 🙏 Special Thanks to @davepoon
 
-The powerful Persona Delegation feature is made possible by the incredible work of community hero **@davepoon**. Their brilliant `claude-code-subagents-collection` provides the vast library of over 295 specialized agents that Kiro uses to delegate tasks.
+The powerful Persona Delegation feature is made possible by the incredible work of community hero **@davepoon**. Their brilliant `claude-code-subagents-collection` provides the vast library of over 150 specialized agents that Kiro uses to delegate tasks.
 
 **Please support their invaluable contribution:**
 - 🌟 **Star the repository**: [davepoon/claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)
@@ -104,7 +104,7 @@ rm -rf kiro_style_claude_code
 
 ## 💡 How to Use Kiro with Gemini CLI
 
-Kiro operates as an intelligent command for the Gemini CLI using a TOML-based system prompt with integrated persona delegation. The system automatically selects from 295+ specialist personas to handle different aspects of your development workflow. No complex setup or servers required!
+Kiro operates as an intelligent command for the Gemini CLI using a TOML-based system prompt with integrated persona delegation. The system automatically selects from 150+ specialist personas to handle different aspects of your development workflow. No complex setup or servers required!
 
 ### 🚀 Initialize Gemini CLI (Per-Project Only)
 
@@ -215,7 +215,7 @@ To continue work on an existing feature with persona context:
 
 | Command | Purpose | Persona Features | Example |
 |---|---|---|---|
-| `/kiro-init` | Initialize new project with Kiro template and persona library | Sets up 295+ specialist personas | `/kiro-init` |
+| `/kiro-init` | Initialize new project with Kiro template and persona library | Sets up 150+ specialist personas | `/kiro-init` |
 | `/kiro "Feature Name"` | Generate specifications + persona assignments | Auto-assigns tasks to specialists | `/kiro "User Dashboard"` |
 | `/kiro resume "Feature Name"` | Resume work with persona context | Loads assigned specialist for next task | `/kiro resume "Payment System"` |
 | Natural language follow-ups | Task updates, completion, etc. | Maintains persona context | "Mark task TASK-001 as completed" |

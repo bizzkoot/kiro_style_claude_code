@@ -172,7 +172,7 @@ Load the full BEAR V2 protocol from: `~/.claude/protocols/bear_protocol.md`
 
 ## Activation Commands
 - `/bear [task-description]` - Full BEAR V2 workflow
-- `/bear-fast [simple-task]` - Fast Track workflow only  
+- `/bear-fast [simple-task]` - Fast Track workflow with plan confirmation  
 - `/bear-deep [complex-task]` - Deep Dive workflow only
 - `/bear-memory [search-query]` - Search memory system
 
@@ -243,13 +243,14 @@ cat >> CLAUDE.md << 'EOF'
 ## Bear V2 Agentic Agent Commands
 
 - `/bear [task-description]` - Full BEAR V2 adaptive workflow with memory and learning
-- `/bear-fast [simple-task]` - Quick execution for well-defined tasks
+- `/bear-fast [simple-task]` - Fast Track with plan confirmation before execution
 - `/bear-deep [complex-task]` - Comprehensive planning for complex projects
 - `/bear-memory [query]` - Search and recall from persistent memory system
 
 ### Bear Integration Benefits
 - **Persistent Memory**: Learn from every project and interaction
 - **Adaptive Workflows**: Automatic complexity triage and workflow selection  
+- **Plan Confirmation**: User approval required before Fast Track file modifications
 - **Performance Tracking**: Continuous improvement of agent selection
 - **Reflexive Learning**: Deep analysis and prevention of repeated errors
 - **Parallel Execution**: DAG-based planning for efficient task coordination

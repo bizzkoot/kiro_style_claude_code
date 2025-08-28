@@ -133,6 +133,49 @@ grep "bear_protocol.md" ~/.claude/commands/bear.md
 sed -i 's|/old/path/bear_protocol.md|~/.claude/protocols/bear_protocol.md|g' ~/.claude/commands/bear.md
 ```
 
+#### Problem: Fast Track plan confirmation not working
+**Symptoms:**
+- `/bear-fast` executes immediately without showing plan
+- No user confirmation prompt appears
+- Configuration settings seem ignored
+
+**Diagnostics:**
+```bash
+# Check Fast Track confirmation configuration
+grep -A 10 "fast_track_confirmation" ~/.claude/state/bear/config.json
+
+# Verify FAST_TRACK_EXAMPLES.md is installed
+ls -la ~/.claude/protocols/FAST_TRACK_EXAMPLES.md
+
+# Test configuration JSON validity
+python3 -m json.tool ~/.claude/state/bear/config.json
+```
+
+**Solutions:**
+```bash
+# Enable Fast Track confirmation in config
+cat > ~/.claude/state/bear/config-patch.json << 'EOF'
+{
+  "workflows": {
+    "fast_track_confirmation": {
+      "enabled": true,
+      "timeout_seconds": 60,
+      "show_agent_metrics": true,
+      "show_affected_files": true
+    }
+  }
+}
+EOF
+
+# Merge configuration (requires jq)
+jq -s '.[0] * .[1]' ~/.claude/state/bear/config.json ~/.claude/state/bear/config-patch.json > ~/.claude/state/bear/config.json.tmp
+mv ~/.claude/state/bear/config.json.tmp ~/.claude/state/bear/config.json
+
+# Or reinstall with latest configuration
+cd Bear/
+./install-bear.sh --config-only
+```
+
 ### 3. Memory System Issues
 
 #### Problem: Memory searches return no results
