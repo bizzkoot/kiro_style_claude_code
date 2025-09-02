@@ -1,8 +1,43 @@
 # Kiro Command - Traceable Agentic Development (TAD)
 
-Context: Review CLAUDE.md for project context first.
-Trigger: /kiro "Feature Name"
-Action: Create specs/{kebab-case-feature-name}/ with semantic traceability chain.
+**Context:** Review `CLAUDE.md` for project context first.  
+**Trigger:** `/kiro "Feature Name"`  
+**Action:** Create `specs/{kebab-case-feature-name}/` with a semantic traceability chain.
+
+---
+
+## Phase 0: Mandatory Thinking Pass (🛑 Do Not Generate Yet)
+
+> You must complete this **thinking-only** section **before** generating `requirements.md`, `design.md`, or `tasks.md`.
+> If any item below is incomplete or uncertain, **STOP** and ask up to **3–5** focused questions (see Phase 1.0) before proceeding.
+> If any section feels rushed or incomplete after first pass, revise until confident before proceeding.
+
+### 0.A Problem Framing (1–2 sentences)
+- **Core objective:**  
+- **Primary users & value:**  
+- **Out-of-scope / risks to avoid:**  
+
+### 0.B Assumptions (max 5; each with confidence %)
+1. (…%)  
+2. (…%)
+
+### 0.C Constraints (tech, org, time, compliance)
+- …
+
+### 0.D Solution Options (at least 2)
+- **Option A** — summary, key pros, key cons  
+- **Option B** — summary, key pros, key cons  
+**Selection:** A | B — because …
+
+### 0.E Test Strategy Sketch (tie to EARS AC groups)
+- How will each **EARS** acceptance criterion be validated? (unit / integration / E2E / inspection)
+
+### 0.F Go/No-Go Criteria
+- Proceed only when **every AC group** has ≥1 validation idea **and** all critical ambiguities are resolved.
+
+> **Gate:** If options < 2, AC validation is missing, or critical ambiguity remains → **STOP** and ask clarification questions (Phase 1.0).
+
+---
 
 ## Phase 1: Generation Sequence
 
@@ -11,12 +46,12 @@ Before generating each document, conduct targeted clarification to minimize revi
 
 **Requirements Clarification:**
 - Analyze feature request for ambiguous user roles, success criteria, constraints
-- Ask max 3-5 focused questions to resolve critical unknowns
+- Ask max 3–5 focused questions to resolve critical unknowns
 - Example: "Who are primary users?", "What's the success metric?", "Any tech constraints?"
 
 **Design Clarification:**
 - Identify technical unknowns from requirements (architecture, integrations, data flow)
-- Ask max 2-3 questions about tech stack, existing system integration
+- Ask max 2–3 questions about tech stack, existing system integration
 - Focus on decisions that significantly impact implementation
 
 **Tasks Clarification:**
@@ -25,7 +60,7 @@ Before generating each document, conduct targeted clarification to minimize revi
 - Ensure clear understanding of what's in/out of scope
 
 ### 1. requirements.md (Semantic Anchor)
-```markdown
+````markdown
 # Requirements: [Feature Name]
 ## Meta-Context
 - Feature UUID: FEAT-{8-char-hash}
@@ -67,10 +102,10 @@ NFR Examples:
 
 ## Traceability Manifest
 Upstream: [dependencies] | Downstream: [impact] | Coverage: [AI-calculated]
-```
+````
 
 ### 2. design.md (Architecture Mirror)
-```markdown
+````markdown
 # Design: [Feature Name]
 ## ADRs (Architectural Decision Records)
 ### ADR-001: [Decision]
@@ -111,10 +146,10 @@ interface Component {
 - ADRs: >80% confidence to requirements
 - Interfaces: trace to acceptance criteria
 - NFRs: measurable test plans
-```
+````
 
 ### 3. tasks.md (Execution Blueprint)
-```markdown
+````markdown
 # Tasks: [Feature Name]
 ## Metadata
 Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {estimate}
@@ -151,39 +186,56 @@ Complexity: {AI-calc} | Critical Path: {sequence} | Risk: {score} | Timeline: {e
 - [ ] All design EARS contracts → implementation tasks
 - [ ] Risk mitigation for Medium+ risks with EARS success criteria
 - [ ] EARS-to-BDD test translation completeness check
-```
+````
 
-### 4. User Approval Gates
+### 4. Internal Review Gate (before User Approval)
+
+Complete and show this **filled** section **before** asking the user to approve any document:
+
+**Traceability Quick-check**
+- Every REQ-* maps to ≥1 task? □ Yes / □ No  
+- Every EARS AC has a validation hook? □ Yes / □ No  
+- NFRs measurable & linked to design choices? □ Yes / □ No
+
+**Reviewer Rubric (0–3 each)**  
+- Clarity __ / Correctness __ / Safety __ / Testability __ / Simplicity __
+
+> **Rule:** If any checkbox is **No** or any score < **2** → **REVISE**. Do **not** request approval.
+
+### 5. User Approval Gates
+
 After generating/updating each document, explicitly request user approval:
 
 **Requirements Approval:**
-- Present requirements.md for review
+- Present `requirements.md` for review
 - Ask: "Do these requirements capture your vision? Any critical gaps or changes needed?"
 - Make revisions if requested, then re-request approval
-- Do NOT proceed to design until explicit approval ("yes", "approved", "looks good")
+- Do **NOT** proceed to design until explicit approval ("yes", "approved", "looks good")
 
 **Design Approval:**
-- Present design.md for review
+- Present `design.md` for review
 - Ask: "Does this design approach work? Any architectural concerns?"
 - Make revisions if requested, then re-request approval
-- Do NOT proceed to tasks until explicit approval
+- Do **NOT** proceed to tasks until explicit approval
 
 **Tasks Approval:**
-- Present tasks.md for review  
+- Present `tasks.md` for review  
 - Ask: "Is this implementation plan actionable? Any scope adjustments needed?"
 - Make revisions if requested, then re-request approval
 - Mark workflow complete only after explicit approval
 
-### 5. Auto-Verification (Internal)
+### 6. Auto-Verification (Internal)
+
 Before each approval request, run AI validation:
 1. Forward/Backward/Bi-directional traceability check
 2. Gap analysis (missing coverage, orphaned elements)
 3. Confidence scoring (requirements: X%, design: X%, tasks: X%)
 4. Risk assessment and recommendations
-5. Output: "Traceability Check: PASSED/FAILED" + improvement suggestions
+5. Output: "**Traceability Check: PASSED/FAILED**" + improvement suggestions
 
-### 6. CLAUDE.md Update Assessment (Post-Generation)
-After generating all three files, analyze if major architectural changes require CLAUDE.md updates:
+### 7. CLAUDE.md Update Assessment (Post-Generation)
+
+After generating all three files, analyze if major architectural changes require `CLAUDE.md` updates:
 
 **Triggers for CLAUDE.md Update:**
 - New technology stack (framework, database, architecture pattern)
@@ -192,9 +244,9 @@ After generating all three files, analyze if major architectural changes require
 - Significant changes to development approach or constraints
 
 **Assessment Process:**
-1. Compare generated design.md ADRs against current CLAUDE.md project context
+1. Compare generated `design.md` ADRs against current `CLAUDE.md` project context
 2. Identify semantic gaps between new requirements and existing project description
-3. Check if new NFRs introduce constraints not reflected in CLAUDE.md
+3. Check if new NFRs introduce constraints not reflected in `CLAUDE.md`
 
 **If update needed:**
 ```bash
@@ -217,19 +269,19 @@ This will improve future agent decisions and maintain project context accuracy."
 ## Phase 2: Lifecycle Management
 
 **Execution Rules:**
-- ALWAYS read requirements.md, design.md, tasks.md before executing any task
-- Execute ONLY one task at a time - stop after completion for user review
-- Do NOT automatically proceed to next task without user request
-- If task has sub-tasks, start with sub-tasks first
-- Verify implementation against specific AC references in task details
+- ALWAYS read `requirements.md`, `design.md`, `tasks.md` before executing any task
+- Execute **ONLY one task at a time** — stop after completion for user review
+- Do **NOT** automatically proceed to next task without explicit user request
+- If a task has sub-tasks, start with sub-tasks first
+- Verify implementation against specific **AC** references in task details
 
-**Task Updates**: Change [ ] to [x], update progress count, AI monitors for scope drift/timeline deviation
+**Task Updates**: Change `[ ]` to `[x]`, update progress count; monitor scope drift/timeline deviation
 
 **Smart Completion** (100% progress):
 1. Auto-validate acceptance criteria vs implementation
 2. Execute full test suite against original requirements  
 3. Generate requirement satisfaction + quality metrics report
-4. Archive: Create specs/done/, move specs/{feature}/, rename DONE_{date}_{hash}_filename.md
+4. Archive: Create `specs/done/`, move `specs/{feature}/`, rename `DONE_{date}_{hash}_filename.md`
 5. Generate retrospective + update semantic knowledge base
 
 **Learning Loop**: Pattern recognition for estimates, risk prediction, process optimization
@@ -237,12 +289,13 @@ This will improve future agent decisions and maintain project context accuracy."
 ---
 
 ## Resume Command
-/kiro resume "{feature-name}"
-Action: 
-1. Read specs/{feature-name}/requirements.md for full requirement context
-2. Read specs/{feature-name}/design.md for architectural decisions + rationale  
-3. Read specs/{feature-name}/tasks.md for current progress state
+
+`/kiro resume "{feature-name}"`  
+**Action:** 
+1. Read `specs/{feature-name}/requirements.md` for full requirement context
+2. Read `specs/{feature-name}/design.md` for architectural decisions + rationale  
+3. Read `specs/{feature-name}/tasks.md` for current progress state
 4. Reconstruct semantic traceability graph from all three documents
 5. Continue with full TAD framework context maintained
 
-This ensures AI agents understand WHY decisions were made, not just WHAT needs to be done.
+> This ensures AI agents understand **WHY** decisions were made, not just **WHAT** needs to be done.
