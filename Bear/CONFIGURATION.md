@@ -116,6 +116,20 @@ This guide covers detailed configuration options for Bear V2 agentic agent syste
       "max_subtasks": 3,
       "estimated_time_minutes": 15,
       "requires_research": false
+    },
+    "fast_track_confirmation": {
+      "enabled": true,
+      "timeout_seconds": 60,
+      "show_agent_metrics": true,
+      "show_risk_assessment": true,
+      "show_affected_files": true,
+      "allow_plan_modification": true,
+      "auto_escalate_on_modify": false,
+      "confirmation_prompts": {
+        "accept": ["y", "yes", "proceed", "ok", "confirm", "continue"],
+        "decline": ["n", "no", "abort", "cancel", "stop"],
+        "modify": ["modify", "change", "adjust", "edit", "different"]
+      }
     }
   }
 }
@@ -130,6 +144,16 @@ This guide covers detailed configuration options for Bear V2 agentic agent syste
 - `task_timeout_minutes`: Maximum time allowed for individual tasks
 - `retry_failed_tasks`: Automatically retry failed tasks (default: true)
 - `max_retries`: Maximum number of retry attempts per task
+
+**Fast Track Confirmation Options:**
+- `fast_track_confirmation.enabled`: Enable plan confirmation for Fast Track workflow (default: true)
+- `fast_track_confirmation.timeout_seconds`: Time to wait for user response before re-prompting (default: 60)
+- `fast_track_confirmation.show_agent_metrics`: Display agent performance data in plan (default: true)
+- `fast_track_confirmation.show_risk_assessment`: Include risk analysis in plan display (default: true)
+- `fast_track_confirmation.show_affected_files`: List all files that will be modified/created (default: true)
+- `fast_track_confirmation.allow_plan_modification`: Allow user to request plan changes (default: true)
+- `fast_track_confirmation.auto_escalate_on_modify`: Automatically escalate to Deep Dive on modification request (default: false)
+- `fast_track_confirmation.confirmation_prompts`: Customizable response keywords for accept/decline/modify actions
 
 ### Integration Configuration
 

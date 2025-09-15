@@ -163,7 +163,7 @@ The enhanced implementer supports intelligent resume functionality, allowing sea
   "feature_name": "user-authentication",
   "discovery_timestamp": "2024-01-15T10:30:00Z",
   "capabilities_briefing": "**Code Review**: @code-reviewer, @security-auditor...",
-  "total_agents": 295,
+  "total_agents": 150,
   "agent_assignments": {
     "security_tasks": "@security-expert",
     "database_tasks": "@database-expert",

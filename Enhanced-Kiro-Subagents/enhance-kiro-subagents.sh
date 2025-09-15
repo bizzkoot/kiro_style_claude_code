@@ -589,11 +589,26 @@ download_all_subagents() {
         cleanup_temp_dir "$temp_dir"
         return 1
     fi
-    # Find all .md files in the collection (excluding README and docs)
+    # Find all .md files in the collection/subagents directory (excluding README and docs)
     local subagent_files=()
+    local subagents_dir="$temp_dir/collection/subagents"
+    
+    # Check if subagents directory exists
+    if [[ ! -d "$subagents_dir" ]]; then
+        show_detailed_error "SUBAGENTS_DIR_MISSING" "subagents directory not found in repository" \
+            "The repository structure has changed. Expected to find subagents/ directory in the cloned repository."
+        cleanup_temp_dir "$temp_dir"
+        return 1
+    fi
+    
+    # Find agent files specifically in the subagents directory
     while IFS= read -r -d '' file; do
-        subagent_files+=("$file")
-    done < <(find "$temp_dir/collection" -name "*.md" -type f -print0)
+        # Skip README, CHANGELOG, and other non-agent files
+        local filename=$(basename "$file")
+        if [[ ! "$filename" =~ ^(README|CHANGELOG|CONTRIBUTING|LICENSE|UPDATES) ]]; then
+            subagent_files+=("$file")
+        fi
+    done < <(find "$subagents_dir" -name "*.md" -type f -print0)
     echo -e "${BLUE}[Download]${NC} Found ${#subagent_files[@]} subagent files to download"
     if [[ ${#subagent_files[@]} -eq 0 ]]; then
         echo -e "${YELLOW}⚠ WARNING${NC} - No subagent files found in repository"

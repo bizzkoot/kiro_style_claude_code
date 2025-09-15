@@ -142,9 +142,20 @@ echo -e "   -> Downloading from ${PERSONAS_REPO}..."
 git clone --depth 1 "$PERSONAS_REPO.git" "$TEMP_DIR/collection" &> /dev/null &
 show_spinner $! "      Cloning repository..."
 
-# 2. Copy persona files
+# 2. Copy persona files from the subagents directory
 echo -e "   -> Installing persona files to ${INSTALLATION_PATH}..."
-find "$TEMP_DIR/collection" -name "*.md" -exec cp {} "$INSTALLATION_PATH" \;
+local subagents_dir="$TEMP_DIR/collection/subagents"
+
+# Check if subagents directory exists
+if [[ ! -d "$subagents_dir" ]]; then
+    echo -e "      ${RED}✗ ERROR: subagents directory not found in repository${NC}"
+    echo -e "      ${YELLOW}  Expected location: subagents/${NC}"
+    rm -rf "$TEMP_DIR"
+    exit 1
+fi
+
+# Find agent files specifically in the subagents directory
+find "$subagents_dir" -name "*.md" -type f -exec cp {} "$INSTALLATION_PATH" \;
 PERSONA_COUNT=$(find "$INSTALLATION_PATH" -name "*.md" | wc -l)
 echo -e "      ${GREEN}✓ Installed ${PERSONA_COUNT} persona files.${NC}"
 

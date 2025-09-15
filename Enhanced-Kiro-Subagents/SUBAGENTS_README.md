@@ -4,7 +4,7 @@
     <img src="../ICON.png" alt="Kiro Style TAD Framework Icon" width="150" height="150">
     <br><br>
     <h3>🤖 Enhanced Specification-Driven Development</h3>
-    <p><em>A powerful system that enhances the <code>/kiro-implementer</code> with access to 295+ specialized subagents from the community, enabling intelligent task delegation while maintaining strict EARS compliance and preventing over-engineering.</em></p>
+    <p><em>A powerful system that enhances the <code>/kiro-implementer</code> with access to 150+ specialized subagents from the community, enabling intelligent task delegation while maintaining strict EARS compliance and preventing over-engineering.</em></p>
     
 ![Subagent Integration](https://img.shields.io/badge/Subagent-Integration-blueviolet)
 ![Dynamic Discovery](https://img.shields.io/badge/Dynamic-Discovery-informational)
@@ -48,7 +48,7 @@ cd Enhanced-Kiro-Subagents
 /kiro-implementer feature-name
 ```
 
-That's it! You now have access to 295+ specialized subagents with intelligent discovery, EARS-compliant delegation, and built-in optimization.
+That's it! You now have access to 150+ specialized subagents with intelligent discovery, EARS-compliant delegation, and built-in optimization.
 
 ---
 
@@ -77,7 +77,7 @@ The enhanced implementer follows a structured process for robust, traceable, and
 ```mermaid
 graph TD
     A["/kiro-implementer feature-name"] --> B{Phase 1: Dynamic Discovery}
-    B --> C[Load 295+ agent capabilities from manifest]
+    B --> C[Load 150+ agent capabilities from manifest]
     C --> E[Generate capabilities briefing & save state]
     
     E --> F{Phase 2: Strategic Planning}
@@ -109,7 +109,7 @@ graph TD
 
 ### Core Features
 
-*   **295+ Specialized Subagents**: Access to the entire @davepoon subagent collection for any task.
+*   **150+ Specialized Subagents**: Access to the entire @davepoon subagent collection for any task.
 *   **Built-in Optimization**: Includes rules and processes to prevent over-engineering, prioritize MVP solutions, and manage complexity with token budgets.
 *   **EARS-Compliant Delegation**: Injects requirement traceability into every subagent action.
 *   **Stateful Resume**: Seamlessly stop and continue your work. The system loads state from `.claude/state/implementer-state/[feature-name].json` to preserve context and agent assignments, skipping the discovery phase on resume.
@@ -174,7 +174,7 @@ The system analyzes your `requirements.md` and `design.md` to generate a `tasks.
 
 Running `./enhance-kiro-subagents.sh` performs the following:
 
-*   **Subagent Collection**: Downloads 295+ specialized `.md` subagent files to `~/.claude/agents/` or `./.claude/agents/`.
+*   **Subagent Collection**: Downloads 150+ specialized `.md` subagent files to `~/.claude/agents/` or `./.claude/agents/`.
 *   **Optimized Manifest**: Creates `subagents-manifest.json` for fast discovery.
 *   **Enhanced Kiro Implementer**: Replaces the standard implementer with the enhanced 3.5-phase version.
 *   **Support Files**: Installs required protocols and templates for delegation and discovery.
@@ -191,7 +191,7 @@ Running `./enhance-kiro-subagents.sh` performs the following:
 
 ### Confirm Installation Success
 
-1.  **Check Agents**: `ls ~/.claude/agents/ | wc -l` (should show 295+ files).
+1.  **Check Agents**: `ls ~/.claude/agents/ | wc -l` (should show 150+ files).
 2.  **Verify Manifest**: `cat ~/.claude/agents/subagents-manifest.json | head -5`.
 3.  **Test Implementer**: `/kiro-implementer --help` (should show 3.5-phase execution strategy).
 
@@ -206,7 +206,7 @@ Running `./enhance-kiro-subagents.sh` performs the following:
 
 ## 🚀 Next Steps & Community
 
-1.  **Explore Available Agents**: Review the manifest or browse `~/.claude/agents/` to see all 295+ specialists.
+1.  **Explore Available Agents**: Review the manifest or browse `~/.claude/agents/` to see all 150+ specialists.
 2.  **Try the Enhanced Implementer**: Start with a simple feature to see the 3.5-phase process in action.
 3.  **Join the Community**: This system is powered by @davepoon's subagent collection. Please support their work!
     -   ⭐ **Star the original repo**: [claude-code-subagents-collection](https://github.com/davepoon/claude-code-subagents-collection)

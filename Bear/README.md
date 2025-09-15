@@ -10,6 +10,7 @@ Bear V2 is a sophisticated agentic developer protocol that brings adaptive workf
 - **💾 Persistent Memory System**: Semantic search across all project histories and learnings
 - **🔄 Reflexive Learning**: Deep analysis and prevention of repeated errors
 - **⚡ Dynamic Agent Selection**: Performance-based agent selection with continuous optimization
+- **✅ Plan Confirmation**: User approval required before file creation/editing in Fast Track workflow
 - **🎯 EARS Integration**: Full specification compliance and validation
 - **🤝 Kiro Compatible**: Seamless integration with existing Kiro framework
 
@@ -51,6 +52,7 @@ Bear/
 ├── 🔧 TROUBLESHOOTING.md       # Comprehensive troubleshooting
 ├── 🐻 bear_protocol.md         # Core Bear V2 protocol specification
 ├── 🧠 knowledge_synthesizer_v2.md # Memory curation agent
+├── ⚡ FAST_TRACK_EXAMPLES.md    # Fast Track plan confirmation examples
 ├── 🛠️  install-bear.sh          # Automated installation script
 ├── ✅ validate-bear.sh          # Installation validation tool
 └── 📖 README.md                # This file
@@ -97,6 +99,13 @@ Knowledge Synthesizer agent specification:
 - Semantic tagging systems
 - Quality assurance processes
 
+### [FAST_TRACK_EXAMPLES.md](./FAST_TRACK_EXAMPLES.md)
+Fast Track plan confirmation examples and configuration:
+- Real-world usage scenarios with plan confirmation
+- User interaction patterns (approve/decline/modify)
+- Configuration examples for different team needs
+- Benefits analysis for users, teams, and system
+
 ## 🛠️ Installation Options
 
 ### 🌍 Global Installation (Recommended for Personal Use)
@@ -128,9 +137,9 @@ User Request → Assess & Recall → Triage Complexity
                                       ↙        ↘
                             Fast Track        Deep Dive
                                ↓                ↓
-                        Quick Execution    Research → Plan → Execute
+                      Plan → Confirm     Research → Plan → Execute
                                ↓                ↓
-                        Learn & Update ← Learn & Synthesize
+                        Execute & Learn ← Learn & Synthesize
 ```
 
 ### Memory System
@@ -235,7 +244,7 @@ Memory Entry Structure:
 | Command | Description | Use Case |
 |---------|-------------|----------|
 | `/bear [task]` | Full adaptive workflow with complexity triage | General development tasks |
-| `/bear-fast [task]` | Fast Track workflow for simple, well-defined tasks | Quick fixes, simple implementations |
+| `/bear-fast [task]` | Fast Track workflow with plan confirmation before execution | Quick fixes, simple implementations |
 | `/bear-deep [task]` | Deep Dive workflow for complex, multi-faceted projects | Architecture design, complex features |
 | `/bear-memory [query]` | Search and recall from persistent memory system | Find past solutions, patterns, learnings |
 

@@ -93,12 +93,36 @@ validate_system() {
         echo -e "${GREEN}✓ Git available${NC}: $(git --version | head -n1)"
     fi
     
-    # Check network connectivity
-    if ping -c 1 github.com >/dev/null 2>&1; then
+    # Check network connectivity with multiple fallback methods
+    echo -e "${BLUE}[Network]${NC} Testing connectivity to github.com..."
+    
+    # Try multiple methods for better compatibility
+    local network_ok=false
+    
+    # Method 1: Try ping with timeout (macOS compatible)
+    if ping -c 1 -W 5000 github.com >/dev/null 2>&1; then
+        network_ok=true
+    # Method 2: Try curl as fallback
+    elif command -v curl >/dev/null 2>&1 && curl -s --max-time 10 --connect-timeout 5 https://github.com >/dev/null 2>&1; then
+        network_ok=true
+    # Method 3: Try nc (netcat) as last resort
+    elif command -v nc >/dev/null 2>&1 && echo | nc -w 5 github.com 443 >/dev/null 2>&1; then
+        network_ok=true
+    fi
+    
+    if [[ "$network_ok" == "true" ]]; then
         echo -e "${GREEN}✓ Network connectivity${NC}: github.com accessible"
     else
-        echo -e "${RED}✗ Network connectivity${NC}: Cannot reach github.com"
-        return 1
+        echo -e "${YELLOW}⚠ Network connectivity${NC}: Cannot reach github.com reliably"
+        echo -e "${YELLOW}  This may be due to: firewall, proxy, or slow connection${NC}"
+        echo -e "${YELLOW}  Installation will continue but agent download may fail${NC}"
+        
+        # Ask user if they want to continue
+        read -p "Continue anyway? (y/N): " continue_choice
+        if [[ ! "$continue_choice" =~ ^[Yy]$ ]]; then
+            echo -e "${RED}Installation cancelled by user${NC}"
+            return 1
+        fi
     fi
     
     # Check disk space (need ~100MB)
@@ -228,9 +252,11 @@ download_agent_collection() {
     local temp_dir="/tmp/bear_agents_$$"
     mkdir -p "$temp_dir"
 
-    # Clone the repository
+    # Clone the repository with timeout
     echo -e "${BLUE}[Download]${NC} Cloning agent collection..."
-    git clone --depth 1 "$AGENTS_REPO.git" "$temp_dir/collection" >/dev/null 2>&1 &
+    
+    # Start git clone in background - macOS compatible approach
+    git clone --depth 1 "$AGENTS_REPO" "$temp_dir/collection" >/dev/null 2>&1 &
     local clone_pid=$!
     show_spinner $clone_pid "Downloading repository from @davepoon's collection..."
     wait $clone_pid
@@ -244,17 +270,28 @@ download_agent_collection() {
         return 1
     fi
 
-    # Find and copy agent files
+    # Find and copy agent files from the subagents directory
     echo -e "${BLUE}[Installation]${NC} Installing agent collection..."
     
     local agent_files=()
+    local subagents_dir="$temp_dir/collection/subagents"
+    
+    # Check if subagents directory exists
+    if [[ ! -d "$subagents_dir" ]]; then
+        echo -e "${RED}✗ FAILED${NC} - subagents directory not found in repository"
+        echo -e "${YELLOW}  Expected location: subagents/${NC}"
+        rm -rf "$temp_dir"
+        return 1
+    fi
+    
+    # Find agent files specifically in the subagents directory
     while IFS= read -r -d '' file; do
         # Skip README, CHANGELOG, and other non-agent files
         local filename=$(basename "$file")
         if [[ ! "$filename" =~ ^(README|CHANGELOG|CONTRIBUTING|LICENSE|UPDATES) ]]; then
             agent_files+=("$file")
         fi
-    done < <(find "$temp_dir/collection" -name "*.md" -type f -print0)
+    done < <(find "$subagents_dir" -name "*.md" -type f -print0)
 
     echo -e "${BLUE}[Installation]${NC} Found ${#agent_files[@]} agent files to install"
 
@@ -294,6 +331,7 @@ download_agent_collection() {
 fix_agent_frontmatter() {
     local agents_dir="$1"
     local fixed_count=0
+    local failed_files=()
     local skip_files="README.md CHANGELOG.md CONTRIBUTING.md UPDATES.md LICENSE.md"
     
     # Function to check if string contains substring
@@ -350,29 +388,32 @@ fix_agent_frontmatter() {
             continue
         fi
         
+        # Skip if already has name field
+        if has_name_in_frontmatter "$file_path"; then
+            continue
+        fi
+        
+        # Create backup before modification
+        cp "$file_path" "$file_path.backup"
+        
         # Read the first line
         local content=$(head -n 1 "$file_path")
+        local name="${md_file%.*}"
+        local success=false
         
         # Check if the file has frontmatter (starts with ---)
         if [[ $content == ---* ]]; then
-            # Check if it already has a name field in the frontmatter
-            if has_name_in_frontmatter "$file_path"; then
-                continue  # Already has name field
-            else
-                # Extract the name from the filename (without extension)
-                local name="${md_file%.*}"
-                
-                # Add the name field to the frontmatter after the first line
-                if sed -i '' "2i\\
+            # Add the name field to the frontmatter after the first line
+            if sed -i '' "2i\\
 name: $name\\
 " "$file_path" 2>/dev/null; then
-                    ((fixed_count++))
+                # Verify the modification was successful
+                if has_name_in_frontmatter "$file_path"; then
+                    success=true
                 fi
             fi
         else
             # File doesn't have frontmatter, add it
-            local name="${md_file%.*}"
-            # Create a temporary file with the new content
             {
                 echo "---"
                 echo "name: $name"
@@ -381,7 +422,20 @@ name: $name\\
                 cat "$file_path"
             } > "$file_path.tmp" && mv "$file_path.tmp" "$file_path"
             
+            # Verify the modification was successful
+            if has_name_in_frontmatter "$file_path"; then
+                success=true
+            fi
+        fi
+        
+        if [[ "$success" == true ]]; then
+            # Success: remove backup
+            rm "$file_path.backup"
             ((fixed_count++))
+        else
+            # Failed: restore backup and record failure
+            mv "$file_path.backup" "$file_path"
+            failed_files+=("$md_file")
         fi
     done
     
@@ -389,6 +443,11 @@ name: $name\\
         echo -e "${GREEN}✓ Fixed frontmatter for $fixed_count agent files${NC}"
     else
         echo -e "${GREEN}✓ All agent files already have proper frontmatter${NC}"
+    fi
+    
+    # Report failed files
+    if [[ ${#failed_files[@]} -gt 0 ]]; then
+        echo -e "${RED}✗ Failed to fix frontmatter for:${NC} ${failed_files[*]}"
     fi
     
     return 0
@@ -489,20 +548,50 @@ EOF
 
     # Validate JSON and move to final location
     if command -v python3 >/dev/null 2>&1; then
-        if python3 -m json.tool "$temp_manifest" >/dev/null 2>&1; then
+        # Try to validate JSON with detailed error reporting
+        local validation_output
+        validation_output=$(python3 -c "
+import json
+import sys
+try:
+    with open('$temp_manifest', 'r') as f:
+        data = json.load(f)
+    print('SUCCESS: Valid JSON with', len(data.get('index', [])), 'agents')
+except json.JSONDecodeError as e:
+    print(f'JSON_ERROR: {e}')
+    sys.exit(1)
+except Exception as e:
+    print(f'FILE_ERROR: {e}')
+    sys.exit(1)
+" 2>&1)
+        
+        if [[ $? -eq 0 ]]; then
             mv "$temp_manifest" "$manifest_path"
-            echo -e "${GREEN}✓ Simple manifest generated${NC}: $agent_count agents indexed"
+            echo -e "${GREEN}✓ Manifest validated and installed${NC}: $agent_count agents indexed"
+            echo -e "${BLUE}  Validation: $validation_output${NC}"
             return 0
         else
             echo -e "${RED}✗ Manifest JSON validation failed${NC}"
+            echo -e "${RED}  Error details: $validation_output${NC}"
+            echo -e "${YELLOW}  Debugging - Last 10 lines of manifest:${NC}"
+            tail -10 "$temp_manifest" | sed 's/^/    /'
             rm -f "$temp_manifest"
             return 1
         fi
     else
-        # No Python validation, just move the file
-        mv "$temp_manifest" "$manifest_path"
-        echo -e "${YELLOW}⚠ Manifest created without JSON validation${NC}: $agent_count agents indexed"
-        return 0
+        # Fallback: Basic syntax check without Python
+        if grep -q '^{' "$temp_manifest" && grep -q '}$' "$temp_manifest"; then
+            mv "$temp_manifest" "$manifest_path"
+            echo -e "${YELLOW}⚠ Manifest created with basic validation${NC}: $agent_count agents indexed"
+            echo -e "${YELLOW}  Install Python3 for full JSON validation${NC}"
+            return 0
+        else
+            echo -e "${RED}✗ Manifest appears malformed (missing braces)${NC}"
+            echo -e "${YELLOW}  Last 5 lines:${NC}"
+            tail -5 "$temp_manifest" | sed 's/^/    /'
+            rm -f "$temp_manifest"
+            return 1
+        fi
     fi
 }
 
@@ -523,6 +612,14 @@ install_protocol_files() {
         echo -e "${GREEN}✓ Installed${NC} Knowledge Synthesizer V2"
     else
         echo -e "${RED}✗ Failed to install${NC} Knowledge Synthesizer V2"
+        return 1
+    fi
+    
+    # Install Fast Track Examples
+    if cp "$SCRIPT_DIR/FAST_TRACK_EXAMPLES.md" "$INSTALLATION_PATH/protocols/FAST_TRACK_EXAMPLES.md"; then
+        echo -e "${GREEN}✓ Installed${NC} Fast Track Examples"
+    else
+        echo -e "${RED}✗ Failed to install${NC} Fast Track Examples"
         return 1
     fi
     
@@ -1044,6 +1141,7 @@ validate_installation() {
     # Check required files
     local required_files=(
         "$INSTALLATION_PATH/protocols/bear_protocol.md"
+        "$INSTALLATION_PATH/protocols/FAST_TRACK_EXAMPLES.md"
         "$INSTALLATION_PATH/agents/knowledge-synthesizer-v2.md"
         "$INSTALLATION_PATH/agents/agent-performance.json"
         "$INSTALLATION_PATH/agents/$MANIFEST_FILE"

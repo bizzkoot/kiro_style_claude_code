@@ -212,7 +212,7 @@ This project now includes an advanced subagent integration system that transform
 
 ### Key Features:
 
--   **One-Command Setup**: A single script, `Enhanced-Kiro-Subagents/enhance-kiro-subagents.sh`, downloads and installs over 280 specialized subagents.
+-   **One-Command Setup**: A single script, `Enhanced-Kiro-Subagents/enhance-kiro-subagents.sh`, downloads and installs over 150 specialized subagents.
 -   **Dynamic Discovery**: The `/kiro-implementer` can now dynamically discover available subagents, understand their capabilities, and form a strategic plan for task execution.
 -   **EARS-Compliant Delegation**: The system preserves the core Kiro TAD framework by ensuring all delegated tasks adhere to EARS behavioral contracts, maintaining full requirement traceability.
 -   **Zero Repository Pollution**: Subagents can be installed globally (`~/.claude/agents/`) or locally (`./.claude/agents/`) without adding them to your project's repository.
